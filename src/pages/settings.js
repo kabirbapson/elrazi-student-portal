@@ -8,7 +8,7 @@ const Page = () => (
   <>
     <Head>
       <title>
-        Settings | Devias Kit
+        Settings | Elrazi Medical University, Kano
       </title>
     </Head>
     <Box

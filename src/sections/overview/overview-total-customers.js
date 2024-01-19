@@ -21,9 +21,9 @@ export const OverviewTotalCustomers = (props) => {
               color="text.secondary"
               variant="overline"
             >
-              Total Customers
+              Program Applied
             </Typography>
-            <Typography variant="h4">
+            <Typography variant="h6">
               {value}
             </Typography>
           </Stack>
@@ -57,18 +57,12 @@ export const OverviewTotalCustomers = (props) => {
               >
                 {positive ? <ArrowUpIcon /> : <ArrowDownIcon />}
               </SvgIcon>
-              <Typography
-                color={positive ? 'success.main' : 'error.main'}
-                variant="body2"
-              >
-                {difference}%
-              </Typography>
             </Stack>
             <Typography
               color="text.secondary"
               variant="caption"
             >
-              Since last month
+              Date Applied: null
             </Typography>
           </Stack>
         )}

@@ -8,7 +8,7 @@ const Page = () => (
   <>
     <Head>
       <title>
-        Account | Devias Kit
+        Account | Elrazi Medical University, Kano
       </title>
     </Head>
     <Box
