@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import PropTypes from "prop-types";
 import { Box, Divider, MenuItem, MenuList, Popover, Typography } from "@mui/material";
@@ -6,12 +6,21 @@ import { Box, Divider, MenuItem, MenuList, Popover, Typography } from "@mui/mate
 export const AccountPopover = (props) => {
   const { anchorEl, onClose, open } = props;
   const router = useRouter();
+  const [user, setUser] = useState();
 
   const handleSignOut = useCallback(() => {
     onClose?.();
     localStorage.removeItem("user");
     router.push("/auth/login");
   }, [onClose, router]);
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+      // redirect to login
+      router.push("/auth/login");
+    }
+    setUser(user);
+  }, []);
 
   return (
     <Popover
@@ -32,7 +41,10 @@ export const AccountPopover = (props) => {
       >
         <Typography variant="overline">Account</Typography>
         <Typography color="text.secondary" variant="body2">
-          Anika Visser
+          {user?.first_name}
+        </Typography>
+        <Typography color="text.secondary" variant="body2">
+          {user?.email}
         </Typography>
       </Box>
       <Divider />

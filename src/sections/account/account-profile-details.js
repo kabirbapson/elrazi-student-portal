@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -33,8 +33,15 @@ const states = [
 export const AccountProfileDetails = () => {
   // lets stringify the user object from local storage
 
-  const user = JSON.parse(localStorage.getItem("user"));
-
+  const [user, setUser] = useState();
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+      // redirect to login
+      router.push("/auth/login");
+    }
+    setUser(user);
+  }, []);
   const [values, setValues] = useState({
     firstName: "Mansa",
     lastName: "Musa",
@@ -71,7 +78,7 @@ export const AccountProfileDetails = () => {
                   name="firstName"
                   onChange={handleChange}
                   required
-                  value={user.first_name}
+                  value={user?.first_name}
                 />
               </Grid>
               <Grid xs={12} md={6}>
@@ -81,7 +88,7 @@ export const AccountProfileDetails = () => {
                   name="lastName"
                   onChange={handleChange}
                   required
-                  value={user.last_name}
+                  value={user?.last_name}
                 />
               </Grid>
               <Grid xs={12} md={6}>
@@ -91,7 +98,7 @@ export const AccountProfileDetails = () => {
                   name="email"
                   onChange={handleChange}
                   required
-                  value={user.email}
+                  value={user?.email}
                 />
               </Grid>
               <Grid xs={12} md={6}>

@@ -1,5 +1,5 @@
 import NextLink from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import PropTypes from "prop-types";
 import ArrowTopRightOnSquareIcon from "@heroicons/react/24/solid/ArrowTopRightOnSquareIcon";
 import ChevronUpDownIcon from "@heroicons/react/24/solid/ChevronUpDownIcon";
@@ -22,11 +22,17 @@ import { useEffect, useState } from "react";
 export const SideNav = (props) => {
   const { open, onClose } = props;
   const pathname = usePathname();
-  const [user, setUser] = useState();
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));
   //  let's get the user from localstorage
+  const router = useRouter();
+  const [user, setUser] = useState();
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+      // redirect to login
+      router.push("/auth/login");
+    }
+    console.log({ user });
     setUser(user);
   }, []);
 
@@ -80,6 +86,9 @@ export const SideNav = (props) => {
               <Typography color="neutral.400" variant="body2">
                 {user?.first_name}
               </Typography>
+              <Typography color="neutral.400" variant="body2">
+                {user?.email}
+              </Typography>
             </div>
             <SvgIcon fontSize="small" sx={{ color: "neutral.500" }}>
               <ChevronUpDownIcon />
@@ -129,10 +138,10 @@ export const SideNav = (props) => {
           }}
         >
           <Typography color="neutral.100" variant="subtitle2">
-            Need more features?
+            Powered by nail...
           </Typography>
           <Typography color="neutral.500" variant="body2">
-            Check out our Pro solution template.
+           thisisnail.xyz
           </Typography>
           <Box
             sx={{
@@ -147,7 +156,7 @@ export const SideNav = (props) => {
           >
             <img alt="Go to pro" src="/assets/devias-kit-pro.png" />
           </Box>
-          <Button
+          {/* <Button
             component="a"
             endIcon={
               <SvgIcon fontSize="small">
@@ -161,7 +170,7 @@ export const SideNav = (props) => {
             variant="contained"
           >
             Pro Live Preview
-          </Button>
+          </Button> */}
         </Box>
       </Box>
     </Scrollbar>

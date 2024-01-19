@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Head from "next/head";
 import NextLink from "next/link";
 import { useRouter } from "next/navigation";
@@ -16,16 +16,22 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useAuth } from "src/hooks/use-auth";
 import { Layout as AuthLayout } from "src/layouts/auth/layout";
 
 const Page = () => {
-  // lets fetch user from localstorage
+  const [user, setUser] = useState();
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+      // redirect to login
+      router.push("/auth/login");
+    }
+    console.log({ user });
+    setUser(user);
+  }, []);
 
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
-  console.log('za user',user);
+  console.log("za user", user);
   const router = useRouter();
-  const auth = useAuth();
   const formik = useFormik({
     initialValues: {
       otp: "",
@@ -38,7 +44,7 @@ const Page = () => {
         // await auth.signIn(values.email, values.password);
         console.log({ values });
         if (values.otp.length > 4) {
-          alert("Account verified successfully")
+          alert("Account verified successfully");
           router.push("/");
         }
 
@@ -78,17 +84,9 @@ const Page = () => {
               <Typography variant="h4">Verify</Typography>
               <Typography color="text.secondary" variant="body2">
                 Please verify your email address
-                <p>
-                Enter the code sent to {user.email}
-              </p>
-                {/* <Link
-                  component={NextLink}
-                  href="/auth/register"
-                  underline="hover"
-                  variant="subtitle2"
-                >
-                  Register
-                </Link> */}
+              </Typography>
+              <Typography color="text.secondary" variant="body2">
+                Enter the code sent to {user?.email}
               </Typography>
             </Stack>
 

@@ -78,18 +78,18 @@ export const TopNav = (props) => {
             direction="row"
             spacing={2}
           >
-            <Tooltip title="Contacts">
+            {/* <Tooltip title="Contacts">
               <IconButton>
                 <SvgIcon fontSize="small">
                   <UsersIcon />
                 </SvgIcon>
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
             <Tooltip title="Notifications">
               <IconButton>
                 <Badge
                   badgeContent={4}
-                  color="success"
+                  color="error"
                   variant="dot"
                 >
                   <SvgIcon fontSize="small">
@@ -106,7 +106,7 @@ export const TopNav = (props) => {
                 height: 40,
                 width: 40
               }}
-              src="/assets/avatars/avatar-anika-visser.png"
+              src="https://api.lorem.space/image/face?w=150&h=150"
             />
           </Stack>
         </Stack>

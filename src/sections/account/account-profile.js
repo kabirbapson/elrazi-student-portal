@@ -8,6 +8,7 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
+import { useEffect, useState } from "react";
 
 const userS = {
   avatar: "/assets/avatars/avatar-anika-visser.png",
@@ -18,7 +19,16 @@ const userS = {
 };
 
 export const AccountProfile = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const [user, setUser] = useState();
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+      // redirect to login
+      router.push("/auth/login");
+    }
+    setUser(user);
+  }
+  , []);
   return (
     <Card>
       <CardContent>
@@ -38,7 +48,7 @@ export const AccountProfile = () => {
             }}
           />
           <Typography gutterBottom variant="h5">
-            {user.first_name} {user.last_name}
+            {user?.first_name} {user?.last_name}
           </Typography>
           <Typography color="text.secondary" variant="body2">
             {userS.city}, {userS.country}
