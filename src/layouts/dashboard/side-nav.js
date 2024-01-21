@@ -33,7 +33,7 @@ export const SideNav = (props) => {
       router.push("/auth/login");
     }
     console.log({ user });
-    setUser(user);
+    setUser(user?.user);
   }, []);
 
   const content = (

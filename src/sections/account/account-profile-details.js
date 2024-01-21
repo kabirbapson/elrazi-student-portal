@@ -40,7 +40,7 @@ export const AccountProfileDetails = () => {
       // redirect to login
       router.push("/auth/login");
     }
-    setUser(user);
+    setUser(user?.user);
   }, []);
   const [values, setValues] = useState({
     firstName: "Mansa",

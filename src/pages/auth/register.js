@@ -32,18 +32,34 @@ const Page = () => {
         .required("Confirm Password is required")
         .oneOf([Yup.ref("password"), null], "Passwords must match"),
     }),
-    onSubmit: async (values, helpers) => {
+    onSubmit: async (values) => {
+      const { email, password,first_name,last_name,  } = values;
       try {
-        // await auth.signUp(values.email, values.name, values.password);
-        // awai
-        localStorage.setItem("user", JSON.stringify(values));
-        // console.log({ values });
-        router.push("/auth/verify");
-        // router.push("/");
+        // await auth.signIn(values.email, values.password);
+        axiosInstance
+          .post("/auth/register", { email, password,first_name,last_name })
+          .then((response) => {
+            if (response.status === 201) {
+              const user = response.data; 
+              localStorage.setItem("user", JSON.stringify(user));
+              router.push("/verify");
+                // alert("Login successful");
+              // setIsLoading(false);
+              toast("Please check your email for OTP!");
+            }
+          })
+          .catch((error) => {
+            // setIsLoading(false);
+            console.log("MY ERROR", error.response.data);
+          });
+
+        const user = JSON.parse(localStorage.getItem("user"));
+
+        // if (user.email === values.email && user.password === values.password) {
+        //   alert("Login successful");
+        // }
       } catch (err) {
-        helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err.message });
-        helpers.setSubmitting(false);
+        console.log(err);
       }
     },
   });

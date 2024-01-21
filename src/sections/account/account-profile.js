@@ -26,7 +26,7 @@ export const AccountProfile = () => {
       // redirect to login
       router.push("/auth/login");
     }
-    setUser(user);
+    setUser(user?.user);
   }
   , []);
   return (

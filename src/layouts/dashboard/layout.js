@@ -1,8 +1,11 @@
+"use client";
 import { useCallback, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { styled } from "@mui/material/styles";
 import { SideNav } from "./side-nav";
 import { TopNav } from "./top-nav";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SIDE_NAV_WIDTH = 280;
 
@@ -46,7 +49,10 @@ export const Layout = (props) => {
       <TopNav onNavOpen={() => setOpenNav(true)} />
       <SideNav onClose={() => setOpenNav(false)} open={openNav} />
       <LayoutRoot>
-        <LayoutContainer>{children}</LayoutContainer>
+        <LayoutContainer>
+          {children}
+          <ToastContainer />
+        </LayoutContainer>
       </LayoutRoot>
     </>
   );

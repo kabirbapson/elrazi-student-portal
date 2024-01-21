@@ -8,6 +8,7 @@ import { useNProgress } from "src/hooks/use-nprogress";
 import { createTheme } from "src/theme";
 import { createEmotionCache } from "src/utils/create-emotion-cache";
 import "simplebar-react/dist/simplebar.min.css";
+import { ToastContainer } from "react-toastify";
 
 const clientSideEmotionCache = createEmotionCache();
 

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Head from "next/head";
 import NextLink from "next/link";
 import { useRouter } from "next/navigation";
@@ -17,8 +17,15 @@ import {
   Typography,
 } from "@mui/material";
 import { Layout as AuthLayout } from "src/layouts/auth/layout";
+import axios from "axios";
+import axiosInstance from "config";
+import { ToastContainer, toast } from "react-toastify";
 
 const Page = () => {
+  // useEffect(() => {
+  //   toast("Wow so easy!");
+  // }, []);
+
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -31,26 +38,33 @@ const Page = () => {
       password: Yup.string().max(50).required("Password is required"),
     }),
     onSubmit: async (values, helpers) => {
+      const { email, password } = values;
       try {
         // await auth.signIn(values.email, values.password);
-        console.log({ values });
+        axiosInstance
+          .post("/auth/login", { email, password })
+          .then((response) => {
+            if (response.status === 200) {
+              const user = response.data; 
+              localStorage.setItem("user", JSON.stringify(user));
+              router.push("/");
+                // alert("Login successful");
+              // setIsLoading(false);
+              toast("Welcome back!");
+            }
+          })
+          .catch((error) => {
+            // setIsLoading(false);
+            console.log("MY ERROR", error.response.data);
+          });
+
         const user = JSON.parse(localStorage.getItem("user"));
-        if (!user) {
-          alert("No account with this email found, please register");
-        }
 
-        if (user.email === values.email && user.password === values.password) {
-          alert("Login successful");
-          router.push("/");
-        }
-
-        // let's save the json values  localstorage
-        // localStorage.setItem('user', JSON.stringify(values));
+        // if (user.email === values.email && user.password === values.password) {
+        //   alert("Login successful");
+        // }
       } catch (err) {
-        console.log({ err });
-        // helpers.setStatus({ success: false });
-        // helpers.setErrors({ submit: err.message });
-        // helpers.setSubmitting(false);
+        console.log(err);
       }
     },
   });
