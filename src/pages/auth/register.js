@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Box, Button, Link, Stack, TextField, Typography } from "@mui/material";
 import { Layout as AuthLayout } from "src/layouts/auth/layout";
+import axiosInstance from "config";
 
 const Page = () => {
   const router = useRouter();
