@@ -6,6 +6,8 @@ import * as Yup from "yup";
 import { Box, Button, Link, Stack, TextField, Typography } from "@mui/material";
 import { Layout as AuthLayout } from "src/layouts/auth/layout";
 import axiosInstance from "config";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Page = () => {
   const router = useRouter();
@@ -34,24 +36,36 @@ const Page = () => {
         .oneOf([Yup.ref("password"), null], "Passwords must match"),
     }),
     onSubmit: async (values) => {
-      const { email, password,first_name,last_name,  } = values;
+      const { email, password, first_name, last_name } = values;
       try {
         // await auth.signIn(values.email, values.password);
         axiosInstance
-          .post("/auth/register", { email, password,first_name,last_name })
+          .post("/auth/register", { email, password, first_name, last_name })
           .then((response) => {
             if (response.status === 201) {
-              const user = response.data; 
-              localStorage.setItem("user", JSON.stringify(user));
-              router.push("/verify");
-                // alert("Login successful");
+              const user = response.data;
+              localStorage.setItem("email", JSON.stringify(email));
+              console.log("CREATED USER", user);
+              router.push("/auth/verify");
+              // alert("Login successful");
               // setIsLoading(false);
               toast("Please check your email for OTP!");
+            } else if (response.status === 400) {
+              console.log(response.data);
+              alert("Student with this email already exists!")
+              // setIsLoading(false);
+              toast("Student with this email already exists!");
             }
           })
           .catch((error) => {
             // setIsLoading(false);
-            console.log("MY ERROR", error.response.data);
+            if (error.response.status === 400) {
+              // setIsLoading(false);
+              // alert("Student with this email already exists!");
+              toast("Student with this email already exists!");
+            } else {
+              console.log("MY ERROR", error.response.data);
+            }
           });
 
         const user = JSON.parse(localStorage.getItem("user"));
@@ -173,6 +187,7 @@ const Page = () => {
             </form>
           </div>
         </Box>
+        <ToastContainer />
       </Box>
     </>
   );

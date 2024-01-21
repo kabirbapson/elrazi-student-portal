@@ -2,7 +2,7 @@ import axios from 'axios';
 
 
 const axiosInstance = axios.create({
-  baseURL: 'http://34.255.190.46/api', // Base URL for your API
+  baseURL: 'https://elraziportal.alis.com.ng/api', // Base URL for your API
 //   timeout: 2000,
 });
 

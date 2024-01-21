@@ -45,17 +45,23 @@ const Page = () => {
           .post("/auth/login", { email, password })
           .then((response) => {
             if (response.status === 200) {
-              const user = response.data; 
+              const user = response.data;
               localStorage.setItem("user", JSON.stringify(user));
-              router.push("/");
-                // alert("Login successful");
-              // setIsLoading(false);
               toast("Welcome back!");
+              router.push("/");
+              // alert("Login successful");
+              // setIsLoading(false);
             }
           })
           .catch((error) => {
+            if (error.response.status === 400) {
+              // alert("Please verifycheck your email");
+              toast("Something went wrong, please check your email");
+            } else {
+              console.log("MY ERROR", error.response.data);
+            }
+
             // setIsLoading(false);
-            console.log("MY ERROR", error.response.data);
           });
 
         const user = JSON.parse(localStorage.getItem("user"));

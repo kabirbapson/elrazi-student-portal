@@ -13,13 +13,15 @@ import {
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { OverviewBudget } from "src/sections/overview/overview-budget";
 import { CalendarIcon } from "@mui/x-date-pickers";
+import axiosInstance from "config";
 
 const now = new Date();
 
 const Page = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState("");
-
+  const [user, setUser] = useState();
+  const [token, setToken] = useState();
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
@@ -35,9 +37,25 @@ const Page = () => {
 
     try {
       const formData = new FormData();
-      formData.append("file", selectedFile);
+      formData.append("receipt", selectedFile);
 
-      console.log(formData);
+      axiosInstance
+        .post("/payments/", formData, {
+          headers: {
+            Authorization: `Token ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          if (response.status === 201) {
+            console.log("upload respnnse", response.data);
+          }
+        })
+        .catch((error) => {
+          console.log('upload error',error.response.data);
+        });
+      //
+      // console.log(formData);
       // const response = await fetch("/api/upload", {
       //   method: "POST",
       //   body: formData,
@@ -56,6 +74,19 @@ const Page = () => {
       setUploadStatus("An error occurred during upload.");
     }
   };
+
+  
+  React.useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    setToken(user.token)
+    if (!user) {
+      // redirect to login
+      router.push("/auth/login");
+    }
+
+    setUser(user?.user);
+  }, []);
 
   return (
     <>
@@ -83,7 +114,7 @@ const Page = () => {
                 // p: 10,
               }}
             >
-              <Grid >
+              <Grid>
                 <Typography variant="h6" sx={{ marginBottom: "15px" }}>
                   Make payment of N30,000 Application Fee and Upload Receipt
                 </Typography>
@@ -184,7 +215,7 @@ const Page = () => {
                 difference={12}
                 positive
                 sx={{ height: "100%" }}
-                value="Pending"
+                value={user?.has_paid ? "Paid" : "Not Paid"}
               />
             </Grid>
 
@@ -197,7 +228,7 @@ const Page = () => {
                 difference={12}
                 positive
                 sx={{ height: "100%" }}
-                value="MBBS. Medicine and Surgery"
+                value="No Course Applied"
               />
             </Grid>
 

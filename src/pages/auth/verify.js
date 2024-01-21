@@ -17,20 +17,23 @@ import {
   Typography,
 } from "@mui/material";
 import { Layout as AuthLayout } from "src/layouts/auth/layout";
+import axiosInstance from "config";
+import { toast } from "react-toastify";
 
 const Page = () => {
   const [user, setUser] = useState();
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user) {
-      // redirect to login
-      router.push("/auth/login");
-    }
-    console.log({ user });
-    setUser(user);
-  }, []);
+  // useEffect(() => {
+  //   const email = JSON.parse(localStorage.getItem("email"));
 
-  console.log("za user", user);
+  //   if (!email) {
+  //     // redirect to login
+  //     router.push("/auth/login");
+  //   }
+  //   // console.log({ email });
+  //   setUser(email);
+  // }, []);
+
+  // console.log("za user", user);
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -40,20 +43,44 @@ const Page = () => {
       otp: Yup.string().max(70).required("OTP is required"),
     }),
     onSubmit: async (values, helpers) => {
-      try {
-        // await auth.signIn(values.email, values.password);
-        console.log({ values });
-        if (values.otp.length > 4) {
-          alert("Account verified successfully");
-          router.push("/");
-        }
+      const { otp } = values;
+      const email = JSON.parse(localStorage.getItem("email"));
+      console.log('email for local', email);
+      console.log(email, otp);
+      axiosInstance
+        .get(`/auth/verify-email?otp=${otp}&email=${email}`)
+        .then((response) => {
+          if (response.status === 200) {
+            const user = response.data;
+            console.log('response',user);
+            alert("Email has been successfully verified.");
+            // setIsLoading(false);
+            toast("Welcome back!");
+            localStorage.clear();
+            router.push("/auth/login");
+          }
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+          // setIsLoading(false);
+          alert("Something went wrong");
+          toast.error("Something went wrong");
+        });
 
-        // router.push("/");
-      } catch (err) {
-        helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err.message });
-        helpers.setSubmitting(false);
-      }
+      // try {
+      //   // await auth.signIn(values.email, values.password);
+      //   console.log({ values });
+      //   if (values.otp.length > 4) {
+      //     alert("Account verified successfully");
+      //     router.push("/");
+      //   }
+
+      //   // router.push("/");
+      // } catch (err) {
+      //   helpers.setStatus({ success: false });
+      //   helpers.setErrors({ submit: err.message });
+      //   helpers.setSubmitting(false);
+      // }
     },
   });
 
