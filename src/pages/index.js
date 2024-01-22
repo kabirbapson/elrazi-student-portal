@@ -168,13 +168,13 @@ const Page = () => {
                 Account Name:
               </Typography>
               <Typography textAlign={"center"} variant="body2">
-                Elrazi Medical University, Kano
+                Elrazi Medical University kn-Revenue 
               </Typography>
 
               <Typography variant="body1" sx={{ fontWeight: "bold" }}>
                 Account Number:
               </Typography>
-              <Typography variant="body2">1020304050</Typography>
+              <Typography variant="body2">0005035147</Typography>
 
               <Typography variant="body1" sx={{ fontWeight: "bold" }}>
                 Bank Name:
