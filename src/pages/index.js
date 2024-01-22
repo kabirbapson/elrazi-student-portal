@@ -23,7 +23,6 @@ const Page = () => {
   const [uploadStatus, setUploadStatus] = useState("");
   const [user, setUser] = useState();
   const [token, setToken] = useState();
-  const [paymentStatus, setPaymentStatus] = useState("Not Paid");
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -79,6 +78,25 @@ const Page = () => {
     }
   };
 
+  const fetchUserDetails = () => {
+    axiosInstance
+        .post("/auth/user/", {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        })
+        .then((response) => {
+          if (response.status === 201) {
+            setUploadStatus("File uploaded successfully!");
+            toast("File uploaded successfully!");
+            setSelectedFile(null); // Clear selected file
+            console.log("upload respnnse", response.data);
+          }
+        })
+        .catch((error) => {
+          console.log("upload error", error.response.data);
+        });
+  }
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
 
@@ -92,17 +110,9 @@ const Page = () => {
   }, []);
 
   useEffect(() => {
-    if (user?.has_paid) {
-      if (selectedFile) {
-        setPaymentStatus("Confirmation Pending");
-      } else {
-        setPaymentStatus("Paid");
-      }
-    } else {
-      setPaymentStatus("Not Paid");
-    }
+
   }, [user?.has_paid, selectedFile]);
-  console.log({paymentStatus});
+
   return (
     <>
       <Head>
@@ -230,7 +240,7 @@ const Page = () => {
                 difference={12}
                 positive
                 sx={{ height: "100%" }}
-                value={paymentStatus}
+                value={user?.has_paid ? 'Paid' : 'Not Paid/Pending'}
               />
             </Grid>
 
@@ -256,7 +266,7 @@ const Page = () => {
                 difference={12}
                 positive
                 sx={{ height: "100%" }}
-                value="Pending"
+                value="Not Applied"
               />
             </Grid>
           </Grid>

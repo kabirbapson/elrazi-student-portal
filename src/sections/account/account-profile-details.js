@@ -111,7 +111,7 @@ export const AccountProfileDetails = () => {
                   value={values.phone}
                 />
               </Grid>
-              <Grid xs={12} md={6}>
+              {/* <Grid xs={12} md={6}>
                 <TextField
                   fullWidth
                   label="Country"
@@ -138,7 +138,7 @@ export const AccountProfileDetails = () => {
                     </option>
                   ))}
                 </TextField>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Box>
         </CardContent>

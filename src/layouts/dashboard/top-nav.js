@@ -106,7 +106,7 @@ export const TopNav = (props) => {
                 height: 40,
                 width: 40
               }}
-              src="https://api.lorem.space/image/face?w=150&h=150"
+              src="/assets/userIcon.jpg"
             />
           </Stack>
         </Stack>

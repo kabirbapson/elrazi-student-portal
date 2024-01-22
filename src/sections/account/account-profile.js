@@ -40,7 +40,7 @@ export const AccountProfile = () => {
           }}
         >
           <Avatar
-            src={"https://api.lorem.space/image/face?w=150&h=150"}
+            src={"/assets/userIcon.jpg"}
             sx={{
               height: 80,
               mb: 2,
@@ -50,12 +50,12 @@ export const AccountProfile = () => {
           <Typography gutterBottom variant="h5">
             {user?.first_name} {user?.last_name}
           </Typography>
-          <Typography color="text.secondary" variant="body2">
+          {/* <Typography color="text.secondary" variant="body2">
             {userS.city}, {userS.country}
           </Typography>
           <Typography color="text.secondary" variant="body2">
             {userS.timezone}
-          </Typography>
+          </Typography> */}
         </Box>
       </CardContent>
       <Divider />

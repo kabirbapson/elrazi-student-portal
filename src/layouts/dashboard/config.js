@@ -40,7 +40,7 @@ export const items = [
   },
   {
     title: "Payment",
-    path: "/",
+    path: "/#",
     icon: (
       <SvgIcon fontSize="small">
         <Card />
@@ -49,7 +49,7 @@ export const items = [
   },
   {
     title: "Uploads",
-    path: "/",
+    path: "/#",
     icon: (
       <SvgIcon fontSize="small">
         <UsersIcon />
