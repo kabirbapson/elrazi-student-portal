@@ -8,6 +8,7 @@ import {
   Alert,
   Box,
   Button,
+  CircularProgress,
   FormHelperText,
   Link,
   Stack,
@@ -22,6 +23,8 @@ import axiosInstance from "config";
 import { ToastContainer, toast } from "react-toastify";
 
 const Page = () => {
+  const [loading, setLoading] = useState(false);
+
   // useEffect(() => {
   //   toast("Wow so easy!");
   // }, []);
@@ -37,8 +40,9 @@ const Page = () => {
       email: Yup.string().email("Must be a valid email").max(70).required("Email is required"),
       password: Yup.string().max(50).required("Password is required"),
     }),
-    onSubmit: async (values, helpers) => {
+    onSubmit: async (values) => {
       const { email, password } = values;
+      setLoading(true);
       try {
         // await auth.signIn(values.email, values.password);
         axiosInstance
@@ -46,29 +50,24 @@ const Page = () => {
           .then((response) => {
             if (response.status === 200) {
               const user = response.data;
-              localStorage.setItem("user", JSON.stringify(user));
+              localStorage.setItem("user", JSON.stringify(user.user));
+              localStorage.setItem("token", JSON.stringify(user.token));
+
               toast("Welcome back!");
               router.push("/");
-              // alert("Login successful");
-              // setIsLoading(false);
+              setLoading(false);
             }
           })
           .catch((error) => {
             if (error.response.status === 400) {
-              // alert("Please verifycheck your email");
+              setLoading(false);
+              alert("Please verify/check your email and password");
               toast("Something went wrong, please check your email");
             } else {
+              setLoading(false);
               console.log("MY ERROR", error.response.data);
             }
-
-            // setIsLoading(false);
           });
-
-        const user = JSON.parse(localStorage.getItem("user"));
-
-        // if (user.email === values.email && user.password === values.password) {
-        //   alert("Login successful");
-        // }
       } catch (err) {
         console.log(err);
       }
@@ -144,8 +143,19 @@ const Page = () => {
                   {formik.errors.submit}
                 </Typography>
               )}
-              <Button fullWidth size="large" sx={{ mt: 3 }} type="submit" variant="contained">
-                Continue
+              <Button
+                fullWidth
+                size="large"
+                sx={{ mt: 3 }}
+                type="submit"
+                variant="contained"
+                disabled={loading}
+              >
+                {loading ? (
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  <Typography>Continue</Typography>
+                )}
               </Button>
             </form>
           </div>

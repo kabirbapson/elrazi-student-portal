@@ -40,15 +40,19 @@ export const AccountProfileDetails = () => {
       // redirect to login
       router.push("/auth/login");
     }
-    setUser(user?.user);
+    setUser(user);
   }, []);
   const [values, setValues] = useState({
-    firstName: "Mansa",
-    lastName: "Musa",
-    email: "Mansa",
-    phone: "",
-    state: "los-angeles",
-    country: "USA",
+    firstName: user?.first_name,
+    lastName: user?.last_name,
+    other_name: user?.other_name,
+    email: user?.email,
+    phone_number: user?.phone_number,
+    dob: user?.dob,
+    gender: user?.gender,
+    address: user?.address,
+    state: user?.state,
+    country: user?.country,
   });
 
   const handleChange = useCallback((event) => {

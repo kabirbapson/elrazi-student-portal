@@ -8,6 +8,7 @@ import {
   Alert,
   Box,
   Button,
+  CircularProgress,
   FormHelperText,
   Link,
   Stack,
@@ -21,73 +22,88 @@ import axiosInstance from "config";
 import { toast } from "react-toastify";
 
 const Page = () => {
-  const [user, setUser] = useState();
-  // useEffect(() => {
-  //   const email = JSON.parse(localStorage.getItem("email"));
+  const [loading, setLoading] = useState(false);
+  const [otpLoading, setOtpLoading] = useState(false);
+  
+  const [email, setEmail] = useState("");
 
-  //   if (!email) {
-  //     // redirect to login
-  //     router.push("/auth/login");
-  //   }
-  //   // console.log({ email });
-  //   setUser(email);
-  // }, []);
-
-  // console.log("za user", user);
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
       otp: "",
     },
     validationSchema: Yup.object({
-      otp: Yup.string().max(70).required("OTP is required"),
+      otp: Yup.string().min(4).required("OTP is required"),
     }),
-    onSubmit: async (values, helpers) => {
+    onSubmit: async (values) => {
+      setLoading(true);
       const { otp } = values;
-      const email = JSON.parse(localStorage.getItem("email"));
-      console.log('email for local', email);
-      console.log(email, otp);
       axiosInstance
         .get(`/auth/verify-email?otp=${otp}&email=${email}`)
         .then((response) => {
           if (response.status === 200) {
+            setLoading(false);
             const user = response.data;
-            console.log('response',user);
             alert("Email has been successfully verified.");
-            // setIsLoading(false);
-            toast("Welcome back!");
+            toast("Email verified, please login to continue");
             localStorage.clear();
             router.push("/auth/login");
           }
         })
         .catch((error) => {
-          console.log(error.response.data);
-          // setIsLoading(false);
-          alert("Something went wrong");
-          toast.error("Something went wrong");
+          // if error is 400 then otp is wrong
+          if (error.response.status === 400) {
+            setLoading(false);
+            alert("OTP is incorrect");
+            toast.error("OTP is incorrect");
+            return;
+          } else {
+            setLoading(false);
+            console.log('error verifying email',error.response.data);
+            toast.error("Something went wrong");
+          }
         });
-
-      // try {
-      //   // await auth.signIn(values.email, values.password);
-      //   console.log({ values });
-      //   if (values.otp.length > 4) {
-      //     alert("Account verified successfully");
-      //     router.push("/");
-      //   }
-
-      //   // router.push("/");
-      // } catch (err) {
-      //   helpers.setStatus({ success: false });
-      //   helpers.setErrors({ submit: err.message });
-      //   helpers.setSubmitting(false);
-      // }
     },
   });
 
+  const handleResendOTP = () => {
+    setOtpLoading(true);
+    // You can add logic here to resend OTP via email
+    // For example, make an API call to trigger OTP resend
+    axiosInstance
+      .post("/auth/resend-verification-email", { email })
+      .then((response) => {
+        if (response.status === 200) {
+          setOtpLoading(false);
+          toast("OTP has been resent successfully.");
+          alert("OTP sent, please check your email");
+        }
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          setOtpLoading(false);
+          toast.error("User with this email does not exist.");
+          return;
+        }
+        setOtpLoading(false);
+        console.error("Error resending OTP:", error);
+        toast.error("Failed to resend OTP. Please try again.");
+      });
+  };
+
+  useEffect(() => {
+    const email = JSON.parse(localStorage.getItem("email"));
+
+    if (!email) {
+      // redirect to login
+      router.push("/auth/login");
+    }
+    setEmail(email);
+  }, []);
   return (
     <>
       <Head>
-        <title>Login | Elrazi Medical University, Kano</title>
+        <title>Verify | Elrazi Medical University, Kano</title>
       </Head>
       <Box
         sx={{
@@ -112,8 +128,11 @@ const Page = () => {
               <Typography color="text.secondary" variant="body2">
                 Please verify your email address
               </Typography>
-              <Typography color="text.secondary" variant="body2">
-                Enter the code sent to {user?.email}
+              <Typography color="text.primary" variant="body1">
+                Enter the code sent to{" "}
+                <b>
+                  <u>{email && email}</u>
+                </b>
               </Typography>
             </Stack>
 
@@ -137,10 +156,36 @@ const Page = () => {
                   {formik.errors.submit}
                 </Typography>
               )}
-              <Button fullWidth size="large" sx={{ mt: 3 }} type="submit" variant="contained">
-                Continue
+              <Button
+                fullWidth
+                size="large"
+                sx={{ mt: 3 }}
+                type="submit"
+                variant="contained"
+                disabled={loading}
+              >
+                {loading ? (
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  <Typography>Continue</Typography>
+                )}
               </Button>
             </form>
+
+            <Button
+              fullWidth
+              size="medium"
+              sx={{ mt: 2 }}
+              variant="text"
+              disabled={otpLoading}
+              onClick={handleResendOTP}
+            >
+              {otpLoading ? (
+                <CircularProgress size={18} color="inherit" />
+              ) : (
+                <Typography variant="body2">Resend OTP</Typography>
+              )}
+            </Button>
           </div>
         </Box>
       </Box>

@@ -3,13 +3,15 @@ import NextLink from "next/link";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Box, Button, Link, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Link, Stack, TextField, Typography } from "@mui/material";
 import { Layout as AuthLayout } from "src/layouts/auth/layout";
 import axiosInstance from "config";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useState } from "react";
 
 const Page = () => {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -37,43 +39,37 @@ const Page = () => {
     }),
     onSubmit: async (values) => {
       const { email, password, first_name, last_name } = values;
+      setLoading(true);
       try {
-        // await auth.signIn(values.email, values.password);
         axiosInstance
           .post("/auth/register", { email, password, first_name, last_name })
           .then((response) => {
             if (response.status === 201) {
               const user = response.data;
               localStorage.setItem("email", JSON.stringify(email));
-              console.log("CREATED USER", user);
               router.push("/auth/verify");
-              // alert("Login successful");
-              // setIsLoading(false);
-              toast("Please check your email for OTP!");
+              setLoading(false);
+              toast("Account created, please check your email for OTP!");
             } else if (response.status === 400) {
               console.log(response.data);
-              alert("Student with this email already exists!")
-              // setIsLoading(false);
-              toast("Student with this email already exists!");
+              setLoading(false);
+              alert("Account with this email already exists!");
+              toast("Account with this email already exists!");
             }
           })
           .catch((error) => {
-            // setIsLoading(false);
+            setLoading(false);
             if (error.response.status === 400) {
-              // setIsLoading(false);
-              // alert("Student with this email already exists!");
-              toast("Student with this email already exists!");
+              toast("Account with this email already exists!");
             } else {
+              toast("Something went wrong!");
               console.log("MY ERROR", error.response.data);
             }
           });
-
         const user = JSON.parse(localStorage.getItem("user"));
-
-        // if (user.email === values.email && user.password === values.password) {
-        //   alert("Login successful");
-        // }
       } catch (err) {
+        toast("Something went wrong!");
+        setLoading(false);
         console.log(err);
       }
     },
@@ -181,8 +177,19 @@ const Page = () => {
                   {formik.errors.submit}
                 </Typography>
               )}
-              <Button fullWidth size="large" sx={{ mt: 3 }} type="submit" variant="contained">
-                Continue
+              <Button
+                fullWidth
+                size="large"
+                sx={{ mt: 3 }}
+                type="submit"
+                variant="contained"
+                disabled={loading}
+              >
+                {loading ? (
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  <Typography>Continue</Typography>
+                )}
               </Button>
             </form>
           </div>

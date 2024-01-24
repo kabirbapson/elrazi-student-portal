@@ -19,7 +19,7 @@ export const AccountPopover = (props) => {
       // redirect to login
       router.push("/auth/login");
     }
-    setUser(user?.user);
+    setUser(user);
   }, []);
 
   return (
@@ -39,13 +39,13 @@ export const AccountPopover = (props) => {
           px: 2,
         }}
       >
-        <Typography variant="overline">Account</Typography>
+        <Typography variant="overline">My Account</Typography>
         <Typography color="text.secondary" variant="body2">
-          {user?.first_name}
+          {user?.first_name} {user.last_name}
         </Typography>
-        <Typography color="text.secondary" variant="body2">
+        {/* <Typography color="text.secondary" variant="body2">
           {user?.email}
-        </Typography>
+        </Typography> */}
       </Box>
       <Divider />
       <MenuList

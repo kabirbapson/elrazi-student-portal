@@ -10,14 +10,6 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 
-const userS = {
-  avatar: "/assets/avatars/avatar-anika-visser.png",
-  city: "Los Angeles",
-  country: "USA",
-  jobTitle: "Senior Developer",
-  name: "Mansa Musa",
-};
-
 export const AccountProfile = () => {
   const [user, setUser] = useState();
   useEffect(() => {
@@ -26,9 +18,9 @@ export const AccountProfile = () => {
       // redirect to login
       router.push("/auth/login");
     }
-    setUser(user?.user);
+    setUser(user);
   }
-  , []);
+  , []); 
   return (
     <Card>
       <CardContent>
@@ -40,7 +32,7 @@ export const AccountProfile = () => {
           }}
         >
           <Avatar
-            src={"/assets/userIcon.jpg"}
+            src={"/assets/userIcon.jpg"} 
             sx={{
               height: 80,
               mb: 2,
@@ -50,12 +42,12 @@ export const AccountProfile = () => {
           <Typography gutterBottom variant="h5">
             {user?.first_name} {user?.last_name}
           </Typography>
-          {/* <Typography color="text.secondary" variant="body2">
-            {userS.city}, {userS.country}
+          <Typography color="text.secondary" variant="body2">
+            {user?.email}
           </Typography>
           <Typography color="text.secondary" variant="body2">
-            {userS.timezone}
-          </Typography> */}
+            {user?.state} {user?.country}
+          </Typography>
         </Box>
       </CardContent>
       <Divider />

@@ -3,6 +3,7 @@ import { usePathname, useRouter } from "next/navigation";
 import PropTypes from "prop-types";
 import ArrowTopRightOnSquareIcon from "@heroicons/react/24/solid/ArrowTopRightOnSquareIcon";
 import ChevronUpDownIcon from "@heroicons/react/24/solid/ChevronUpDownIcon";
+import UserIcon from "@heroicons/react/24/solid/UserIcon";
 import {
   Box,
   Button,
@@ -32,8 +33,7 @@ export const SideNav = (props) => {
       // redirect to login
       router.push("/auth/login");
     }
-    console.log({ user });
-    setUser(user?.user);
+    setUser(user);
   }, []);
 
   const content = (
@@ -61,11 +61,22 @@ export const SideNav = (props) => {
             href="/"
             sx={{
               display: "inline-flex",
-              height: 32,
-              width: 32,
+              // height: 32,
+              // width: 32,
             }}
           >
             <Logo />
+            {/* let us format the font */}
+            <Typography
+              sx={{
+                color: "white",
+                fontSize: "1rem", // Adjust the font size
+                fontWeight: "bold", // Adjust the font weight
+                marginLeft: 1, // Add some left margin for separation
+              }}
+            >
+              Elrazi Medical University, Kano
+            </Typography>
           </Box>
           <Box
             sx={{
@@ -81,17 +92,14 @@ export const SideNav = (props) => {
           >
             <div>
               <Typography color="inherit" variant="subtitle1">
-                Welcome
-              </Typography>
-              <Typography color="neutral.400" variant="body2">
-                {user?.first_name}
+                Welcome {user?.first_name}
               </Typography>
               <Typography color="neutral.400" variant="body2">
                 {user?.email}
               </Typography>
             </div>
             <SvgIcon fontSize="small" sx={{ color: "neutral.500" }}>
-              <ChevronUpDownIcon />
+              <UserIcon />
             </SvgIcon>
           </Box>
         </Box>
@@ -141,7 +149,7 @@ export const SideNav = (props) => {
             Powered by nail...
           </Typography>
           <Typography color="neutral.500" variant="body2">
-           thisisnail.xyz
+            thisisnail.xyz
           </Typography>
           <Box
             sx={{

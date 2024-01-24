@@ -4,6 +4,7 @@ import Head from "next/head";
 import {
   Box,
   Button,
+  CircularProgress,
   Container,
   FormControl,
   Unstable_Grid2 as Grid,
@@ -15,20 +16,24 @@ import { OverviewBudget } from "src/sections/overview/overview-budget";
 import { CalendarIcon } from "@mui/x-date-pickers";
 import axiosInstance from "config";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const now = new Date();
 
 const Page = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState("");
-  const [user, setUser] = useState();
-  const [token, setToken] = useState();
+  const [user, setUser] = useState({});
+  const [token, setToken] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [hasUploaded, setHasUploaded] = useState(false);
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
 
-  const handleSubmit = async (event) => {
+  const handleUploadReceipt = async (event) => {
+    setLoading(true);
     event.preventDefault();
 
     if (!selectedFile) {
@@ -37,81 +42,81 @@ const Page = () => {
       return;
     }
 
-    try {
-      const formData = new FormData();
-      formData.append("receipt", selectedFile);
+    const formData = new FormData();
+    formData.append("receipt", selectedFile);
 
-      axiosInstance
-        .post("/payments/", formData, {
-          headers: {
-            Authorization: `Token ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) => {
-          if (response.status === 201) {
-            setUploadStatus("File uploaded successfully!");
-            toast("File uploaded successfully!");
-            setSelectedFile(null); // Clear selected file
-            console.log("upload respnnse", response.data);
-          }
-        })
-        .catch((error) => {
+    axiosInstance
+      .post("/payments/", formData, {
+        headers: {
+          Authorization: `Token ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        if (response.status === 201) {
+          setLoading(false);
+          const uploadsData = response.data;
+          console.log("upload respnnse", uploadsData);
+          setUploadStatus("File uploaded successfully!");
+          toast("File uploaded successfully!");
+          setSelectedFile(null);
+        }
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          setLoading(false);
+          setUploadStatus("Please select a valid image to upload.");
+          toast("Please upload a valid image");
+        } else {
+          setLoading(false);
           console.log("upload error", error.response.data);
-        });
-      //
-      // console.log(formData);
-      // const response = await fetch("/api/upload", {
-      //   method: "POST",
-      //   body: formData,
-      // });
-
-      // if (response.ok) {
-
-      // } else {
-      //   // Handle server-side error
-      //   setUploadStatus("Upload failed. Please try again.");
-      // }
-    } catch (error) {
-      console.error("Upload error:", error);
-      setUploadStatus("An error occurred during upload.");
-    }
+        }
+      });
   };
 
-  const fetchUserDetails = () => {
+  const fetchUserDetails = (token) => {
     axiosInstance
-        .post("/auth/user/", {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        })
-        .then((response) => {
-          if (response.status === 201) {
-            setUploadStatus("File uploaded successfully!");
-            toast("File uploaded successfully!");
-            setSelectedFile(null); // Clear selected file
-            console.log("upload respnnse", response.data);
-          }
-        })
-        .catch((error) => {
-          console.log("upload error", error.response.data);
-        });
-  }
+      .get("/auth/user/", {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          const user = response.data;
+          localStorage.setItem("user", JSON.stringify(user));
+          setUser(user);
+          // localStorage.setItem("user", JSON.stringify(user));
+        }
+      })
+      .catch((error) => {
+        console.log("Fetched error", error.response.data);
+      });
+  };
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
-
-    setToken(user.token);
+    const token = JSON.parse(localStorage.getItem("token"));
+    if (token) {
+      fetchUserDetails(token);
+    }
     if (!user) {
       // redirect to login
       router.push("/auth/login");
     }
-
-    setUser(user?.user);
+    setUser(user);
+    setToken(token);
   }, []);
 
-  useEffect(() => {
+  const router = useRouter();
+  // useEffect(() => {
+  //   // settimeout to clear storage after an hour
+  //   setTimeout(() => {
+  //     localStorage.clear();
+  //     router.push("/auth/login");
+  //   }, 360000);
 
-  }, [user?.has_paid, selectedFile]);
+  // }, []);
 
   return (
     <>
@@ -140,83 +145,104 @@ const Page = () => {
               }}
             >
               <Grid>
-                <Typography variant="h6" sx={{ marginBottom: "15px" }}>
-                  Make payment of N30,000 Application Fee and Upload Receipt
-                </Typography>
+                {!user.has_paid ? (
+                  <Typography
+                    textAlign={"center"}
+                    color="black"
+                    variant="h6"
+                    sx={{ marginBottom: "15px" }}
+                  >
+                    Please make payment of N30,000 application fee and upload receipt to continue.
+                  </Typography>
+                ) : (
+                  <Typography variant="h6" sx={{ marginBottom: "15px" }}>
+                    Payment receipt uploaded please wait for confirmation
+                  </Typography>
+                )}
               </Grid>
             </Box>
           </Grid>
 
-          <Grid
-            container
-            spacing={3}
-            sx={{
-              marginTop: "20px",
-              marginBottom: "20px",
-              backgroundColor: "lightgreen",
-              display: "flex",
-              justifyContent: "space-around" /* Align items to start and end */,
-              borderRadius: "15px",
-            }}
-          >
-            <Grid
-              item
-              xs={6}
-              sx={{
-                // backgroundColor: "red",
-                display: "flex" /* Enable flexbox for centering */,
-                flexDirection: "column" /* Arrange content vertically */,
-                alignItems: "center" /* Center elements horizontally */,
-                justifyContent: "center" /* Center elements vertically */,
-              }}
-            >
-              <Typography variant="h6" sx={{ marginBottom: "15px" }}>
-                Payment Information
-              </Typography>
-
-              <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                Account Name:
-              </Typography>
-              <Typography textAlign={"center"} variant="body2">
-                Elrazi Medical University kn-Revenue 
-              </Typography>
-
-              <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                Account Number:
-              </Typography>
-              <Typography variant="body2">0005035147</Typography>
-
-              <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                Bank Name:
-              </Typography>
-              <Typography variant="body2">Taj Bank Plc.</Typography>
-            </Grid>
-
-            <Grid
-              sx={{
-                // flexDirection: "column", /* Arrange elements vertically */
-                alignItems: "center" /* Center elements horizontally */,
-                justifyContent: "center" /* Center elements vertically */,
-                // width: "100%" /* Ensure full width */,
-              }}
-            >
-              <form onSubmit={handleSubmit}>
-                <FormControl>
-                  <Typography variant="h6" sx={{ marginBottom: "15px" }}>
-                    Upload Payment Receipt
+          {!user?.has_paid && (
+            <>
+              <Grid
+                container
+                spacing={3}
+                sx={{
+                  marginTop: "20px",
+                  marginBottom: "20px",
+                  backgroundColor: "lightgreen",
+                  display: "flex",
+                  justifyContent: "space-around" /* Align items to start and end */,
+                  borderRadius: "15px",
+                }}
+              >
+                <Grid
+                  item
+                  xs={6}
+                  sx={{
+                    // backgroundColor: "red",
+                    display: "flex" /* Enable flexbox for centering */,
+                    flexDirection: "column" /* Arrange content vertically */,
+                    alignItems: "center" /* Center elements horizontally */,
+                    justifyContent: "center" /* Center elements vertically */,
+                  }}
+                >
+                  <Typography variant="h6" textAlign={"center"} sx={{ marginBottom: "15px" }}>
+                    Payment Information {user.first_name}
                   </Typography>
-                  <Input type="file" onChange={handleFileChange} accept=".jpg,.png,.pdf" />
-                </FormControl>{" "}
-                {uploadStatus && <p>{uploadStatus}</p>}
-                <p>
-                  <Button sx={{ textAlign: "center" }} type="submit" variant="contained">
-                    Upload Receipt
-                  </Button>
-                </p>
-              </form>
-            </Grid>
-          </Grid>
 
+                  <Typography variant="body2">Account Name:</Typography>
+                  <Typography textAlign={"center"} variant="body1" sx={{ fontWeight: "bold" }}>
+                    Elrazi Medical University kn-Revenue
+                  </Typography>
+
+                  <Typography variant="body2">Account Number:</Typography>
+                  <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                    0005035147
+                  </Typography>
+
+                  <Typography variant="body2">Bank Name:</Typography>
+                  <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                    Taj Bank Plc.
+                  </Typography>
+                </Grid>
+
+                <Grid
+                  sx={{
+                    // flexDirection: "column", /* Arrange elements vertically */
+                    alignItems: "center" /* Center elements horizontally */,
+                    justifyContent: "center" /* Center elements vertically */,
+                    // width: "100%" /* Ensure full width */,
+                  }}
+                >
+                  <form onSubmit={handleUploadReceipt}>
+                    <FormControl>
+                      <Typography variant="h6" sx={{ marginBottom: "15px" }}>
+                        Upload Receipt (jpg/png)
+                      </Typography>
+                      <Input type="file" onChange={handleFileChange} accept=".jpg,.png,.pdf" />
+                    </FormControl>{" "}
+                    {uploadStatus && <p>{uploadStatus}</p>}
+                    <p>
+                      <Button
+                        sx={{ textAlign: "center" }}
+                        type="submit"
+                        variant="contained"
+                        disabled={loading}
+                      >
+                        {loading ? (
+                          <CircularProgress size={24} color="inherit" />
+                        ) : (
+                          <Typography>Upload Payment Receipt</Typography>
+                        )}
+                      </Button>
+                    </p>
+                  </form>
+                </Grid>
+              </Grid>
+            </>
+          )}
           <Grid container spacing={3}>
             <Grid xs={12} sm={6} lg={3}>
               <OverviewBudget
@@ -240,7 +266,7 @@ const Page = () => {
                 difference={12}
                 positive
                 sx={{ height: "100%" }}
-                value={user?.has_paid ? 'Paid' : 'Not Paid/Pending'}
+                value={user?.has_paid ? "Paid" : "Not Paid/Pending"}
               />
             </Grid>
 

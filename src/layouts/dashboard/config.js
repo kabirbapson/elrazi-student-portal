@@ -30,20 +30,20 @@ export const items = [
   //   )
   // },
   {
-    title: "Biodata",
-    path: "/account",
-    icon: (
-      <SvgIcon fontSize="small">
-        <UserIcon />
-      </SvgIcon>
-    ),
-  },
-  {
     title: "Payment",
     path: "/#",
     icon: (
       <SvgIcon fontSize="small">
         <Card />
+      </SvgIcon>
+    ),
+  },
+  {
+    title: "Biodata",
+    path: "/biodata",
+    icon: (
+      <SvgIcon fontSize="small">
+        <UserIcon />
       </SvgIcon>
     ),
   },
@@ -56,7 +56,7 @@ export const items = [
       </SvgIcon>
     ),
   },
-  
+
   {
     title: "Settings",
     path: "/settings",
