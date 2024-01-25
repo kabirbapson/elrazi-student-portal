@@ -18,8 +18,6 @@ import axiosInstance from "config";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
-const now = new Date();
-
 const Page = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState("");
@@ -56,10 +54,10 @@ const Page = () => {
         if (response.status === 201) {
           setLoading(false);
           const uploadsData = response.data;
-          console.log("upload respnnse", uploadsData);
           setUploadStatus("File uploaded successfully!");
           toast("File uploaded successfully!");
           setSelectedFile(null);
+          fetchUserPaymentStatus(token);
         }
       })
       .catch((error) => {
@@ -67,10 +65,36 @@ const Page = () => {
           setLoading(false);
           setUploadStatus("Please select a valid image to upload.");
           toast("Please upload a valid image");
+        } else if (error.response.status === 401) {
+          localStorage.clear();
+          router.push("/auth/login");
         } else {
           setLoading(false);
           console.log("upload error", error.response.data);
         }
+      });
+  };
+
+  const fetchUserPaymentStatus = (token) => {
+    axiosInstance
+      .get("/payments/", {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          setHasUploaded(true);
+        }
+      })
+      .catch((error) => {
+        if (error.response.status === 401) {
+          toast("Session expired, please login again");
+          localStorage.clear();
+          router.push("/auth/login");
+        }
+        toast("Something went wrong!, try again");
+        console.log("Fetched error", error.response.data);
       });
   };
 
@@ -90,7 +114,13 @@ const Page = () => {
         }
       })
       .catch((error) => {
-        console.log("Fetched error", error.response.data);
+        if (error.response.status === 401) {
+          toast("Session expired, please login again");
+          localStorage.clear();
+          router.push("/auth/login");
+        } else {
+          console.log("Fetched error", error.response.data);
+        }
       });
   };
 
@@ -98,10 +128,10 @@ const Page = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     const token = JSON.parse(localStorage.getItem("token"));
     if (token) {
+      fetchUserPaymentStatus(token);
       fetchUserDetails(token);
     }
     if (!user) {
-      // redirect to login
       router.push("/auth/login");
     }
     setUser(user);
@@ -109,14 +139,15 @@ const Page = () => {
   }, []);
 
   const router = useRouter();
+
+  //   // settimeout to clear storage after 3 hour
   // useEffect(() => {
-  //   // settimeout to clear storage after an hour
   //   setTimeout(() => {
   //     localStorage.clear();
   //     router.push("/auth/login");
-  //   }, 360000);
-
+  //   }, 10800000);
   // }, []);
+
 
   return (
     <>
@@ -145,7 +176,7 @@ const Page = () => {
               }}
             >
               <Grid>
-                {!user.has_paid ? (
+                {!hasUploaded ? (
                   <Typography
                     textAlign={"center"}
                     color="black"
@@ -156,14 +187,14 @@ const Page = () => {
                   </Typography>
                 ) : (
                   <Typography variant="h6" sx={{ marginBottom: "15px" }}>
-                    Payment receipt uploaded please wait for confirmation
+                    Payment receipt uploaded, please wait for confirmation
                   </Typography>
                 )}
               </Grid>
             </Box>
           </Grid>
 
-          {!user?.has_paid && (
+          {!hasUploaded && (
             <>
               <Grid
                 container
@@ -266,7 +297,7 @@ const Page = () => {
                 difference={12}
                 positive
                 sx={{ height: "100%" }}
-                value={user?.has_paid ? "Paid" : "Not Paid/Pending"}
+                value={user?.has_paid ? "Paid" : hasUploaded ? "Pending confirmation" : "Not Paid"}
               />
             </Grid>
 
