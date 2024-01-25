@@ -10,25 +10,8 @@ import {
   TextField,
   Unstable_Grid2 as Grid,
 } from "@mui/material";
-
-const states = [
-  {
-    value: "alabama",
-    label: "Alabama",
-  },
-  {
-    value: "new-york",
-    label: "New York",
-  },
-  {
-    value: "san-francisco",
-    label: "San Francisco",
-  },
-  {
-    value: "los-angeles",
-    label: "Los Angeles",
-  },
-];
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 export const AccountProfileDetails = () => {
   // lets stringify the user object from local storage
@@ -42,113 +25,68 @@ export const AccountProfileDetails = () => {
     }
     setUser(user);
   }, []);
-  const [values, setValues] = useState({
-    firstName: user?.first_name,
-    lastName: user?.last_name,
-    other_name: user?.other_name,
-    email: user?.email,
-    phone_number: user?.phone_number,
-    dob: user?.dob,
-    gender: user?.gender,
-    address: user?.address,
-    state: user?.state,
-    country: user?.country,
+  // console.log(user)
+  const formik = useFormik({
+    initialValues: {
+      first_name: user?.first_name || "",
+      last_name: user?.last_name || "",
+      email: user?.email || "",
+      phone_number: user?.phone_number || "",
+      dob: user?.dob || "",
+      address: user?.address || "",
+      state: user?.state || "",
+      country: user?.country || "",
+      gender: user?.gender || "",
+    },
+    enableReinitialize: true,
+    validationSchema: Yup.object({
+      first_name: Yup.string().max(25).required("First Name is required"),
+      last_name: Yup.string().max(25).required("Last Name is required"),
+      email: Yup.string().email("Must be a valid email").max(50).required("Email is required"),
+      phone_number: Yup.string().required("Phone Number is required"),
+      // Add more validations as required for other fields
+    }),
+    onSubmit: (values) => {
+      // Your update logic here
+      try {
+        console.log("hhhhyy", values);
+      } catch (error) {
+        console.log("hhhhyy", error);
+      }
+    },
   });
 
-  const handleChange = useCallback((event) => {
-    setValues((prevState) => ({
-      ...prevState,
-      [event.target.name]: event.target.value,
-    }));
-  }, []);
-
-  const handleSubmit = useCallback((event) => {
-    event.preventDefault();
-  }, []);
-  +true;
-  +false;
+  // +true;
+  // +false;
   return (
-    <form autoComplete="off" noValidate onSubmit={handleSubmit}>
+    <form noValidate onSubmit={formik.handleSubmit}>
       <Card>
         <CardHeader subheader="The information can be edited" title="Profile" />
         <CardContent sx={{ pt: 0 }}>
           <Box sx={{ m: -1.5 }}>
             <Grid container spacing={3}>
+              {/* Repeat for each field */}
               <Grid xs={12} md={6}>
                 <TextField
                   fullWidth
-                  helperText="Please specify the first name"
                   label="First name"
-                  name="firstName"
-                  onChange={handleChange}
-                  required
-                  value={user?.first_name}
+                  name="first_name"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.first_name}
+                  error={formik.touched.first_name && Boolean(formik.errors.first_name)}
+                  helperText={formik.touched.first_name && formik.errors.first_name}
                 />
               </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Last name"
-                  name="lastName"
-                  onChange={handleChange}
-                  required
-                  value={user?.last_name}
-                />
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Email Address"
-                  name="email"
-                  onChange={handleChange}
-                  required
-                  value={user?.email}
-                />
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Phone Number"
-                  name="phone"
-                  onChange={handleChange}
-                  type="number"
-                  value={values.phone}
-                />
-              </Grid>
-              {/* <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Country"
-                  name="country"
-                  onChange={handleChange}
-                  required
-                  value={values.country}
-                />
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Select State"
-                  name="state"
-                  onChange={handleChange}
-                  required
-                  select
-                  SelectProps={{ native: true }}
-                  value={values.state}
-                >
-                  {states.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
-              </Grid> */}
+              {/* ... other fields */}
             </Grid>
           </Box>
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: "flex-end" }}>
-          <Button variant="contained">Save details</Button>
+          <Button disabled={false} type="submit" variant="contained">
+            Save details
+          </Button>
         </CardActions>
       </Card>
     </form>

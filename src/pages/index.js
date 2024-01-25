@@ -83,12 +83,15 @@ const Page = () => {
         },
       })
       .then((response) => {
-        if (response.status === 200) {
+        // if the response has data, it means user has uploaded receipt
+        //  let's write the code
+        const uploadsData = response.data;
+        if (uploadsData.length > 0) {
           setHasUploaded(true);
         }
       })
       .catch((error) => {
-        if (error.response.status === 401) {
+        if (error?.response?.status === 401) {
           toast("Session expired, please login again");
           localStorage.clear();
           router.push("/auth/login");
@@ -147,7 +150,6 @@ const Page = () => {
   //     router.push("/auth/login");
   //   }, 10800000);
   // }, []);
-
 
   return (
     <>
