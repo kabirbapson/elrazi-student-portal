@@ -31,7 +31,7 @@ export const items = [
   // },
   {
     title: "Payment",
-    path: "/#",
+    path: "/payment",
     icon: (
       <SvgIcon fontSize="small">
         <Card />

@@ -153,7 +153,7 @@ const Page = () => {
   return (
     <>
       <Head>
-        <title>Dashboard | Elrazi Medical University, Kano</title>
+        <title>Payment | Elrazi Medical University, Kano</title>
       </Head>
       <Box
         component="main"
@@ -184,106 +184,23 @@ const Page = () => {
                     variant="h6"
                     sx={{ marginBottom: "15px" }}
                   >
-                    Application fee paid, please update your Bio-data
+                    Application fee paid, please update your Bio-data and upload required documents
                   </Typography>
-                ) : !hasUploaded ? (
+                ) : (
                   <Typography
                     textAlign={"center"}
-                    color="black"
+                    color="maroon"
                     variant="h6"
                     sx={{ marginBottom: "15px" }}
                   >
-                    Please make payment of N30,000 application fee and upload receipt to continue.
-                  </Typography>
-                ) : (
-                  <Typography variant="h6" sx={{ marginBottom: "15px" }}>
-                    Payment receipt uploaded, please wait for confirmation
+                    Please go to Dashboard, make payment of N30,000 application fee and upload
+                    receipt to continue.
                   </Typography>
                 )}
               </Grid>
             </Box>
           </Grid>
 
-          {!hasUploaded && (
-            <>
-              <Grid
-                container
-                spacing={3}
-                sx={{
-                  marginTop: "20px",
-                  marginBottom: "20px",
-                  backgroundColor: "lightgreen",
-                  display: "flex",
-                  justifyContent: "space-around" /* Align items to start and end */,
-                  borderRadius: "15px",
-                }}
-              >
-                <Grid
-                  item
-                  xs={6}
-                  sx={{
-                    // backgroundColor: "red",
-                    display: "flex" /* Enable flexbox for centering */,
-                    flexDirection: "column" /* Arrange content vertically */,
-                    alignItems: "center" /* Center elements horizontally */,
-                    justifyContent: "center" /* Center elements vertically */,
-                  }}
-                >
-                  <Typography variant="h6" textAlign={"center"} sx={{ marginBottom: "15px" }}>
-                    Payment Information {user?.first_name}
-                  </Typography>
-
-                  <Typography variant="body2">Account Name:</Typography>
-                  <Typography textAlign={"center"} variant="body1" sx={{ fontWeight: "bold" }}>
-                    Elrazi Medical University kn-Revenue
-                  </Typography>
-
-                  <Typography variant="body2">Account Number:</Typography>
-                  <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                    0005035147
-                  </Typography>
-
-                  <Typography variant="body2">Bank Name:</Typography>
-                  <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                    Taj Bank Plc.
-                  </Typography>
-                </Grid>
-
-                <Grid
-                  sx={{
-                    // flexDirection: "column", /* Arrange elements vertically */
-                    alignItems: "center" /* Center elements horizontally */,
-                    justifyContent: "center" /* Center elements vertically */,
-                    // width: "100%" /* Ensure full width */,
-                  }}
-                >
-                  <form onSubmit={handleUploadReceipt}>
-                    <FormControl>
-                      <Typography variant="h6" sx={{ marginBottom: "15px" }}>
-                        Upload Receipt (jpg/png)
-                      </Typography>
-                      <Input type="file" onChange={handleFileChange} accept=".jpg,.png,.pdf" />
-                    </FormControl>{" "}
-                    {uploadStatus && <p>{uploadStatus}</p>}
-                    <p>
-                      <Button
-                        sx={{ textAlign: "center" }}
-                        type="submit"
-                        variant="contained"
-                        disabled={loading}
-                      >
-                        {loading ? (
-                          <CircularProgress size={24} color="inherit" />
-                        ) : (
-                          <Typography>Upload Payment Receipt</Typography>
-                        )}
-                      </Button>
-                    </p>
-                  </form>
-                </Grid>
-              </Grid>
-            </>
-          )}
           <Grid container spacing={3}>
             <Grid xs={12} sm={6} lg={3}>
               <OverviewBudget
