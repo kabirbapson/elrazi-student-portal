@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 import { Layout as AuthLayout } from "src/layouts/auth/layout";
 import axiosInstance from "config";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 
 const Page = () => {
   const [loading, setLoading] = useState(false);
@@ -44,9 +44,8 @@ const Page = () => {
           if (response.status === 200) {
             setLoading(false);
             const user = response.data;
-            alert("Email has been successfully verified.");
             toast("Email verified, please login to continue");
-            localStorage.clear();
+            localStorage.removeItem('email');
             router.push("/auth/login");
           }
         })
@@ -54,12 +53,11 @@ const Page = () => {
           // if error is 400 then otp is wrong
           if (error.response.status === 400) {
             setLoading(false);
-            alert("OTP is incorrect");
-            toast.error("OTP is incorrect");
+            toast.error("Incorrect OTP, please check your email and try again");
             return;
           } else {
             setLoading(false);
-            console.log('error verifying email',error.response.data);
+            // console.log('error verifying email',error.response.data);
             toast.error("Something went wrong");
           }
         });
@@ -76,7 +74,6 @@ const Page = () => {
         if (response.status === 200) {
           setOtpLoading(false);
           toast("OTP has been resent successfully.");
-          alert("OTP sent, please check your email");
         }
       })
       .catch((error) => {
@@ -100,6 +97,7 @@ const Page = () => {
     }
     setEmail(email);
   }, []);
+  
   return (
     <>
       <Head>
@@ -188,6 +186,7 @@ const Page = () => {
             </Button>
           </div>
         </Box>
+        <ToastContainer />
       </Box>
     </>
   );

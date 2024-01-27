@@ -45,15 +45,12 @@ const Page = () => {
           .post("/auth/register", { email, password, first_name, last_name })
           .then((response) => {
             if (response.status === 201) {
-              const user = response.data;
               localStorage.setItem("email", JSON.stringify(email));
               router.push("/auth/verify");
               setLoading(false);
               toast("Account created, please check your email for OTP!");
             } else if (response.status === 400) {
-              console.log(response.data);
               setLoading(false);
-              alert("Account with this email already exists!");
               toast("Account with this email already exists!");
             }
           })
@@ -63,7 +60,6 @@ const Page = () => {
               toast("Account with this email already exists!");
             } else {
               toast("Something went wrong!");
-              console.log("MY ERROR", error.response.data);
             }
           });
         const user = JSON.parse(localStorage.getItem("user"));

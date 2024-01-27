@@ -1,26 +1,12 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import PropTypes from "prop-types";
 import { Box, Divider, MenuItem, MenuList, Popover, Typography } from "@mui/material";
+import { AuthContext } from "src/context";
 
 export const AccountPopover = (props) => {
   const { anchorEl, onClose, open } = props;
-  const router = useRouter();
-  const [user, setUser] = useState();
-
-  const handleSignOut = useCallback(() => {
-    onClose?.();
-    localStorage.removeItem("user");
-    router.push("/auth/login");
-  }, [onClose, router]);
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user) {
-      // redirect to login
-      router.push("/auth/login");
-    }
-    setUser(user);
-  }, []);
+  const { user, logOutUser } = useContext(AuthContext);
 
   return (
     <Popover
@@ -58,7 +44,7 @@ export const AccountPopover = (props) => {
           },
         }}
       >
-        <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
+        <MenuItem onClick={logOutUser}>Sign out</MenuItem>
       </MenuList>
     </Popover>
   );

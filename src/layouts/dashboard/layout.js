@@ -1,11 +1,14 @@
+/* eslint-disable react/jsx-max-props-per-line */
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { styled } from "@mui/material/styles";
 import { SideNav } from "./side-nav";
 import { TopNav } from "./top-nav";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AuthContext } from "src/context";
+import { useRouter } from "next/router";
 
 const SIDE_NAV_WIDTH = 280;
 

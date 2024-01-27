@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import Head from "next/head";
 import NextLink from "next/link";
 import { useRouter } from "next/navigation";
@@ -21,13 +21,11 @@ import { Layout as AuthLayout } from "src/layouts/auth/layout";
 import axios from "axios";
 import axiosInstance from "config";
 import { ToastContainer, toast } from "react-toastify";
+import { AuthContext } from "src/context";
 
 const Page = () => {
   const [loading, setLoading] = useState(false);
-
-  // useEffect(() => {
-  //   toast("Wow so easy!");
-  // }, []);
+  const { user, loadUserSession } = useContext(AuthContext);
 
   const router = useRouter();
   const formik = useFormik({
@@ -43,34 +41,29 @@ const Page = () => {
     onSubmit: async (values) => {
       const { email, password } = values;
       setLoading(true);
-      try {
-        // await auth.signIn(values.email, values.password);
-        axiosInstance
-          .post("/auth/login", { email, password })
-          .then((response) => {
-            if (response.status === 200) {
-              const user = response.data;
-              localStorage.setItem("user", JSON.stringify(user.user));
-              localStorage.setItem("token", JSON.stringify(user.token));
-
-              toast("Welcome back!");
-              router.push("/");
-              setLoading(false);
-            }
-          })
-          .catch((error) => {
-            if (error.response.status === 400) {
-              setLoading(false);
-              alert("Please verify/check your email and password");
-              toast("Something went wrong, please check your email");
-            } else {
-              setLoading(false);
-              console.log("MY ERROR", error.response.data);
-            }
-          });
-      } catch (err) {
-        console.log(err);
-      }
+      axiosInstance
+        .post("/auth/login", { email, password })
+        .then((response) => {
+          if (response.status === 200) {
+            const user = response.data;
+            // save user token
+            localStorage.setItem("token", user.token);
+            toast("Welcome back!");
+            router.push("/");
+            setLoading(false);
+          }
+        })
+        .catch((error) => {
+          if (error.response.status === 400) {
+            setLoading(false);
+            toast("Something went wrong, please check your email");
+            // console.log("MY ERROR", error.response.data);
+          } else {
+            setLoading(false);
+            toast("Something went wrong");
+            // console.log("MY ERROR", error.response.data);
+          }
+        });
     },
   });
 
@@ -160,6 +153,7 @@ const Page = () => {
             </form>
           </div>
         </Box>
+        <ToastContainer />
       </Box>
     </>
   );

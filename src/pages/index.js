@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Head from "next/head";
 import {
   Box,
@@ -17,14 +17,14 @@ import { CalendarIcon } from "@mui/x-date-pickers";
 import axiosInstance from "config";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { AuthContext } from "src/context";
 
 const Page = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState("");
-  const [user, setUser] = useState({});
-  const [token, setToken] = useState("");
   const [loading, setLoading] = useState(false);
-  const [hasUploaded, setHasUploaded] = useState(false);
+
+  const { user, token, paymentUpload, setPaymentUpload } = useContext(AuthContext);
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -54,6 +54,7 @@ const Page = () => {
         if (response.status === 201) {
           setLoading(false);
           const uploadsData = response.data;
+          setPaymentUpload(uploadsData);
           setUploadStatus("File uploaded successfully!");
           toast("File uploaded successfully!");
           setSelectedFile(null);
@@ -61,94 +62,21 @@ const Page = () => {
         }
       })
       .catch((error) => {
-        if (error.response.status === 400) {
+        if (error?.response?.status === 400) {
           setLoading(false);
           setUploadStatus("Please select a valid image to upload.");
           toast("Please upload a valid image");
-        } else if (error.response.status === 401) {
+        } else if (error?.response?.status === 401) {
           localStorage.clear();
           router.push("/auth/login");
         } else {
           setLoading(false);
-          console.log("upload error", error.response.data);
+          console.log("upload error", error?.response?.data);
         }
       });
   };
-
-  const fetchUserPaymentStatus = (token) => {
-    axiosInstance
-      .get("/payments/", {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      })
-      .then((response) => {
-        // if the response has data, it means user has uploaded receipt
-        //  let's write the code
-        const uploadsData = response.data;
-        if (uploadsData.length > 0) {
-          setHasUploaded(true);
-        }
-      })
-      .catch((error) => {
-        if (error?.response?.status === 401) {
-          toast("Session expired, please login again");
-          localStorage.clear();
-          router.push("/auth/login");
-        }
-        toast("Something went wrong!, try again");
-      });
-  };
-
-  const fetchUserDetails = (token) => {
-    axiosInstance
-      .get("/auth/user/", {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          const user = response.data;
-          localStorage.setItem("user", JSON.stringify(user));
-          setUser(user);
-          // localStorage.setItem("user", JSON.stringify(user));
-        }
-      })
-      .catch((error) => {
-        if (error.response.status === 401) {
-          toast("Session expired, please login again");
-          localStorage.clear();
-          router.push("/auth/login");
-        } else {
-          console.log("Fetched error", error.response.data);
-        }
-      });
-  };
-
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const token = JSON.parse(localStorage.getItem("token"));
-    if (token) {
-      fetchUserPaymentStatus(token);
-      fetchUserDetails(token);
-    }
-    if (!user) {
-      router.push("/auth/login");
-    }
-    setUser(user);
-    setToken(token);
-  }, []);
 
   const router = useRouter();
-
-  //   // settimeout to clear storage after 3 hour
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     localStorage.clear();
-  //     router.push("/auth/login");
-  //   }, 10800000);
-  // }, []);
 
   return (
     <>
@@ -186,7 +114,7 @@ const Page = () => {
                   >
                     Application fee paid, please update your Bio-data
                   </Typography>
-                ) : !hasUploaded ? (
+                ) : !paymentUpload ? (
                   <Typography
                     textAlign={"center"}
                     color="black"
@@ -204,7 +132,7 @@ const Page = () => {
             </Box>
           </Grid>
 
-          {!hasUploaded && (
+          {!paymentUpload && (
             <>
               <Grid
                 container
@@ -230,7 +158,7 @@ const Page = () => {
                   }}
                 >
                   <Typography variant="h6" textAlign={"center"} sx={{ marginBottom: "15px" }}>
-                    Payment Information {user?.first_name}
+                    Payment Information
                   </Typography>
 
                   <Typography variant="body2">Account Name:</Typography>
@@ -307,7 +235,9 @@ const Page = () => {
                 difference={12}
                 positive
                 sx={{ height: "100%" }}
-                value={user?.has_paid ? "Paid" : hasUploaded ? "Pending confirmation" : "Not Paid"}
+                value={
+                  user?.has_paid ? "Paid" : paymentUpload ? "Pending confirmation" : "Not Paid"
+                }
               />
             </Grid>
 

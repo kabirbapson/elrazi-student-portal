@@ -9,6 +9,7 @@ import { createTheme } from "src/theme";
 import { createEmotionCache } from "src/utils/create-emotion-cache";
 import "simplebar-react/dist/simplebar.min.css";
 import { ToastContainer } from "react-toastify";
+import { AuthProvider } from "src/context";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -32,7 +33,7 @@ const App = (props) => {
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          {getLayout(<Component {...pageProps} />)}
+          <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
         </ThemeProvider>
       </LocalizationProvider>
     </CacheProvider>
