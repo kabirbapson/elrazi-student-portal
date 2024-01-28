@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { use, useCallback, useContext, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -12,19 +12,12 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { AuthContext } from "src/context";
 
 export const AccountProfileDetails = () => {
   // lets stringify the user object from local storage
 
-  const [user, setUser] = useState();
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user) {
-      // redirect to login
-      router.push("/auth/login");
-    }
-    setUser(user);
-  }, []);
+  const { user } = useContext(AuthContext);
   // console.log(user)
   const formik = useFormik({
     initialValues: {

@@ -8,19 +8,12 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { use, useContext, useEffect, useState } from "react";
+import { AuthContext } from "src/context";
 
 export const AccountProfile = () => {
-  const [user, setUser] = useState();
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user) {
-      // redirect to login
-      router.push("/auth/login");
-    }
-    setUser(user);
-  }
-  , []); 
+  const { user } = useContext(AuthContext);
+
   return (
     <Card>
       <CardContent>
@@ -32,7 +25,7 @@ export const AccountProfile = () => {
           }}
         >
           <Avatar
-            src={"/assets/userIcon.jpg"} 
+            src={"/assets/userIcon.jpg"}
             sx={{
               height: 80,
               mb: 2,

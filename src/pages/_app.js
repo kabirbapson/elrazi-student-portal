@@ -10,9 +10,9 @@ import { createEmotionCache } from "src/utils/create-emotion-cache";
 import "simplebar-react/dist/simplebar.min.css";
 import { ToastContainer } from "react-toastify";
 
-const clientSideEmotionCache = createEmotionCache();
+import "react-toastify/dist/ReactToastify.css";
 
-const SplashScreen = () => null;
+const clientSideEmotionCache = createEmotionCache();
 
 const App = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
@@ -33,6 +33,7 @@ const App = (props) => {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           {getLayout(<Component {...pageProps} />)}
+          <ToastContainer position="top-right" autoClose={1000} limit={1} hideProgressBar={true} />
         </ThemeProvider>
       </LocalizationProvider>
     </CacheProvider>

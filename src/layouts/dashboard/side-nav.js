@@ -18,23 +18,17 @@ import { Logo } from "src/components/logo";
 import { Scrollbar } from "src/components/scrollbar";
 import { items } from "./config";
 import { SideNavItem } from "./side-nav-item";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "src/context";
 
 export const SideNav = (props) => {
   const { open, onClose } = props;
   const pathname = usePathname();
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));
   //  let's get the user from localstorage
-  const router = useRouter();
-  const [user, setUser] = useState();
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user) {
-      // redirect to login
-      router.push("/auth/login");
-    }
-    setUser(user);
-  }, []);
+
+  const { user, isLoading } = useContext(AuthContext);
+
 
   const content = (
     <Scrollbar

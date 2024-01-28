@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import NextLink from "next/link";
-import { Box, Typography, Unstable_Grid2 as Grid } from "@mui/material";
+import { Box, Typography, Unstable_Grid2 as Grid, Stack } from "@mui/material";
 import { Logo } from "src/components/logo";
-import { ToastContainer } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 
 // TODO: Change subtitle text
@@ -60,7 +60,7 @@ export const Layout = (props) => {
             alignItems: "center",
             background: "radial-gradient(50% 50% at 50% 50%, #122647 0%, #090E23 100%)",
             color: "white",
-            display: "flex",
+            display: { xs: "none", sm: "none", md: "flex" },
             justifyContent: "center",
             "& img": {
               maxWidth: "100%",
@@ -68,13 +68,15 @@ export const Layout = (props) => {
           }}
         >
           <Box sx={{ p: 3 }}>
+            <img alt="" src="/assets/LogoElraziBack.svg" />
+
             <Typography
               align="center"
               color="inherit"
               sx={{
                 fontSize: "24px",
                 lineHeight: "32px",
-                mb: 1,
+                mt: 1,
               }}
               variant="h1"
             >
@@ -86,11 +88,9 @@ export const Layout = (props) => {
             <Typography align="center" sx={{ mb: 3 }} variant="subtitle1">
               Pioneering Excellence in Medical Education...
             </Typography>
-            <img alt="" src="/assets/LogoElrazi.svg" />
           </Box>
         </Grid>
       </Grid>
-      <ToastContainer />
     </Box>
   );
 };

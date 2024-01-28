@@ -20,39 +20,12 @@ export const items = [
     ),
   },
 
-  // {
-  //   title: 'Companies',
-  //   path: '/companies',
-  //   icon: (
-  //     <SvgIcon fontSize="small">
-  //       <ShoppingBagIcon />
-  //     </SvgIcon>
-  //   )
-  // },
   {
-    title: "Payment",
-    path: "/payment",
-    icon: (
-      <SvgIcon fontSize="small">
-        <Card />
-      </SvgIcon>
-    ),
-  },
-  {
-    title: "Biodata",
+    title: "Bio Data",
     path: "/biodata",
     icon: (
       <SvgIcon fontSize="small">
         <UserIcon />
-      </SvgIcon>
-    ),
-  },
-  {
-    title: "Uploads",
-    path: "/#",
-    icon: (
-      <SvgIcon fontSize="small">
-        <UsersIcon />
       </SvgIcon>
     ),
   },
@@ -66,23 +39,4 @@ export const items = [
       </SvgIcon>
     ),
   },
-
-  // {
-  //   title: 'Register',
-  //   path: '/auth/register',
-  //   icon: (
-  //     <SvgIcon fontSize="small">
-  //       <UserPlusIcon />
-  //     </SvgIcon>
-  //   )
-  // },
-  // {s
-  //   title: 'Error',
-  //   path: '/404',
-  //   icon: (
-  //     <SvgIcon fontSize="small">
-  //       <XCircleIcon />
-  //     </SvgIcon>
-  //   )
-  // }
 ];

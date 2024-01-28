@@ -1,11 +1,16 @@
+/* eslint-disable react/jsx-max-props-per-line */
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { styled } from "@mui/material/styles";
 import { SideNav } from "./side-nav";
 import { TopNav } from "./top-nav";
-import { ToastContainer } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
+import { AuthContext, AuthProvider } from "src/context";
+import { useRouter } from "next/router";
+import { useAuth } from "src/hooks";
+import FullScreenLoading from "src/components/loading/FullScreenLoading";
 
 const SIDE_NAV_WIDTH = 280;
 
@@ -30,6 +35,8 @@ export const Layout = (props) => {
   const pathname = usePathname();
   const [openNav, setOpenNav] = useState(false);
 
+  const { paymentUpload, token, isLoading, user, logOutUser } = useAuth();
+
   const handlePathnameChange = useCallback(() => {
     if (openNav) {
       setOpenNav(false);
@@ -46,14 +53,17 @@ export const Layout = (props) => {
 
   return (
     <>
-      <TopNav onNavOpen={() => setOpenNav(true)} />
-      <SideNav onClose={() => setOpenNav(false)} open={openNav} />
-      <LayoutRoot>
-        <LayoutContainer>
-          {children}
-          <ToastContainer />
-        </LayoutContainer>
-      </LayoutRoot>
+      {isLoading ? (
+        <FullScreenLoading />
+      ) : (
+        <AuthContext.Provider value={{ user, paymentUpload, token, logOutUser }}>
+          <TopNav onNavOpen={() => setOpenNav(true)} />
+          <SideNav onClose={() => setOpenNav(false)} open={openNav} />
+          <LayoutRoot>
+            <LayoutContainer>{children}</LayoutContainer>
+          </LayoutRoot>
+        </AuthContext.Provider>
+      )}
     </>
   );
 };

@@ -19,12 +19,12 @@ import {
 } from "@mui/material";
 import { Layout as AuthLayout } from "src/layouts/auth/layout";
 import axiosInstance from "config";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 
 const Page = () => {
   const [loading, setLoading] = useState(false);
   const [otpLoading, setOtpLoading] = useState(false);
-  
+
   const [email, setEmail] = useState("");
 
   const router = useRouter();
@@ -44,9 +44,8 @@ const Page = () => {
           if (response.status === 200) {
             setLoading(false);
             const user = response.data;
-            alert("Email has been successfully verified.");
-            toast("Email verified, please login to continue");
-            localStorage.clear();
+            toast.success("Email verified, please login to continue");
+            localStorage.removeItem("email");
             router.push("/auth/login");
           }
         })
@@ -54,12 +53,11 @@ const Page = () => {
           // if error is 400 then otp is wrong
           if (error.response.status === 400) {
             setLoading(false);
-            alert("OTP is incorrect");
-            toast.error("OTP is incorrect");
+            toast.error("Incorrect OTP, please check your email and try again");
             return;
           } else {
             setLoading(false);
-            console.log('error verifying email',error.response.data);
+            // console.log('error verifying email',error.response.data);
             toast.error("Something went wrong");
           }
         });
@@ -75,8 +73,7 @@ const Page = () => {
       .then((response) => {
         if (response.status === 200) {
           setOtpLoading(false);
-          toast("OTP has been resent successfully.");
-          alert("OTP sent, please check your email");
+          toast.success("OTP has been resent successfully.");
         }
       })
       .catch((error) => {
@@ -100,6 +97,7 @@ const Page = () => {
     }
     setEmail(email);
   }, []);
+
   return (
     <>
       <Head>
