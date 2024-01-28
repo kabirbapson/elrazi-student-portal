@@ -25,7 +25,6 @@ import { AuthContext } from "src/context";
 
 const Page = () => {
   const [loading, setLoading] = useState(false);
-  const { user, loadUserSession } = useContext(AuthContext);
 
   const router = useRouter();
   const formik = useFormik({
@@ -48,7 +47,7 @@ const Page = () => {
             const user = response.data;
             // save user token
             localStorage.setItem("token", user.token);
-            toast("Welcome back!");
+            toast.success("Welcome back!");
             router.push("/");
             setLoading(false);
           }
@@ -56,11 +55,11 @@ const Page = () => {
         .catch((error) => {
           if (error.response.status === 400) {
             setLoading(false);
-            toast("Something went wrong, please check your email");
+            toast.warning("Something went wrong, please check your email");
             // console.log("MY ERROR", error.response.data);
           } else {
             setLoading(false);
-            toast("Something went wrong");
+            toast.warning("Something went wrong");
             // console.log("MY ERROR", error.response.data);
           }
         });
@@ -153,7 +152,7 @@ const Page = () => {
             </form>
           </div>
         </Box>
-        <ToastContainer />
+
       </Box>
     </>
   );

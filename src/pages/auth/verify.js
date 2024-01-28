@@ -24,7 +24,7 @@ import { ToastContainer, toast } from "react-toastify";
 const Page = () => {
   const [loading, setLoading] = useState(false);
   const [otpLoading, setOtpLoading] = useState(false);
-  
+
   const [email, setEmail] = useState("");
 
   const router = useRouter();
@@ -44,8 +44,8 @@ const Page = () => {
           if (response.status === 200) {
             setLoading(false);
             const user = response.data;
-            toast("Email verified, please login to continue");
-            localStorage.removeItem('email');
+            toast.success("Email verified, please login to continue");
+            localStorage.removeItem("email");
             router.push("/auth/login");
           }
         })
@@ -73,7 +73,7 @@ const Page = () => {
       .then((response) => {
         if (response.status === 200) {
           setOtpLoading(false);
-          toast("OTP has been resent successfully.");
+          toast.success("OTP has been resent successfully.");
         }
       })
       .catch((error) => {
@@ -97,7 +97,7 @@ const Page = () => {
     }
     setEmail(email);
   }, []);
-  
+
   return (
     <>
       <Head>
@@ -186,7 +186,6 @@ const Page = () => {
             </Button>
           </div>
         </Box>
-        <ToastContainer />
       </Box>
     </>
   );

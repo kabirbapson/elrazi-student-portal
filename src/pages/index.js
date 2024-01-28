@@ -4,11 +4,13 @@ import Head from "next/head";
 import {
   Box,
   Button,
+  Card,
   CircularProgress,
   Container,
   FormControl,
   Unstable_Grid2 as Grid,
   Input,
+  Stack,
   Typography,
 } from "@mui/material";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
@@ -18,6 +20,7 @@ import axiosInstance from "config";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "src/context";
+import { ApplicationFeeConfirmed, ApplicationFeePaymentProcess } from "src/components";
 
 const Page = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -56,7 +59,7 @@ const Page = () => {
           const uploadsData = response.data;
           setPaymentUpload(uploadsData);
           setUploadStatus("File uploaded successfully!");
-          toast("File uploaded successfully!");
+          toast.success("File uploaded successfully!");
           setSelectedFile(null);
           fetchUserPaymentStatus(token);
         }
@@ -65,7 +68,7 @@ const Page = () => {
         if (error?.response?.status === 400) {
           setLoading(false);
           setUploadStatus("Please select a valid image to upload.");
-          toast("Please upload a valid image");
+          toast.warning("Please upload a valid image");
         } else if (error?.response?.status === 401) {
           localStorage.clear();
           router.push("/auth/login");
@@ -91,128 +94,14 @@ const Page = () => {
         }}
       >
         <Container maxWidth="xl">
-          <Grid container spacing={3}>
-            <Box
-              component="section"
-              sx={{
-                color: "green",
-                // backgroundColor: "blue",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexGrow: 1,
-                // p: 10,
-              }}
-            >
-              <Grid>
-                {user?.has_paid ? (
-                  <Typography
-                    textAlign={"center"}
-                    color="green"
-                    variant="h6"
-                    sx={{ marginBottom: "15px" }}
-                  >
-                    Application fee paid, please update your Bio-data
-                  </Typography>
-                ) : !paymentUpload ? (
-                  <Typography
-                    textAlign={"center"}
-                    color="black"
-                    variant="h6"
-                    sx={{ marginBottom: "15px" }}
-                  >
-                    Please make payment of N30,000 application fee and upload receipt to continue.
-                  </Typography>
-                ) : (
-                  <Typography variant="h6" sx={{ marginBottom: "15px" }}>
-                    Payment receipt uploaded, please wait for confirmation
-                  </Typography>
-                )}
-              </Grid>
-            </Box>
-          </Grid>
-
-          {!paymentUpload && (
-            <>
-              <Grid
-                container
-                spacing={3}
-                sx={{
-                  marginTop: "20px",
-                  marginBottom: "20px",
-                  backgroundColor: "lightgreen",
-                  display: "flex",
-                  justifyContent: "space-around" /* Align items to start and end */,
-                  borderRadius: "15px",
-                }}
-              >
-                <Grid
-                  item
-                  xs={6}
-                  sx={{
-                    // backgroundColor: "red",
-                    display: "flex" /* Enable flexbox for centering */,
-                    flexDirection: "column" /* Arrange content vertically */,
-                    alignItems: "center" /* Center elements horizontally */,
-                    justifyContent: "center" /* Center elements vertically */,
-                  }}
-                >
-                  <Typography variant="h6" textAlign={"center"} sx={{ marginBottom: "15px" }}>
-                    Payment Information
-                  </Typography>
-
-                  <Typography variant="body2">Account Name:</Typography>
-                  <Typography textAlign={"center"} variant="body1" sx={{ fontWeight: "bold" }}>
-                    Elrazi Medical University kn-Revenue
-                  </Typography>
-
-                  <Typography variant="body2">Account Number:</Typography>
-                  <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                    0005035147
-                  </Typography>
-
-                  <Typography variant="body2">Bank Name:</Typography>
-                  <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                    Taj Bank Plc.
-                  </Typography>
-                </Grid>
-
-                <Grid
-                  sx={{
-                    // flexDirection: "column", /* Arrange elements vertically */
-                    alignItems: "center" /* Center elements horizontally */,
-                    justifyContent: "center" /* Center elements vertically */,
-                    // width: "100%" /* Ensure full width */,
-                  }}
-                >
-                  <form onSubmit={handleUploadReceipt}>
-                    <FormControl>
-                      <Typography variant="h6" sx={{ marginBottom: "15px" }}>
-                        Upload Receipt (jpg/png)
-                      </Typography>
-                      <Input type="file" onChange={handleFileChange} accept=".jpg,.png,.pdf" />
-                    </FormControl>{" "}
-                    {uploadStatus && <p>{uploadStatus}</p>}
-                    <p>
-                      <Button
-                        sx={{ textAlign: "center" }}
-                        type="submit"
-                        variant="contained"
-                        disabled={loading}
-                      >
-                        {loading ? (
-                          <CircularProgress size={24} color="inherit" />
-                        ) : (
-                          <Typography>Upload Payment Receipt</Typography>
-                        )}
-                      </Button>
-                    </p>
-                  </form>
-                </Grid>
-              </Grid>
-            </>
-          )}
-          <Grid container spacing={3}>
+          <Card sx={{ padding: { xs: "20px", sm: "40px" }, mb: "20px" }}>
+            {user?.has_paid ? (
+              <ApplicationFeeConfirmed name={user?.first_name} />
+            ) : (
+              <ApplicationFeePaymentProcess name={user?.first_name} />
+            )}
+          </Card>
+          {/* <Grid container spacing={3}>
             <Grid xs={12} sm={6} lg={3}>
               <OverviewBudget
                 title={"Session"}
@@ -266,7 +155,7 @@ const Page = () => {
                 value="Not Applied"
               />
             </Grid>
-          </Grid>
+          </Grid> */}
         </Container>
       </Box>
     </>

@@ -9,11 +9,10 @@ import { createTheme } from "src/theme";
 import { createEmotionCache } from "src/utils/create-emotion-cache";
 import "simplebar-react/dist/simplebar.min.css";
 import { ToastContainer } from "react-toastify";
-import { AuthProvider } from "src/context";
+
+import "react-toastify/dist/ReactToastify.css";
 
 const clientSideEmotionCache = createEmotionCache();
-
-const SplashScreen = () => null;
 
 const App = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
@@ -33,7 +32,8 @@ const App = (props) => {
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
+          {getLayout(<Component {...pageProps} />)}
+          <ToastContainer position="top-right" autoClose={1000} limit={1} hideProgressBar={true} />
         </ThemeProvider>
       </LocalizationProvider>
     </CacheProvider>
