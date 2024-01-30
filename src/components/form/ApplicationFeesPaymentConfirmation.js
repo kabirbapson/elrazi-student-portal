@@ -60,8 +60,8 @@ export const ApplicationFeePaymentConfirmation = ({ name }) => {
         </Stack>
       </Stack>
 
-      <Typography>We appreciate your patience and cooperation. Best regards,</Typography>
-      <Typography fontWeight={'bold'}>Elrazi Medical University Admission Team</Typography>
+      {/* <Typography>We appreciate your patience and cooperation. Best regards,</Typography> */}
+      <Typography fontWeight={'italic'}>Admission - Elrazi Medical University, Kano. </Typography>
     </Stack>
   );
 };

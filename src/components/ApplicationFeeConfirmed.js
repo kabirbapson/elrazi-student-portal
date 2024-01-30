@@ -80,7 +80,7 @@ export const ApplicationFeeConfirmed = ({ name }) => {
         Thank you for choosing Elrazi Medical University. We wish you the best of luck in the
         application process,
       </Typography>
-      <Typography fontWeight={"bold"}>Elrazi Medical University Admission Team</Typography>
+      <Typography >Admission - Elrazi Medical University, Kano. </Typography>
     </Stack>
   );
 };

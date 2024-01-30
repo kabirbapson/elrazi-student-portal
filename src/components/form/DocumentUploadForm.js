@@ -12,6 +12,12 @@ import {
   IconButton,
   styled,
   Card,
+  Box,
+  ButtonGroup,
+  FormControl,
+  FormLabel,
+  Radio,
+  RadioGroup,
 } from "@mui/material";
 import { MdCloudUpload } from "react-icons/md";
 import { toast } from "react-toastify";
@@ -35,44 +41,55 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-const initialData = [
+const personalDocument = [
   {
-    name: "jamb_document",
-    title: "Upload Your JAMB",
-  },
-  {
-    name: "waec_document",
-    title: "Upload Your WAEC",
-  },
-  {
-    name: "neco_document",
-    title: "Upload Your NECO",
-  },
-  {
-    name: "nabteb_document",
-    title: "Upload Your NABTEB",
+    name: "primary_certificate",
+    title: "Primary Certificate",
   },
   {
     name: "cob_document",
-    title: "Upload Certificate of Birth",
+    title: "Certificate of Birth",
+  },
+];
+
+const nonInternationalStudent = [
+  {
+    name: "jamb_document",
+    title: "JAMB Result",
+  },
+];
+
+const additionalDocument = [
+  {
+    name: "waec_document",
+    title: "WAEC",
   },
   {
-    name: "passport_photo",
-    title: "Upload Passport",
+    name: "neco_document",
+    title: "NECO",
   },
   {
-    name: "primary_certificate",
-    title: "Upload Primary Certificate",
+    name: "nabteb_document",
+    title: "NABTEB",
   },
+];
+
+const internationalStudent = [
   {
     name: "international_student_document",
-    title: "Upload International Student Document",
+    title: "International Student Certificate Equivalent",
   },
 ];
 
 export const DocumentUploadForm = ({ onBack, document }) => {
   const { control, handleSubmit, setValue, watch } = useForm();
   const router = useRouter();
+
+  const form = watch();
+
+  const [previewImageUrl, setPreviewImageUrl] = useState(
+    form["passport_photo"] || document["passport_photo"] || "/assets/img_placeholder_avatar.jpg"
+  );
 
   const [loading, setLoading] = useState(false);
   const { token } = useContext(AuthContext);
@@ -102,8 +119,6 @@ export const DocumentUploadForm = ({ onBack, document }) => {
     setLoading(false);
   };
 
-  const form = watch();
-
   const validateFile = (file) => {
     if (!file) return true; // No file selected is allowed
     const isImageOrPdf = file.type.startsWith("image/") || file.type === "application/pdf";
@@ -120,78 +135,296 @@ export const DocumentUploadForm = ({ onBack, document }) => {
     }
   };
 
+  const handleImageChange = (fieldName, file) => {
+    if (validateFile(file)) {
+      setValue(fieldName, file);
+
+      // Set the state with the data URL
+      const reader = new FileReader();
+      reader.onload = () => {
+        setPreviewImageUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      // Handle invalid file (e.g., show an error message)
+      toast.warning("Invalid file format or size");
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Typography textAlign={"center"} mt={"10px"} variant="h6" color={"black"}>
+      <Typography mt={"10px"} variant="h6" color={"black"}>
         Upload Your Documents Here
       </Typography>
       <Typography
-        paddingInline={{ xs: "10", sm: "60px" }}
         mt={"10px"}
-        textAlign={"center"}
+        // textAlign={"center"}
         variant="body1"
         color={"black"}
+        sx={{ maxWidth: "800px" }}
       >
         Please note that not all the document are required also all documents must be in PDF or
         Image format and not more than 1MB
       </Typography>
-      <Grid
-        container
-        spacing={2}
-        direction="row"
-        justifyContent="space-around"
-        alignItems="flex-start"
-        sx={{
-          width: "100%",
-          minHeight: 360,
 
-          paddingInline: { xs: "10px", sm: "40px" },
-          backgroundColor: "background.paper",
-          marginTop: "20px",
-        }}
-      >
-        {/* Repeat this Grid item for each jamb document */}
-        {initialData.map((data, index) => (
-          <Grid item key={index} xs={12} sm={"6"}>
-            <Card
-              maxWidth={"400px"}
-              sx={{
-                borderRadius: "10px",
-                padding: "10px",
-                border: `1px solid ${
-                  form[data.name] || document[data.name] ? "#31ea19" : "#A2A4FA"
-                }`,
-              }}
-            >
-              <Stack
+      {/* upload passport_photo */}
+      <Stack direction={"column"} mt={"10px"}>
+        <img
+          src={previewImageUrl}
+          width={150}
+          height={150}
+          alt="passport"
+          style={{ borderRadius: "5px", border: "1px solid #31ea19" }}
+        />
+
+        <Stack direction={"row"} justifyContent={"flex-start"} alignItems={"center"}>
+          <Typography>Passport Photo</Typography>
+          <IconButton component="label" aria-label="fingerprint" color="#3133AD">
+            <VisuallyHiddenInput
+              type="file"
+              accept=".jpg, .jpeg, .png"
+              onChange={(e) => handleImageChange("passport_photo", e.target.files[0])}
+            />
+            {form["passport_photo"] || document["passport_photo"] ? (
+              <FaCheckCircle color={"#31ea19"} />
+            ) : (
+              <MdCloudUpload color="#3133AD" />
+            )}
+          </IconButton>
+        </Stack>
+      </Stack>
+
+      {/* personal documents  */}
+      <Stack direction={"column"} mt={"10px"}>
+        <Typography variant="h6" color={"black"}>
+          Personal Documents
+        </Typography>
+        <Stack mt={"10px"} spacing={1} direction={"row"} maxWidth={400}>
+          {personalDocument.map((data, index) => (
+            <Box key={index}>
+              <Card
+                maxWidth={"100px"}
                 sx={{
-                  padding: "5px",
                   borderRadius: "5px",
+                  // padding: "10px",
+                  border: `1px solid ${
+                    form[data.name] || document[data.name] ? "#31ea19" : "#A2A4FA"
+                  }`,
                 }}
-                direction={"row"}
-                alignItems={"center"}
-                justifyContent={"space-between"}
               >
-                <Typography variant="body1" color={"black"}>
-                  {data.title}
-                </Typography>
-                <IconButton component="label" aria-label="fingerprint" color="#3133AD">
-                  {form[data.name] || document[data.name] ? (
-                    <FaCheckCircle color={"#31ea19"} />
-                  ) : (
-                    <MdCloudUpload color="#3133AD" />
-                  )}
-                  <VisuallyHiddenInput
-                    type="file"
-                    accept=".pdf, .jpg, .jpeg, .png"
-                    onChange={(e) => handleFileChange(data.name, e.target.files[0])}
-                  />
-                </IconButton>
-              </Stack>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+                <Stack
+                  sx={{
+                    px: "6px",
+                    borderRadius: "5px",
+                  }}
+                  direction={"row"}
+                  alignItems={"center"}
+                  justifyContent={"space-between"}
+                >
+                  <Typography variant="body2" fontSize={"70%"} color={"black"}>
+                    {data.title}
+                  </Typography>
+                  <IconButton component="label" aria-label="fingerprint" color="#3133AD">
+                    {form[data.name] || document[data.name] ? (
+                      <FaCheckCircle color={"#31ea19"} />
+                    ) : (
+                      <MdCloudUpload color="#3133AD" />
+                    )}
+                    <VisuallyHiddenInput
+                      type="file"
+                      accept=".pdf, .jpg, .jpeg, .png"
+                      onChange={(e) => handleFileChange(data.name, e.target.files[0])}
+                    />
+                  </IconButton>
+                </Stack>
+              </Card>
+            </Box>
+          ))}
+        </Stack>
+      </Stack>
+
+      {/* non international student documents  */}
+      <Stack direction={"column"} mt={"10px"}>
+        <FormControl>
+          <FormLabel id="demo-row-radio-buttons-group-label">
+            Are you an International Student?
+          </FormLabel>
+          <RadioGroup
+            row
+            aria-labelledby="demo-row-radio-buttons-group-label"
+            name="row-radio-buttons-group"
+            value={form["is_international"] || document["is_international"]}
+            onChange={(e) =>
+              setValue("is_international", e.target.value === "true" ? true : false)
+            }
+          >
+            <FormControlLabel value={false} control={<Radio />} label="No" />
+            <FormControlLabel
+              value={true}
+              control={<Radio />}
+              label="Yes, I'm international Student"
+            />
+          </RadioGroup>
+        </FormControl>
+      </Stack>
+
+      <Stack direction={"column"} mt={"20px"}>
+        {form["is_international"] || document["is_international"] ? (
+          <>
+            <Typography variant="h6" color={"black"}>
+              International Student Documents
+            </Typography>
+            <Typography variant={"body1"} mt={"7px"}>
+              Please upload your examination result equivalent certificate
+            </Typography>
+            <Stack mt={"10px"} spacing={1} direction={"row"} maxWidth={400}>
+              {internationalStudent.map((data, index) => (
+                <Box key={index}>
+                  <Card
+                    maxWidth={"100px"}
+                    sx={{
+                      borderRadius: "5px",
+                      // padding: "10px",
+                      border: `1px solid ${
+                        form[data.name] || document[data.name] ? "#31ea19" : "#A2A4FA"
+                      }`,
+                    }}
+                  >
+                    <Stack
+                      sx={{
+                        px: "6px",
+                        borderRadius: "5px",
+                      }}
+                      direction={"row"}
+                      alignItems={"center"}
+                      justifyContent={"space-between"}
+                    >
+                      <Typography variant="body2" fontSize={"70%"} color={"black"}>
+                        {data.title}
+                      </Typography>
+                      <IconButton component="label" aria-label="fingerprint" color="#3133AD">
+                        {form[data.name] || document[data.name] ? (
+                          <FaCheckCircle color={"#31ea19"} />
+                        ) : (
+                          <MdCloudUpload color="#3133AD" />
+                        )}
+                        <VisuallyHiddenInput
+                          type="file"
+                          accept=".pdf, .jpg, .jpeg, .png"
+                          onChange={(e) => handleFileChange(data.name, e.target.files[0])}
+                        />
+                      </IconButton>
+                    </Stack>
+                  </Card>
+                </Box>
+              ))}
+            </Stack>
+          </>
+        ) : (
+          <>
+            <Typography variant="h6" color={"black"}>
+              Student Documents
+            </Typography>
+            <Typography variant={"body1"} mt={"7px"}>
+              Please upload your examination result equivalent certificate
+            </Typography>
+            <Stack mt={"10px"} spacing={1} direction={"row"} maxWidth={400}>
+              {nonInternationalStudent.map((data, index) => (
+                <Box key={index}>
+                  <Card
+                    maxWidth={"100px"}
+                    sx={{
+                      borderRadius: "10px",
+                      // padding: "10px",
+                      border: `1px solid ${
+                        form[data.name] || document[data.name] ? "#31ea19" : "#A2A4FA"
+                      }`,
+                    }}
+                  >
+                    <Stack
+                      sx={{
+                        px: "6px",
+                        borderRadius: "5px",
+                      }}
+                      direction={"row"}
+                      alignItems={"center"}
+                      justifyContent={"space-between"}
+                    >
+                      <Typography variant="body2" fontSize={"70%"} color={"black"}>
+                        {data.title}
+                      </Typography>
+                      <IconButton component="label" aria-label="fingerprint" color="#3133AD">
+                        {form[data.name] || document[data.name] ? (
+                          <FaCheckCircle color={"#31ea19"} />
+                        ) : (
+                          <MdCloudUpload color="#3133AD" />
+                        )}
+                        <VisuallyHiddenInput
+                          type="file"
+                          accept=".pdf, .jpg, .jpeg, .png"
+                          onChange={(e) => handleFileChange(data.name, e.target.files[0])}
+                        />
+                      </IconButton>
+                    </Stack>
+                  </Card>
+                </Box>
+              ))}
+            </Stack>
+          </>
+        )}
+      </Stack>
+
+      <Stack direction={"column"} mt={"20px"}>
+        <Typography variant="h6" color={"black"}>
+          Additional Documents
+        </Typography>
+        <Typography variant={"body1"} mt={"7px"}>
+          Note: These documents are not required but if you have them you can upload them
+        </Typography>
+        <Stack mt={"10px"} spacing={1} direction={"row"} maxWidth={400}>
+          {additionalDocument.map((data, index) => (
+            <Box key={index}>
+              <Card
+                maxWidth={"100px"}
+                sx={{
+                  borderRadius: "5px",
+                  // padding: "10px",
+                  px: "10px",
+                  border: `1px solid ${
+                    form[data.name] || document[data.name] ? "#31ea19" : "#A2A4FA"
+                  }`,
+                }}
+              >
+                <Stack
+                  sx={{
+                    px: "6px",
+                    borderRadius: "5px",
+                  }}
+                  direction={"row"}
+                  alignItems={"center"}
+                  justifyContent={"space-between"}
+                >
+                  <Typography variant="body2" fontSize={"70%"} color={"black"}>
+                    {data.title}
+                  </Typography>
+                  <IconButton component="label" aria-label="fingerprint" color="#3133AD">
+                    {form[data.name] || document[data.name] ? (
+                      <FaCheckCircle color={"#31ea19"} />
+                    ) : (
+                      <MdCloudUpload color="#3133AD" />
+                    )}
+                    <VisuallyHiddenInput
+                      type="file"
+                      accept=".pdf, .jpg, .jpeg, .png"
+                      onChange={(e) => handleFileChange(data.name, e.target.files[0])}
+                    />
+                  </IconButton>
+                </Stack>
+              </Card>
+            </Box>
+          ))}
+        </Stack>
+      </Stack>
       <Stack marginTop={"20px"} direction={"row"} justifyContent={"flex-end"}>
         <Button variant="outlined" onClick={onBack} sx={{ mr: 1 }}>
           Back

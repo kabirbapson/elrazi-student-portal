@@ -16,68 +16,24 @@ import {
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { OverviewBudget } from "src/sections/overview/overview-budget";
 import { CalendarIcon } from "@mui/x-date-pickers";
-import axiosInstance from "config";
+import axiosInstance from "src/api/config";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "src/context";
-import { ApplicationFeeConfirmed, ApplicationFeePaymentProcess } from "src/components";
+import {
+  AdmissionApplication,
+  AdmissionApplicationProcess,
+  ApplicationFeeConfirmed,
+  ApplicationFeePaymentProcess,
+} from "src/components";
 
 const Page = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { user, token, paymentUpload, setPaymentUpload } = useContext(AuthContext);
-
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
-
-  const handleUploadReceipt = async (event) => {
-    setLoading(true);
-    event.preventDefault();
-
-    if (!selectedFile) {
-      // Handle no file selected case
-      setUploadStatus("Please select a file to upload.");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("receipt", selectedFile);
-
-    axiosInstance
-      .post("/payments/", formData, {
-        headers: {
-          Authorization: `Token ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        if (response.status === 201) {
-          setLoading(false);
-          const uploadsData = response.data;
-          setPaymentUpload(uploadsData);
-          setUploadStatus("File uploaded successfully!");
-          toast.success("File uploaded successfully!");
-          setSelectedFile(null);
-          fetchUserPaymentStatus(token);
-        }
-      })
-      .catch((error) => {
-        if (error?.response?.status === 400) {
-          setLoading(false);
-          setUploadStatus("Please select a valid image to upload.");
-          toast.warning("Please upload a valid image");
-        } else if (error?.response?.status === 401) {
-          localStorage.clear();
-          router.push("/auth/login");
-        } else {
-          setLoading(false);
-          console.log("upload error", error?.response?.data);
-        }
-      });
-  };
+  const { user, token, paymentUpload, setPaymentUpload, facultyCourses, documentsCompleted } =
+    useContext(AuthContext);
 
   const router = useRouter();
 
@@ -95,10 +51,16 @@ const Page = () => {
       >
         <Container maxWidth="xl">
           <Card sx={{ padding: { xs: "20px", sm: "40px" }, mb: "20px" }}>
-            {user?.has_paid ? (
-              <ApplicationFeeConfirmed name={user?.first_name} />
+            {!documentsCompleted ? (
+              <>
+                {user?.has_paid ? (
+                  <ApplicationFeeConfirmed name={user?.first_name} />
+                ) : (
+                  <ApplicationFeePaymentProcess name={user?.first_name} />
+                )}
+              </>
             ) : (
-              <ApplicationFeePaymentProcess name={user?.first_name} />
+              <AdmissionApplicationProcess name={user?.first_name} faculties={facultyCourses} />
             )}
           </Card>
           {/* <Grid container spacing={3}>

@@ -8,7 +8,6 @@ import { TopNav } from "./top-nav";
 
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext, AuthProvider } from "src/context";
-import { useRouter } from "next/router";
 import { useAuth } from "src/hooks";
 import FullScreenLoading from "src/components/loading/FullScreenLoading";
 
@@ -35,7 +34,16 @@ export const Layout = (props) => {
   const pathname = usePathname();
   const [openNav, setOpenNav] = useState(false);
 
-  const { paymentUpload, token, isLoading, user, logOutUser } = useAuth();
+  const {
+    paymentUpload,
+    token,
+    documentsCompleted,
+    isLoading,
+    facultyCourses,
+    user,
+    logOutUser,
+    admissions,
+  } = useAuth();
 
   const handlePathnameChange = useCallback(() => {
     if (openNav) {
@@ -56,7 +64,17 @@ export const Layout = (props) => {
       {isLoading ? (
         <FullScreenLoading />
       ) : (
-        <AuthContext.Provider value={{ user, paymentUpload, token, logOutUser }}>
+        <AuthContext.Provider
+          value={{
+            user,
+            paymentUpload,
+            token,
+            documentsCompleted,
+            facultyCourses,
+            admissions,
+            logOutUser,
+          }}
+        >
           <TopNav onNavOpen={() => setOpenNav(true)} />
           <SideNav onClose={() => setOpenNav(false)} open={openNav} />
           <LayoutRoot>

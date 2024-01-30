@@ -53,7 +53,7 @@ const Page = () => {
           }
         })
         .catch((error) => {
-          if (error.response.status === 400) {
+          if (error?.response?.status === 400) {
             setLoading(false);
             toast.warning("Something went wrong, please check your email");
             // console.log("MY ERROR", error.response.data);

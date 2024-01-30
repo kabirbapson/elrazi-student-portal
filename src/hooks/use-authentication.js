@@ -8,15 +8,65 @@ export const useAuth = () => {
   const [token, setToken] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [paymentUpload, setPaymentUpload] = useState(null);
+  const [documentsCompleted, setDocumentsCompleted] = useState(false);
+  const [facultyCourses, setFacultyCourses] = useState([]);
+  const [admissions, setAdmissions] = useState([]);
 
   const router = useRouter();
 
   const logOutUser = useCallback(() => {
     setUser(null);
     setToken(null);
+
     localStorage.clear();
     router.push("/auth/login");
   }, [router]);
+
+  const checkDocumentsCompleted = useCallback(async (userToken) => {
+    try {
+      const response = await axiosInstance.get("/students/document-status", {
+        headers: {
+          Authorization: `Token ${userToken}`,
+        },
+      });
+      if (response.status === 200) {
+        setDocumentsCompleted(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  const getAppliedAdmissions = useCallback(async (userToken) => {
+    try {
+      const response = await axiosInstance.get("/students/admissions/", {
+        headers: {
+          Authorization: `Token ${userToken}`,
+        },
+      });
+      if (response.status === 200) {
+        setAdmissions(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  const getFacultyCourses = useCallback(async (userToken) => {
+    const config = {
+      headers: {
+        Authorization: `Token ${userToken}`,
+      },
+    };
+
+    try {
+      const response = await axiosInstance.get("/faculty-courses/", config);
+      const courses = response.data;
+      setFacultyCourses(courses);
+    } catch (error) {
+      console.log("error", error);
+    }
+  }, []);
 
   const handleFetchUserDetails = useCallback(
     async (token) => {
@@ -72,10 +122,20 @@ export const useAuth = () => {
 
     await handleFetchUserDetails(savedToken);
     await handleFetchUserPayments(savedToken);
+    await checkDocumentsCompleted(savedToken);
+    await getFacultyCourses(savedToken);
+    await getAppliedAdmissions(savedToken);
     setToken(savedToken);
 
     setIsLoading(false);
-  }, [handleFetchUserDetails, handleFetchUserPayments, logOutUser]);
+  }, [
+    checkDocumentsCompleted,
+    getAppliedAdmissions,
+    getFacultyCourses,
+    handleFetchUserDetails,
+    handleFetchUserPayments,
+    logOutUser,
+  ]);
 
   useEffect(() => {
     if (typeof window !== undefined) {
@@ -83,5 +143,14 @@ export const useAuth = () => {
     }
   }, [loadUserSession]);
 
-  return { user, isLoading, paymentUpload, token, logOutUser};
+  return {
+    user,
+    isLoading,
+    paymentUpload,
+    token,
+    documentsCompleted,
+    facultyCourses,
+    admissions,
+    logOutUser,
+  };
 };

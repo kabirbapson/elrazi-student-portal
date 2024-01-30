@@ -34,6 +34,7 @@ export const useReceiptUpload = () => {
       .catch((error) => {
         if (error?.response?.status === 400) {
           toast.error("Unable to upload your receipt");
+          toast.warn("Please upload a valid image/picture!");
           setLoading(false);
         } else {
           setLoading(false);

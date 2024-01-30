@@ -6,6 +6,12 @@ import { IoReceiptSharp } from "react-icons/io5";
 import { LoadingButton } from "@mui/lab";
 import { toast } from "react-toastify";
 
+const TextValue = ({ name, value }) => (
+  <Stack direction={{ xs: "column", sm: "row" }}  spacing={1}>
+    <Typography>{name}:</Typography>
+    <Typography fontWeight={"bold"}>{value}</Typography>
+  </Stack>
+);
 export const ApplicationFeePaymentUpload = ({ onLoading, onUploadReceipt }) => {
   const [selectedFile, setSelectedFile] = useState(null);
 
@@ -43,15 +49,23 @@ export const ApplicationFeePaymentUpload = ({ onLoading, onUploadReceipt }) => {
   return (
     <Stack>
       {/* Welcome Message  */}
-      <Stack direction={"row"} spacing={1}>
+      <Stack direction={"row"} spacing={1} >
         <Typography variant="body2" fontSize={"20px"} fontWeight={"bold"}>
           {`Upload Receipt`},
         </Typography>
       </Stack>
 
-      <Typography sx={{ width: { xs: "100%", md: "70%" } }}>
-        Great! You've confirmed your payment. Now, please upload a clear image of your receipt in
-        either JPG or PNG format to proceed with your application.
+      <Typography variant="body2" marginY={'4px'} >
+        Now that you've made payment to the following account:
+      </Typography>
+
+      <TextValue name={"Bank Name"} value={"Elrazi Medical University kn-Revenue"} />
+      <TextValue name={"Account Name"} value={"0005035147"} />
+      <TextValue name={"Bank Name"} value={"Taj Bank Plc."} />
+
+      <Typography marginY={'5px'} sx={{ width: { xs: "100%", md: "70%", marginBottom: "4" } }}>
+        Great! please upload a clear image of your receipt in either JPG or PNG format to proceed
+        with your application.
       </Typography>
 
       {/* bank account details */}
@@ -69,9 +83,10 @@ export const ApplicationFeePaymentUpload = ({ onLoading, onUploadReceipt }) => {
           backgroundColor: selectedFile ? "#D2FDDA" : "#FFEFDC",
         }}
         spacing={2}
+        paddingY={'6px'} 
       >
         {onLoading ? (
-          <Stack alignItems={'center'} spacing={2}>
+          <Stack alignItems={"center"} spacing={2}>
             <CircularProgress />
             <Typography variant="body2">Uploading Receipt Please wait...</Typography>
           </Stack>
@@ -91,9 +106,17 @@ export const ApplicationFeePaymentUpload = ({ onLoading, onUploadReceipt }) => {
             )}
             {/* File input for selecting the file */}
             {selectedFile ? (
-              <Stack spacing={1} direction={{ xs: "column-reverse", sm: "row" }}>
+              <Stack spacing={1}>
                 <LoadingButton loading={onLoading} onClick={handleUpload} variant="contained">
                   Submit Receipt
+                </LoadingButton>
+
+                <LoadingButton
+                  loading={onLoading}
+                  onClick={() => setSelectedFile(null)}
+                  variant="text"
+                >
+                  Re-upload
                 </LoadingButton>
               </Stack>
             ) : (
@@ -114,7 +137,7 @@ export const ApplicationFeePaymentUpload = ({ onLoading, onUploadReceipt }) => {
         )}
       </Stack>
       <Typography color={"gray"} variant="body2">
-        Image and PDF files only. Max file size 1MB.
+        Image files only.
       </Typography>
 
       <Typography mt={"20px"} variant="body2">
@@ -132,7 +155,7 @@ export const ApplicationFeePaymentUpload = ({ onLoading, onUploadReceipt }) => {
       </Stack>
 
       <Typography mt={"20px"}>
-        Thank you for your cooperation. We look forward to processing your application.
+        Thank you. We look forward to processing your application.
       </Typography>
     </Stack>
   );
