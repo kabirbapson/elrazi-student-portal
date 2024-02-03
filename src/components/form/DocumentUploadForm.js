@@ -77,12 +77,20 @@ const additionalDocument = [
 const internationalStudent = [
   {
     name: "international_student_document",
-    title: "International Student Certificate Equivalent",
+    title: "International Result Equivalent",
   },
 ];
 
 export const DocumentUploadForm = ({ onBack, document }) => {
-  const { control, handleSubmit, setValue, watch } = useForm();
+  // const { control, handleSubmit, setValue, watch } = useForm();
+  const { control, handleSubmit, setValue, watch } = useForm({
+    defaultValues: {
+      is_international:
+        document["is_international"] !== undefined ? document["is_international"] : false, // Or `null` if you prefer
+      // Include other fields as necessary
+    },
+  });
+
   const router = useRouter();
 
   const form = watch();
@@ -154,7 +162,7 @@ export const DocumentUploadForm = ({ onBack, document }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Typography mt={"10px"} variant="h6" color={"black"}>
-        Upload Your Documents Here
+        Upload Your Documents
       </Typography>
       <Typography
         mt={"10px"}
@@ -163,9 +171,8 @@ export const DocumentUploadForm = ({ onBack, document }) => {
         color={"black"}
         sx={{ maxWidth: "800px" }}
       >
-        Please note that not all the document are required also all documents must be in PDF or
-        Image format and not more than 1MB
-      </Typography>
+      Files should be in either PDF or image format and should not exceed 2MB in size.
+ </Typography>
 
       {/* upload passport_photo */}
       <Stack direction={"column"} mt={"10px"}>
@@ -195,7 +202,8 @@ export const DocumentUploadForm = ({ onBack, document }) => {
       </Stack>
 
       {/* personal documents  */}
-      <Stack direction={"column"} mt={"10px"}>
+      <>
+        {/* <Stack direction={"column"} mt={"10px"}>
         <Typography variant="h6" color={"black"}>
           Personal Documents
         </Typography>
@@ -241,28 +249,31 @@ export const DocumentUploadForm = ({ onBack, document }) => {
             </Box>
           ))}
         </Stack>
-      </Stack>
-
+      </Stack> */}
+      </>
       {/* non international student documents  */}
       <Stack direction={"column"} mt={"10px"}>
         <FormControl>
           <FormLabel id="demo-row-radio-buttons-group-label">
             Are you an International Student?
           </FormLabel>
+
           <RadioGroup
             row
             aria-labelledby="demo-row-radio-buttons-group-label"
-            name="row-radio-buttons-group"
+            name="is_international"
             value={form["is_international"] || document["is_international"]}
-            onChange={(e) =>
-              setValue("is_international", e.target.value === "true" ? true : false)
-            }
+            onChange={(e) => setValue("is_international", e.target.value === "true" ? true : false)}
           >
-            <FormControlLabel value={false} control={<Radio />} label="No" />
+            <FormControlLabel
+              value={false}
+              control={<Radio />}
+              label="No, I am a Nigerian Student"
+            />
             <FormControlLabel
               value={true}
               control={<Radio />}
-              label="Yes, I'm international Student"
+              label="Yes, I am an international Student"
             />
           </RadioGroup>
         </FormControl>
@@ -275,7 +286,7 @@ export const DocumentUploadForm = ({ onBack, document }) => {
               International Student Documents
             </Typography>
             <Typography variant={"body1"} mt={"7px"}>
-              Please upload your examination result equivalent certificate
+              Upload the certificate equivalent to your examination results
             </Typography>
             <Stack mt={"10px"} spacing={1} direction={"row"} maxWidth={400}>
               {internationalStudent.map((data, index) => (
@@ -323,10 +334,10 @@ export const DocumentUploadForm = ({ onBack, document }) => {
         ) : (
           <>
             <Typography variant="h6" color={"black"}>
-              Student Documents
+              Student JAMB Result
             </Typography>
             <Typography variant={"body1"} mt={"7px"}>
-              Please upload your examination result equivalent certificate
+              Please upload your JAMB examination result.
             </Typography>
             <Stack mt={"10px"} spacing={1} direction={"row"} maxWidth={400}>
               {nonInternationalStudent.map((data, index) => (
@@ -376,11 +387,10 @@ export const DocumentUploadForm = ({ onBack, document }) => {
 
       <Stack direction={"column"} mt={"20px"}>
         <Typography variant="h6" color={"black"}>
-          Additional Documents
+        Additional Documents (For Nigerian Students)
         </Typography>
         <Typography variant={"body1"} mt={"7px"}>
-          Note: These documents are not required but if you have them you can upload them
-        </Typography>
+        Upload your WAEC or NECO certificates, or a combination of both from no more than two sittings. </Typography>
         <Stack mt={"10px"} spacing={1} direction={"row"} maxWidth={400}>
           {additionalDocument.map((data, index) => (
             <Box key={index}>

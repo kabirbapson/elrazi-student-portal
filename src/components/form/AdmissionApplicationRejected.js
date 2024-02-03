@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import {
   Stack,
   Typography,
@@ -10,11 +10,38 @@ import {
 } from "@mui/material";
 import { FaCircleInfo } from "react-icons/fa6";
 import { LoadingButton } from "@mui/lab";
+import axiosInstance from "src/api/config";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import { AuthContext } from "src/context";
 import { BsHourglassSplit } from "react-icons/bs";
 
-export const AdmissionApplicationPending = ({ name, faculties }) => {
+export const AdmissionApplicationRejected = ({ name, faculties }) => {
   const [courses, setCourses] = React.useState([]);
   const [selectedCourse, setSelectedCourse] = React.useState(null);
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const { token } = useContext(AuthContext);
+
+  const handleSubmitApplication = async () => {
+    const payload = { course_id: selectedCourse.id };
+    const config = {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    };
+    try {
+      await axiosInstance.post("/students/admissions/", payload, config);
+      toast.success("You application has been successfully submitted");
+      router.reload();
+    } catch (error) {
+      toast.error(
+        "Unable to submit your application please try again if the error persist you can contact us"
+      );
+      console.log(error);
+    }
+  };
 
   return (
     <Stack spacing={2}>
@@ -47,13 +74,13 @@ export const AdmissionApplicationPending = ({ name, faculties }) => {
       >
         <BsHourglassSplit fontSize={"50px"} color="#FFE372" />
         <Typography fontWeight={"bold"} color={"white"}>
-          ADMISSION PENDING
+          ADMISSION REJECTED
         </Typography>
 
         <Typography color={"white"} variant="body2">
-          Our admissions team is carefully reviewing your qualifications and fit
-          for the selected program. Rest assured, we are dedicated to conducting a comprehensive and
-          equitable assessment.
+          Our admissions team is carefully reviewing your qualifications and fit for the selected
+          program. Rest assured, we are dedicated to conducting a comprehensive and equitable
+          assessment.
         </Typography>
       </Stack>
 

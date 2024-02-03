@@ -10,15 +10,18 @@ import {
 } from "@mui/material";
 import { FaCircleInfo } from "react-icons/fa6";
 import { LoadingButton } from "@mui/lab";
-import { AdmissionApplicationRequest } from "./AdmissionApplicationRequest";
+import { AdmissionApplicationRequest } from "./AdmissionApplicationRejected";
 import { AdmissionApplicationPending } from "./AdmissionApplicationPending";
+import { AdmissionApplicationApproved } from "./AdmissionApplicationApproved"; // Import the Approved component
+import { AdmissionApplicationRejected } from "./AdmissionApplicationRejected"; // Import the Rejected component
 import { AuthContext } from "src/context";
 
 export const AdmissionApplicationProcess = ({ name, faculties }) => {
   const { admissions } = useContext(AuthContext);
   const [pending, setPending] = useState(false);
+  const [approved, setApproved] = useState(false); // New state for approved
+  const [rejected, setRejected] = useState(false); // New state for rejected
   const [loading, setLoading] = useState(true);
-  const [reject, setReject] = useState(false);
 
   const admissionCheck = useCallback(() => {
     if (admissions?.length < 1) {
@@ -26,14 +29,22 @@ export const AdmissionApplicationProcess = ({ name, faculties }) => {
       return;
     }
 
-    const isPendingFound = admissions?.find((admission) => admission.status === "PENDING");
-    if (isPendingFound) {
-      setPending(true);
-      setLoading(false);
-      return;
+    const admissionStatus = admissions?.find((admission) => admission.status);
+
+    switch (admissionStatus?.status) {
+      case "PENDING":
+        setPending(true);
+        break;
+      case "APPROVED":
+        setApproved(true);
+        break;
+      case "REJECTED":
+        setRejected(true);
+        break;
+      default:
+        break;
     }
 
-    setReject(true);
     setLoading(false);
   }, [admissions]);
 
@@ -44,11 +55,15 @@ export const AdmissionApplicationProcess = ({ name, faculties }) => {
   return (
     <>
       {loading ? (
-        <></>
+        <Typography>Loading...</Typography> // Added a placeholder for loading state
       ) : (
         <>
-          {!pending && <AdmissionApplicationRequest name={name} faculties={faculties} />}
+          {!pending && !approved && !rejected && (
+            <AdmissionApplicationRequest name={name} faculties={faculties} />
+          )}
           {pending && <AdmissionApplicationPending name={name} faculties={faculties} />}
+          {approved && <AdmissionApplicationApproved name={name} faculties={faculties} />} 
+          {rejected && <AdmissionApplicationRejected name={name} faculties={faculties} />} 
         </>
       )}
     </>

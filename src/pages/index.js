@@ -12,6 +12,8 @@ import {
   Input,
   Stack,
   Typography,
+  Modal,
+  TextField,
 } from "@mui/material";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { OverviewBudget } from "src/sections/overview/overview-budget";
@@ -27,15 +29,103 @@ import {
   ApplicationFeePaymentProcess,
 } from "src/components";
 
+const modalStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
 const Page = () => {
+  const {
+    user,
+    token,
+    paymentUpload,
+    setPaymentUpload,
+    handleFetchUserDetails,
+    facultyCourses,
+    documentsCompleted,
+  } = useContext(AuthContext);
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState("");
   const [loading, setLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumberError, setPhoneNumberError] = useState("");
+  const [userData, setUserData] = useState(user);
 
-  const { user, token, paymentUpload, setPaymentUpload, facultyCourses, documentsCompleted } =
-    useContext(AuthContext);
+  // lets write a modal pop up for the user to with an inout field to add phone number if not added
+  // if user.phone_number is null, show modal
 
-  const router = useRouter();
+  useEffect(() => {
+    if (user && user.phone_number === null) {
+      setOpenModal(true);
+    }
+  }, [user]);
+
+  // Modified to prevent closing the modal by clicking away
+  const handleModalClose = () => {
+    // Prevent closing if needed by not implementing body of this function
+    // setOpenModal(false); // Commented out to disable closing the modal by clicking away
+  };
+
+  const handlePhoneNumberChange = (event) => {
+    const value = event.target.value;
+    // Replace any non-digit characters with an empty string
+    const onlyNums = value.replace(/[^0-9]/g, "");
+
+    setPhoneNumber(onlyNums);
+
+    // Optionally, check for non-digit characters and update helper text accordingly
+    if (value !== onlyNums) {
+      setPhoneNumberError("Only digits are allowed.");
+    } else if (phoneNumberError) {
+      setPhoneNumberError(""); // Clear the error if the input is now valid
+    }
+  };
+
+  const updateUserPhoneNumber = async () => {
+    // Validate the new phone number as needed
+    if (!phoneNumber.trim()) {
+      setPhoneNumberError("Phone number is required.");
+      return;
+    }
+    if (phoneNumber.length < 8) {
+      setPhoneNumberError("Phone number must be at least 8 characters.");
+      return;
+    }
+
+    setLoading(true); // Start loading
+
+    const updateData = {
+      phone_number: phoneNumber,
+    };
+
+    try {
+      await axiosInstance.put(
+        "/auth/user/",
+        { ...userData, ...updateData },
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        }
+      );
+      toast.success("Phone number updated successfully");
+      setOpenModal(false); // Close the modal on success
+    } catch (error) {
+      toast.error("Error updating phone number. Please try again.");
+      console.error("Error updating phone number:", error);
+    } finally {
+      setLoading(false); // End loading
+    }
+  };
+  +true + false;
 
   return (
     <>
@@ -63,63 +153,53 @@ const Page = () => {
               <AdmissionApplicationProcess name={user?.first_name} faculties={facultyCourses} />
             )}
           </Card>
-          {/* <Grid container spacing={3}>
-            <Grid xs={12} sm={6} lg={3}>
-              <OverviewBudget
-                title={"Session"}
-                dateApplied={"Jan, 2024"}
-                iconBg={"success.light"}
-                icon={<CalendarIcon />}
-                difference={12}
-                positive
-                sx={{ height: "100%" }}
-                value="2023/2024"
-              />
-            </Grid>
-
-            <Grid xs={12} sm={6} lg={3}>
-              <OverviewBudget
-                title={"Application Fee"}
-                dateApplied={"20 January, 2024"}
-                iconBg={"success.light"}
-                icon={<CalendarIcon />}
-                difference={12}
-                positive
-                sx={{ height: "100%" }}
-                value={
-                  user?.has_paid ? "Paid" : paymentUpload ? "Pending confirmation" : "Not Paid"
-                }
-              />
-            </Grid>
-
-            <Grid xs={12} sm={6} lg={3}>
-              <OverviewBudget
-                title={"Program Applied"}
-                dateApplied={"21 January, 2024"}
-                iconBg={"success.light"}
-                icon={<CalendarIcon />}
-                difference={12}
-                positive
-                sx={{ height: "100%" }}
-                value="No Course Applied"
-              />
-            </Grid>
-
-            <Grid xs={12} sm={6} lg={3}>
-              <OverviewBudget
-                title={"Admission Status"}
-                dateApplied={"31 January, 2024"}
-                iconBg={"success.light"}
-                icon={<CalendarIcon />}
-                difference={12}
-                positive
-                sx={{ height: "100%" }}
-                value="Not Applied"
-              />
-            </Grid>
-          </Grid> */}
         </Container>
       </Box>
+      <Modal
+        open={openModal}
+        onClose={(event, reason) => {
+          if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
+            handleModalClose();
+          }
+          // This effectively prevents the modal from closing on clicking away or pressing escape.
+        }}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        disablebackdropclick // This prop prevents the modal from closing when the backdrop is clicked
+        disableEscapeKeyDown // This prop prevents the modal from closing when the escape key is pressed
+      >
+        <Box sx={modalStyle}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Add Phone Number
+          </Typography>
+          <TextField
+            fullWidth
+            error={!!phoneNumberError}
+            helperText={phoneNumberError || "Enter your phone number (digits only)."}
+            label="Phone Number"
+            value={phoneNumber}
+            onChange={handlePhoneNumberChange}
+            margin="normal"
+            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }} // Encourages numeric keyboard on mobile devices
+          />
+          <Button
+            onClick={() => updateUserPhoneNumber(phoneNumber)}
+            variant="contained"
+            sx={{
+              my: 2,
+              width: "100%", // Makes the button full width of its parent container
+              display: "flex",
+              justifyContent: "center", // Ensures the content is centered
+              alignItems: "center", // Vertically centers the loading indicator and text
+            }}
+            disabled={
+              !phoneNumber.trim() || !!phoneNumberError || loading || phoneNumber.length < 8
+            }
+          >
+            {loading ? <CircularProgress size={20} /> : "Submit"}
+          </Button>
+        </Box>
+      </Modal>
     </>
   );
 };
