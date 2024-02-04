@@ -125,7 +125,6 @@ const Page = () => {
       setLoading(false); // End loading
     }
   };
-  +true + false;
 
   return (
     <>

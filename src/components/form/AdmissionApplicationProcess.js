@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { FaCircleInfo } from "react-icons/fa6";
 import { LoadingButton } from "@mui/lab";
-import { AdmissionApplicationRequest } from "./AdmissionApplicationRejected";
+import { AdmissionApplicationRequest } from "./AdmissionApplicationRequest";
 import { AdmissionApplicationPending } from "./AdmissionApplicationPending";
 import { AdmissionApplicationApproved } from "./AdmissionApplicationApproved"; // Import the Approved component
 import { AdmissionApplicationRejected } from "./AdmissionApplicationRejected"; // Import the Rejected component
@@ -55,15 +55,15 @@ export const AdmissionApplicationProcess = ({ name, faculties }) => {
   return (
     <>
       {loading ? (
-        <Typography>Loading...</Typography> // Added a placeholder for loading state
+        <Typography>Loading...</Typography>
       ) : (
         <>
           {!pending && !approved && !rejected && (
             <AdmissionApplicationRequest name={name} faculties={faculties} />
           )}
           {pending && <AdmissionApplicationPending name={name} faculties={faculties} />}
-          {approved && <AdmissionApplicationApproved name={name} faculties={faculties} />} 
-          {rejected && <AdmissionApplicationRejected name={name} faculties={faculties} />} 
+          {approved && <AdmissionApplicationApproved name={name} faculties={faculties} />}
+          {rejected && <AdmissionApplicationRejected name={name} faculties={faculties} />}
         </>
       )}
     </>
