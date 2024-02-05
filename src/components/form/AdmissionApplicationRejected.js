@@ -45,8 +45,8 @@ export const AdmissionApplicationRejected = ({ name }) => {
           Reason: {admission?.rejection_reason || "Please contact Admission Office."}
         </Typography>
         <Typography color={"white"} variant="body2">
-          We're sorry your application was not successful this time. If you have questions or want
-          to talk about your next steps, please contact our admissions office.
+          {`We're sorry your application was not successful this time. If you have questions or want
+          to talk about your next steps, please contact our admissions office.`}
           <Stack mt={"10px"}>
             <Stack spacing={1} direction={"row"}>
               <Typography fontWeight={"bold"} color={"white"}>
@@ -65,7 +65,7 @@ export const AdmissionApplicationRejected = ({ name }) => {
               </Typography>
             </Stack>
           </Stack>
-          
+
           {/* <Typography mt={2} color={"white"} variant="body2">
             Best, Admissions Team
           </Typography> */}
