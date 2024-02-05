@@ -1,8 +1,18 @@
 import React from "react";
 import { Stack, Typography, Button } from "@mui/material";
-import { FaCircleInfo } from "react-icons/fa6";
 
-export const ApplicationFeePaymentConfirmation = ({ name }) => {
+const TextValue = ({ name, value }) => (
+  <Stack direction={{ xs: "column", sm: "row" }} spacing={1}>
+    <Typography color={"white"} >
+      {name}:
+    </Typography>
+    <Typography color={"white"} fontWeight={"bold"}>
+      {value}
+    </Typography>
+  </Stack>
+);
+
+export const TuitionFeesPaymentDetails = ({ name, onMadePaymentPress }) => {
   return (
     <Stack spacing={2}>
       {/* Welcome Message  */}
@@ -16,8 +26,8 @@ export const ApplicationFeePaymentConfirmation = ({ name }) => {
       </Stack>
 
       <Typography sx={{ width: { xs: "100%", md: "70%" } }}>
-        Thank you for submitting your payment receipt. Our team will now review the information and
-        confirm the successful processing of your payment.
+        To continue with your application process, kindly make a payment of N30,000 as the
+        application fee using the following details:
       </Typography>
 
       {/* bank account details */}
@@ -25,30 +35,40 @@ export const ApplicationFeePaymentConfirmation = ({ name }) => {
       <Stack
         marginTop={"100px"}
         sx={{
-          backgroundColor: "#0A8779",
+          backgroundColor: "#DB5A3A",
           padding: { xs: "20px", sm: "30px" },
           width: { xs: "100%", sm: "90%" },
           borderRadius: "5px",
         }}
         spacing={1}
       >
-        <FaCircleInfo fontSize={"50px"} color="#FFE372" />
         <Typography fontWeight={"bold"} color={"white"}>
-          Confirming your payment
+          Payment Information
         </Typography>
 
+        <TextValue name={"Bank Name"} value={"Elrazi Medical University kn-Revenue"} />
+        <TextValue name={"Account Name"} value={"0005035147"} />
+        <TextValue name={"Bank Name"} value={"Taj Bank Plc."} />
+
+        <br />
+
         <Typography color={"white"} variant="body2">
-          Kindly note that the verification process will take up to 24 hours. Following
-          confirmation, an email notification will be sent to you detailing the outcome of your
-          payment verification and outlining the subsequent steps in the application procedure.
+          Once the payment is complete, click the button below and upload receipt to confirm that
+          you have made the payment.
         </Typography>
       </Stack>
 
-      <Typography>
-        If you do not receive any confirmation within the specified time frame or if you have any
-        concerns, please do not hesitate to reach out to our support team at
-      </Typography>
+      <Button
+        onClick={'onMadePaymentPress'}
+        sx={{ mt: "50px", width: { xs: "100%", sm: "50%", md: "40%" } }}
+        variant="contained"
+      >
+        I Have Made the Payment
+      </Button>
 
+      <Typography mt={"20px"} variant="body2">
+        If you encounter any issues or have questions, feel free to contact our support team at
+      </Typography>
       <Stack mt={"10px"}>
         <Stack spacing={1} direction={"row"}>
           <Typography fontWeight={"bold"}>Email:</Typography>
@@ -60,8 +80,7 @@ export const ApplicationFeePaymentConfirmation = ({ name }) => {
         </Stack>
       </Stack>
 
-      {/* <Typography>We appreciate your patience and cooperation. Best regards,</Typography> */}
-      <Typography >Admission - Elrazi Medical University, Kano. </Typography>
+      <Typography>Thank you for choosing Elrazi Medical University.</Typography>
     </Stack>
   );
 };

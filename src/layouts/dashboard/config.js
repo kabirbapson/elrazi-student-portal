@@ -8,6 +8,7 @@ import UserPlusIcon from "@heroicons/react/24/solid/UserPlusIcon";
 import UsersIcon from "@heroicons/react/24/solid/UsersIcon";
 import XCircleIcon from "@heroicons/react/24/solid/XCircleIcon";
 import { SvgIcon } from "@mui/material";
+import CreditCardIcon from "@heroicons/react/24/solid/CreditCardIcon"; // Assuming you have this or a similar icon
 
 export const items = [
   {
@@ -29,6 +30,16 @@ export const items = [
       </SvgIcon>
     ),
   },
+
+  // {
+  //   title: "Payments",
+  //   path: "/payments",
+  //   icon: (
+  //     <SvgIcon fontSize="small">
+  //       <CreditCardIcon />
+  //     </SvgIcon>
+  //   ),
+  // },
 
   {
     title: "Settings",

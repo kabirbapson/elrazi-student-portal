@@ -2,7 +2,7 @@ import React from "react";
 import { Stack, Typography, Button } from "@mui/material";
 import { FaCircleInfo } from "react-icons/fa6";
 
-export const ApplicationFeePaymentConfirmation = ({ name }) => {
+export const TuitionFeesPaymentConfirmation = ({ name }) => {
   return (
     <Stack spacing={2}>
       {/* Welcome Message  */}
@@ -38,14 +38,14 @@ export const ApplicationFeePaymentConfirmation = ({ name }) => {
         </Typography>
 
         <Typography color={"white"} variant="body2">
-          Kindly note that the verification process will take up to 24 hours. Following
-          confirmation, an email notification will be sent to you detailing the outcome of your
-          payment verification and outlining the subsequent steps in the application procedure.
+          Please allow 1-2 business days for this verification process. Once confirmed, you will
+          receive a notification via email indicating the status of your payment and the next steps
+          in the application process.
         </Typography>
       </Stack>
 
       <Typography>
-        If you do not receive any confirmation within the specified time frame or if you have any
+        If you do not receive any confirmation within the specified timeframe or if you have any
         concerns, please do not hesitate to reach out to our support team at
       </Typography>
 
@@ -61,7 +61,7 @@ export const ApplicationFeePaymentConfirmation = ({ name }) => {
       </Stack>
 
       {/* <Typography>We appreciate your patience and cooperation. Best regards,</Typography> */}
-      <Typography >Admission - Elrazi Medical University, Kano. </Typography>
+      <Typography fontWeight={''}>Admission - Elrazi Medical University, Kano. </Typography>
     </Stack>
   );
 };

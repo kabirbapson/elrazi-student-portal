@@ -63,7 +63,10 @@ const Page = () => {
   // if user.phone_number is null, show modal
 
   useEffect(() => {
-    if (user && user.phone_number === null) {
+    if (
+      user &&
+      (user.phone_number === null || user.phone_number === "" || user.phone_number.length < 6)
+    ) {
       setOpenModal(true);
     }
   }, [user]);
@@ -76,14 +79,21 @@ const Page = () => {
 
   const handlePhoneNumberChange = (event) => {
     const value = event.target.value;
-    // Replace any non-digit characters with an empty string
-    const onlyNums = value.replace(/[^0-9]/g, "");
+    // Allow + as the first character, followed by digits only
+    const formattedValue =
+      value.charAt(0) === "+"
+        ? "+" + value.slice(1).replace(/[^0-9]/g, "")
+        : value.replace(/[^0-9]/g, "");
 
-    setPhoneNumber(onlyNums);
+    setPhoneNumber(formattedValue);
 
-    // Optionally, check for non-digit characters and update helper text accordingly
-    if (value !== onlyNums) {
-      setPhoneNumberError("Only digits are allowed.");
+    // Optionally, check for invalid characters and update helper text accordingly
+    // Check if the first character is + and the rest are digits, or all characters are digits
+    if (
+      (value.charAt(0) === "+" && !/^\+\d*$/.test(value)) ||
+      (value.charAt(0) !== "+" && !/^\d*$/.test(value))
+    ) {
+      setPhoneNumberError("Only digits are allowed. '+' is allowed only as the first character.");
     } else if (phoneNumberError) {
       setPhoneNumberError(""); // Clear the error if the input is now valid
     }
