@@ -42,10 +42,7 @@ export const AccountProfileDetails = () => {
     onSubmit: (values) => {
       // Your update logic here
       try {
-        console.log("hhhhyy", values);
-      } catch (error) {
-        console.log("hhhhyy", error);
-      }
+      } catch (error) {}
     },
   });
 

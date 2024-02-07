@@ -36,6 +36,8 @@ export const Layout = (props) => {
 
   const {
     paymentUpload,
+    tuitionFeeUpload,
+    accommodationFeeUpload,
     token,
     documentsCompleted,
     isLoading,
@@ -68,6 +70,8 @@ export const Layout = (props) => {
           value={{
             user,
             paymentUpload,
+            tuitionFeeUpload,
+            accommodationFeeUpload,
             token,
             documentsCompleted,
             facultyCourses,

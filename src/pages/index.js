@@ -93,7 +93,7 @@ const Page = () => {
       (value.charAt(0) === "+" && !/^\+\d*$/.test(value)) ||
       (value.charAt(0) !== "+" && !/^\d*$/.test(value))
     ) {
-      setPhoneNumberError("Only digits are allowed. '+' is allowed only as the first character.");
+      setPhoneNumberError(`Only digits are allowed. '+' is allowed only as the first character.`);
     } else if (phoneNumberError) {
       setPhoneNumberError(""); // Clear the error if the input is now valid
     }

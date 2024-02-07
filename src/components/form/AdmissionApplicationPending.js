@@ -2,19 +2,10 @@ import React from "react";
 import {
   Stack,
   Typography,
-  Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
 } from "@mui/material";
-import { FaCircleInfo } from "react-icons/fa6";
-import { LoadingButton } from "@mui/lab";
 import { BsHourglassSplit } from "react-icons/bs";
 
-export const AdmissionApplicationPending = ({ name, faculties }) => {
-  const [courses, setCourses] = React.useState([]);
-  const [selectedCourse, setSelectedCourse] = React.useState(null);
+export const AdmissionApplicationPending = ({ name }) => {
 
   return (
     <Stack spacing={2}>

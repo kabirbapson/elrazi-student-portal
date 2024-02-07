@@ -56,11 +56,9 @@ const Page = () => {
           if (error?.response?.status === 400) {
             setLoading(false);
             toast.warning("Something went wrong, please check your email");
-            // console.log("MY ERROR", error.response.data);
           } else {
             setLoading(false);
             toast.warning("Something went wrong");
-            // console.log("MY ERROR", error.response.data);
           }
         });
     },

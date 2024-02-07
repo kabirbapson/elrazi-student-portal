@@ -11,6 +11,8 @@ export const useAuth = () => {
   const [documentsCompleted, setDocumentsCompleted] = useState(false);
   const [facultyCourses, setFacultyCourses] = useState([]);
   const [admissions, setAdmissions] = useState([]);
+  const [tuitionFeeUpload, setTuitionFeeUpload] = useState(false);
+  const [accommodationFeeUpload, setAccommodationFeeUpload] = useState(false);
 
   const router = useRouter();
 
@@ -110,6 +112,52 @@ export const useAuth = () => {
     [logOutUser]
   );
 
+  const handleFetchUserPaymentsTuition = useCallback(
+    async (token) => {
+      const config = {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      };
+
+      try {
+        const response = await axiosInstance.get("/payments/tuition_fee/", config);
+        if (response.data.length > 0) {
+          setTuitionFeeUpload(true);
+        }
+      } catch (error) {
+        if (error?.response?.status === 401) {
+          logOutUser();
+        }
+        console.log(error?.response?.data);
+      }
+    },
+    [logOutUser]
+  );
+
+  const handleFetchUserAccommodationFee = useCallback(
+    async (token) => {
+      const config = {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      };
+
+      try {
+        const response = await axiosInstance.get("/payments/accommodation_fee/", config);
+        if (response.data.length > 0) {
+          setAccommodationFeeUpload(true);
+        }
+      } catch (error) {
+        if (error?.response?.status === 401) {
+          logOutUser();
+        }
+        console.log(error?.response?.data);
+      }
+    },
+    [logOutUser]
+  );
+
   const loadUserSession = useCallback(async () => {
     setIsLoading(true);
 
@@ -120,8 +168,11 @@ export const useAuth = () => {
       return;
     }
 
+    // Call the newly created function within loadUserSession
     await handleFetchUserDetails(savedToken);
     await handleFetchUserPayments(savedToken);
+    await handleFetchUserPaymentsTuition(savedToken); // Add this line
+    await handleFetchUserAccommodationFee(savedToken);
     await checkDocumentsCompleted(savedToken);
     await getFacultyCourses(savedToken);
     await getAppliedAdmissions(savedToken);
@@ -134,6 +185,8 @@ export const useAuth = () => {
     getFacultyCourses,
     handleFetchUserDetails,
     handleFetchUserPayments,
+    handleFetchUserPaymentsTuition,
+    handleFetchUserAccommodationFee,
     logOutUser,
   ]);
 
@@ -147,6 +200,8 @@ export const useAuth = () => {
     user,
     isLoading,
     paymentUpload,
+    tuitionFeeUpload,
+    accommodationFeeUpload,
     token,
     documentsCompleted,
     facultyCourses,

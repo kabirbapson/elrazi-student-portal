@@ -44,7 +44,6 @@ const Page = () => {
         }
       )
       .then((response) => {
-        // console.log(response.data);
         setUserData(response.data);
       })
       .catch((error) => {

@@ -15,7 +15,7 @@ const TextValue = ({ name, value }) => (
   </Stack>
 );
 
-export const TuitionFeesPaymentDetails = ({ name, mBBS, tuitionFeeUpload }) => {
+export const AccommodationFeesPaymentDetails = ({ name, mBBS, accommodationFeeUpload }) => {
   const [madePayment, setMadePayment] = useState(false);
   const { loading, error, paymentUpload, receiptUploaded, uploadPaymentReceiptType } =
     useReceiptUploadType();
@@ -49,17 +49,12 @@ export const TuitionFeesPaymentDetails = ({ name, mBBS, tuitionFeeUpload }) => {
   const handleUpload = () => {
     if (selectedFile) {
       // Perform upload action
-      uploadPaymentReceiptType("tuition_fee", selectedFile);
+      uploadPaymentReceiptType("accommodation_fee", selectedFile);
     } else {
       toast.warning("Please select a file to upload.");
     }
   };
 
-  const tuitionFee = `${
-    mBBS
-      ? "N6,020,000 For MBBS or N2,520,000 for other Allied Health Science Courses"
-      : "N6,020,000 For MBBS or N2,520,000 for other Allied Health Science Courses"
-  }`;
   return (
     <Stack spacing={2}>
       {/* Welcome Message  */}
@@ -75,7 +70,7 @@ export const TuitionFeesPaymentDetails = ({ name, mBBS, tuitionFeeUpload }) => {
       <Typography variant="body3" fontWeight={"bold"}>
         Congratulations on Your Admission, we are excited to welcome you to EMUK community.
       </Typography>
-      {tuitionFeeUpload && (
+      {accommodationFeeUpload && (
         <Typography
           variant="body2"
           color={"maroon"}
@@ -83,20 +78,14 @@ export const TuitionFeesPaymentDetails = ({ name, mBBS, tuitionFeeUpload }) => {
           textAlign={"center"}
           fontWeight={"bold"}
         >
-          We have received your payment for tuition fee before, if the payment is on installment
+          We have received your payment for accommodation fee. if the payment is on installment
           please upload another receipt.
         </Typography>
       )}
-      {/* {accommodationFeeUpload && (
-        <Typography variant="body2" color={"green"} textAlign={"center"} fontWeight={"bold"}>
-          We have received your payment for accommodation fee. If there are additional fees or
-          charges, please ensure they are also settled.
-        </Typography>
-      )} */}
 
       <Typography sx={{ width: { xs: "100%", md: "70%" } }}>
-        1. To secure your spot, a tuition fee of {tuitionFee} is required. Please make your payment
-        using the following details and upload your receipt as proof of payment.
+        1. To secure your spot, Accommodation fee of N500,000 is required. Please make your
+        payment using the following details and upload your receipt as proof of payment.
       </Typography>
 
       {/* bank account details */}

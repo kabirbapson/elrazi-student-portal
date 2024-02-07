@@ -40,20 +40,21 @@ export const AdmissionApplicationApproved = ({ name }) => {
           instructed in the invoice.
         </Typography>
 
-        {/* <Typography sx={{ mt: 2, color: "#2E7D32" }}>
+        <Typography sx={{ mt: 2, color: "#2E7D32" }}>
           After making the payment, please upload the receipt of your tuition fee payment using the
-          link below. This will complete your admission process.
-        </Typography> */}
+          link below. This will complete your registration process.
+        </Typography>
 
         {/* Assuming the link to the upload page is "/upload-payment-receipt" */}
-        {/* <Link href="/payments" passHref>
+        <Link href="/tuition" passHref>
           <Button
             variant="contained"
             sx={{ mt: 2, bgcolor: "#4CAF50", "&:hover": { bgcolor: "#388E3C" } }}
           >
-            Upload Payment Receipt
+            Go To Payments
           </Button>
-        </Link> */}
+        </Link>
+      </Stack>
         <Stack mt={"20px"} spacing={1}>
           <Typography fontWeight={"bold"} sx={{ color: "#2E7D32",marginTop:4 }}>
             Need assistance?
@@ -66,7 +67,6 @@ export const AdmissionApplicationApproved = ({ name }) => {
         <Typography sx={{ color: "#2E7D32" }}>
           Admissions Team, Elrazi Medical University, Kano.
         </Typography>
-      </Stack>
     </Stack>
   );
 };

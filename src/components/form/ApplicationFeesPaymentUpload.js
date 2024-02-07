@@ -7,7 +7,7 @@ import { LoadingButton } from "@mui/lab";
 import { toast } from "react-toastify";
 
 const TextValue = ({ name, value }) => (
-  <Stack direction={{ xs: "column", sm: "row" }}  spacing={1}>
+  <Stack direction={{ xs: "column", sm: "row" }} spacing={1}>
     <Typography>{name}:</Typography>
     <Typography fontWeight={"bold"}>{value}</Typography>
   </Stack>
@@ -49,21 +49,21 @@ export const ApplicationFeePaymentUpload = ({ onLoading, onUploadReceipt }) => {
   return (
     <Stack>
       {/* Welcome Message  */}
-      <Stack direction={"row"} spacing={1} >
+      <Stack direction={"row"} spacing={1}>
         <Typography variant="body2" fontSize={"20px"} fontWeight={"bold"}>
           {`Upload Receipt`},
         </Typography>
       </Stack>
 
-      <Typography variant="body2" marginY={'4px'} >
-        Now that you've made payment to the following account:
+      <Typography variant="body2" marginY={"4px"}>
+        {`Now that you've made payment to the following account:`}
       </Typography>
 
       <TextValue name={"Bank Name"} value={"Elrazi Medical University kn-Revenue"} />
       <TextValue name={"Account Name"} value={"0005035147"} />
       <TextValue name={"Bank Name"} value={"Taj Bank Plc."} />
 
-      <Typography marginY={'5px'} sx={{ width: { xs: "100%", md: "70%", marginBottom: "4" } }}>
+      <Typography marginY={"5px"} sx={{ width: { xs: "100%", md: "70%", marginBottom: "4" } }}>
         Great! please upload a clear image of your receipt in either JPG or PNG format to proceed
         with your application.
       </Typography>
@@ -83,7 +83,7 @@ export const ApplicationFeePaymentUpload = ({ onLoading, onUploadReceipt }) => {
           backgroundColor: selectedFile ? "#D2FDDA" : "#FFEFDC",
         }}
         spacing={2}
-        paddingY={'6px'} 
+        paddingY={"6px"}
       >
         {onLoading ? (
           <Stack alignItems={"center"} spacing={2}>
