@@ -34,8 +34,8 @@ export const TuitionFeesPaymentDetails = ({ name, mBBS, tuitionFeeUpload }) => {
       }
 
       // Check file size (1MB limit)
-      if (file.size > 1024 * 1024) {
-        alert("File size exceeds the limit of 1MB. Please choose a smaller file.");
+      if (file.size > 1024 * 2048) {
+        alert("File size exceeds the limit of 2MB. Please choose a smaller file.");
         return;
       }
 
@@ -55,11 +55,9 @@ export const TuitionFeesPaymentDetails = ({ name, mBBS, tuitionFeeUpload }) => {
     }
   };
 
-  const tuitionFee = `${
-    mBBS
-      ? "N6,020,000 For MBBS or N2,520,000 for other Allied Health Science Courses"
-      : "N6,020,000 For MBBS or N2,520,000 for other Allied Health Science Courses"
-  }`;
+  const tuitionFee = `${mBBS ? "N6,020,000" : "N2,520,000"}`;
+
+  // For MBBS or N2,520,000 for other Allied Health Science Courses
   return (
     <Stack spacing={2}>
       {/* Welcome Message  */}
@@ -87,12 +85,7 @@ export const TuitionFeesPaymentDetails = ({ name, mBBS, tuitionFeeUpload }) => {
           please upload another receipt.
         </Typography>
       )}
-      {/* {accommodationFeeUpload && (
-        <Typography variant="body2" color={"green"} textAlign={"center"} fontWeight={"bold"}>
-          We have received your payment for accommodation fee. If there are additional fees or
-          charges, please ensure they are also settled.
-        </Typography>
-      )} */}
+      
 
       <Typography sx={{ width: { xs: "100%", md: "70%" } }}>
         1. To secure your spot, a tuition fee of {tuitionFee} is required. Please make your payment

@@ -159,6 +159,12 @@ export const DocumentUploadForm = ({ onBack, document }) => {
     }
   };
 
+  useEffect(() => {
+    if (document["is_international"]) {
+      setValue("is_international", document["is_international"]);
+    }
+  }, [document, setValue]);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Typography mt={"10px"} variant="h6" color={"black"}>
@@ -171,8 +177,8 @@ export const DocumentUploadForm = ({ onBack, document }) => {
         color={"black"}
         sx={{ maxWidth: "800px" }}
       >
-      Files should be in either PDF or image format and should not exceed 2MB in size.
- </Typography>
+        Files should be in either PDF or image format and should not exceed 2MB in size.
+      </Typography>
 
       {/* upload passport_photo */}
       <Stack direction={"column"} mt={"10px"}>
@@ -201,68 +207,17 @@ export const DocumentUploadForm = ({ onBack, document }) => {
         </Stack>
       </Stack>
 
-      {/* personal documents  */}
-      <>
-        {/* <Stack direction={"column"} mt={"10px"}>
-        <Typography variant="h6" color={"black"}>
-          Personal Documents
-        </Typography>
-        <Stack mt={"10px"} spacing={1} direction={"row"} maxWidth={400}>
-          {personalDocument.map((data, index) => (
-            <Box key={index}>
-              <Card
-                maxWidth={"100px"}
-                sx={{
-                  borderRadius: "5px",
-                  // padding: "10px",
-                  border: `1px solid ${
-                    form[data.name] || document[data.name] ? "#31ea19" : "#A2A4FA"
-                  }`,
-                }}
-              >
-                <Stack
-                  sx={{
-                    px: "6px",
-                    borderRadius: "5px",
-                  }}
-                  direction={"row"}
-                  alignItems={"center"}
-                  justifyContent={"space-between"}
-                >
-                  <Typography variant="body2" fontSize={"70%"} color={"black"}>
-                    {data.title}
-                  </Typography>
-                  <IconButton component="label" aria-label="fingerprint" color="#3133AD">
-                    {form[data.name] || document[data.name] ? (
-                      <FaCheckCircle color={"#31ea19"} />
-                    ) : (
-                      <MdCloudUpload color="#3133AD" />
-                    )}
-                    <VisuallyHiddenInput
-                      type="file"
-                      accept=".pdf, .jpg, .jpeg, .png"
-                      onChange={(e) => handleFileChange(data.name, e.target.files[0])}
-                    />
-                  </IconButton>
-                </Stack>
-              </Card>
-            </Box>
-          ))}
-        </Stack>
-      </Stack> */}
-      </>
       {/* non international student documents  */}
       <Stack direction={"column"} mt={"10px"}>
         <FormControl>
           <FormLabel id="demo-row-radio-buttons-group-label">
             Are you an International Student?
           </FormLabel>
-
           <RadioGroup
             row
             aria-labelledby="demo-row-radio-buttons-group-label"
             name="is_international"
-            value={form["is_international"] || document["is_international"]}
+            value={form["is_international"]}
             onChange={(e) => setValue("is_international", e.target.value === "true" ? true : false)}
           >
             <FormControlLabel
@@ -280,7 +235,7 @@ export const DocumentUploadForm = ({ onBack, document }) => {
       </Stack>
 
       <Stack direction={"column"} mt={"20px"}>
-        {form["is_international"] || document["is_international"] ? (
+        {form["is_international"] ? (
           <>
             <Typography variant="h6" color={"black"}>
               International Student Documents
@@ -387,10 +342,12 @@ export const DocumentUploadForm = ({ onBack, document }) => {
 
       <Stack direction={"column"} mt={"20px"}>
         <Typography variant="h6" color={"black"}>
-        Additional Documents (For Nigerian Students)
+          Additional Documents (For Nigerian Students)
         </Typography>
         <Typography variant={"body1"} mt={"7px"}>
-        Upload your WAEC or NECO certificates, or a combination of both from no more than two sittings. </Typography>
+          Upload your WAEC or NECO certificates, or a combination of both from no more than two
+          sittings.{" "}
+        </Typography>
         <Stack mt={"10px"} spacing={1} direction={"row"} maxWidth={400}>
           {additionalDocument.map((data, index) => (
             <Box key={index}>

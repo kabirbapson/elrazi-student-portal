@@ -1,3 +1,4 @@
+"use client"
 import Head from "next/head";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { Box, Container, Card, Typography, Stack } from "@mui/material";
@@ -78,7 +79,7 @@ const PaymentsPage = () => {
                   {pending && <AdmissionApplicationPending name={user?.first_name} />}
                   {approved && (
                     <TuitionFeesPaymentDetails
-                      mBBS
+                      mBBS={mBBS}
                       name={user?.first_name}
                       tuitionFeeUpload
                       // onMadePaymentPress={uploadPaymentReceiptType}

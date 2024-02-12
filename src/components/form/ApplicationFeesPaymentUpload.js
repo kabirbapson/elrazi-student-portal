@@ -27,8 +27,8 @@ export const ApplicationFeePaymentUpload = ({ onLoading, onUploadReceipt }) => {
       }
 
       // Check file size (1MB limit)
-      if (file.size > 1024 * 1024) {
-        alert("File size exceeds the limit of 1MB. Please choose a smaller file.");
+      if (file.size > 1024 * 2048) {
+        alert("File size exceeds the limit of 2MB. Please choose a smaller file.");
         return;
       }
 
