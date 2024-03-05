@@ -26,9 +26,9 @@ const Page = () => {
       first_name: Yup.string().max(25).required("First Name is required"),
       last_name: Yup.string().max(25).required("Last Name is required"),
       phone_number: Yup.string()
-        .min(8, 'Phone number cannot be less than 8 characters')
-        .max(15, 'Phone number cannot exceed 15 characters')
-        .required('Phone number is required'),
+        .min(8, "Phone number cannot be less than 8 characters")
+        .max(15, "Phone number cannot exceed 15 characters")
+        .required("Phone number is required"),
       email: Yup.string().email("Must be a valid email").max(50).required("Email is required"),
       password: Yup.string()
         .required("Password is required")
@@ -192,8 +192,19 @@ const Page = () => {
               </Button>
             </form>
           </div>
-        </Box>
 
+          <Typography mt={"20px"} variant="body2">
+            If you encounter any issues or have questions, feel free to contact our support team at
+          </Typography>
+          <Stack mt={"10px"}>
+            <Stack spacing={1} direction={"row"}>
+              <Typography fontWeight={"bold"}>Phone:</Typography>
+              <Typography variant="body1">+234 808 427 7233</Typography>
+            </Stack>
+          </Stack>
+
+          <Typography>Thank you for choosing Elrazi Medical University.</Typography>
+        </Box>
       </Box>
     </>
   );
