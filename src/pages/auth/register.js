@@ -17,7 +17,7 @@ const Page = () => {
     initialValues: {
       first_name: "",
       last_name: "",
-      other_name: "",
+      phone_number: "",
       email: "",
       password: "",
       confirm_password: "",
@@ -25,7 +25,10 @@ const Page = () => {
     validationSchema: Yup.object({
       first_name: Yup.string().max(25).required("First Name is required"),
       last_name: Yup.string().max(25).required("Last Name is required"),
-      other_name: Yup.string().max(25),
+      phone_number: Yup.string()
+        .min(8, 'Phone number cannot be less than 8 characters')
+        .max(15, 'Phone number cannot exceed 15 characters')
+        .required('Phone number is required'),
       email: Yup.string().email("Must be a valid email").max(50).required("Email is required"),
       password: Yup.string()
         .required("Password is required")
@@ -38,11 +41,11 @@ const Page = () => {
         .oneOf([Yup.ref("password"), null], "Passwords must match"),
     }),
     onSubmit: async (values) => {
-      const { email, password, first_name, last_name } = values;
+      const { email, password, phone_number, first_name, last_name } = values;
       setLoading(true);
       try {
         axiosInstance
-          .post("/auth/register", { email, password, first_name, last_name })
+          .post("/auth/register", { email, password, phone_number, first_name, last_name })
           .then((response) => {
             if (response.status === 201) {
               localStorage.setItem("email", JSON.stringify(email));
@@ -125,14 +128,14 @@ const Page = () => {
                   value={formik.values.last_name}
                 />
                 <TextField
-                  error={!!(formik.touched.other_name && formik.errors.other_name)}
+                  error={!!(formik.touched.phone_number && formik.errors.phone_number)}
                   fullWidth
-                  helperText={formik.touched.other_name && formik.errors.other_name}
-                  label="Other Name"
-                  name="other_name"
+                  helperText={formik.touched.phone_number && formik.errors.phone_number}
+                  label="Phone Number"
+                  name="phone_number"
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
-                  value={formik.values.other_name}
+                  value={formik.values.phone_number}
                 />
                 <TextField
                   error={!!(formik.touched.email && formik.errors.email)}
