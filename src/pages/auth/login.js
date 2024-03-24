@@ -54,11 +54,18 @@ const Page = () => {
         })
         .catch((error) => {
           if (error?.response?.status === 400) {
-            setLoading(false);
-            toast.warning("Something went wrong, please check your email");
-          } else {
-            setLoading(false);
-            toast.warning("Something went wrong");
+            if (
+              error?.response?.data?.non_field_errors[0] === "Incorrect Password or Email Address"
+            ) {
+              toast.warning("Incorrect credentials");
+              alert("Incorrect email or password");
+              console.log("Error: Incorrect Email or Password");
+              setLoading(false);
+            } else {
+              console.log("An error occurred, but it's not related to incorrect password.");
+              setLoading(false);
+              toast.warning("Something went wrong, please check your credentials");
+            }
           }
         });
     },

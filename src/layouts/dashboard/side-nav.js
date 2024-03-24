@@ -29,7 +29,6 @@ export const SideNav = (props) => {
 
   const { user, isLoading } = useContext(AuthContext);
 
-
   const content = (
     <Scrollbar
       sx={{
@@ -88,8 +87,8 @@ export const SideNav = (props) => {
               <Typography color="inherit" variant="subtitle1">
                 Welcome {user?.first_name}
               </Typography>
-              <Typography color="neutral.400" variant="body2">
-                {user?.email}
+              <Typography color="text.secondary" variant="body2">
+                {user?.student_profile?.student_id}
               </Typography>
             </div>
             <SvgIcon fontSize="small" sx={{ color: "neutral.500" }}>

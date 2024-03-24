@@ -29,6 +29,12 @@ export const AccountPopover = (props) => {
         <Typography color="text.secondary" variant="body2">
           {user?.first_name} {user?.last_name}
         </Typography>
+        <Typography color="text.secondary" variant="body2">
+          {user?.student_profile?.student_id}
+        </Typography>
+        <Typography color="text.secondary" variant="body2">
+          {user?.email}
+        </Typography>
       </Box>
       <Divider />
       <MenuList

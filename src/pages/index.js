@@ -51,8 +51,6 @@ const Page = () => {
     facultyCourses,
     documentsCompleted,
   } = useContext(AuthContext);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [uploadStatus, setUploadStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -61,7 +59,7 @@ const Page = () => {
 
   // lets write a modal pop up for the user to with an inout field to add phone number if not added
   // if user.phone_number is null, show modal
-
+console.log({user});
   useEffect(() => {
     if (
       user &&
