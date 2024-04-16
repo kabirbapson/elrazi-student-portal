@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://ytxelrazwsite.farookcircle.com/api",
+  baseURL: "https://elrazi-api.bynail.com/api",
 });
 
 export default axiosInstance;
