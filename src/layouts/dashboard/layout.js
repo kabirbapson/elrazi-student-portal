@@ -42,6 +42,7 @@ export const Layout = (props) => {
     documentsCompleted,
     isLoading,
     facultyCourses,
+    studentCourses,
     user,
     logOutUser,
     admissions,
@@ -75,6 +76,7 @@ export const Layout = (props) => {
             token,
             documentsCompleted,
             facultyCourses,
+            studentCourses,
             admissions,
             logOutUser,
           }}

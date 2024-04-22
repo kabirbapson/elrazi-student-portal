@@ -96,17 +96,6 @@ const Page = () => {
           <div>
             <Stack spacing={1} sx={{ mb: 3 }}>
               <Typography variant="h4">Login</Typography>
-              <Typography color="text.secondary" variant="body2">
-                Don&apos;t have an account? &nbsp;
-                <Link
-                  component={NextLink}
-                  href="/auth/register"
-                  underline="hover"
-                  variant="subtitle2"
-                >
-                  Register
-                </Link>
-              </Typography>
             </Stack>
 
             <form noValidate onSubmit={formik.handleSubmit}>
@@ -151,10 +140,17 @@ const Page = () => {
                 {loading ? (
                   <CircularProgress size={24} color="inherit" />
                 ) : (
-                  <Typography>Continue</Typography>
+                  <Typography>Login</Typography>
                 )}
               </Button>
             </form>
+
+            <Typography sx={{ pt: 4 }} textAlign={"center"} color="text.secondary" variant="h6">
+              Don&apos;t have an account? &nbsp;
+              <Link component={NextLink} href="/auth/register" underline="hover" variant="h6">
+                Register
+              </Link>
+            </Typography>
           </div>
           <Typography mt={"20px"} variant="body2">
             If you encounter any issues or have questions, feel free to contact our support team at

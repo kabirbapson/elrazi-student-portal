@@ -85,7 +85,6 @@ export const TuitionFeesPaymentDetails = ({ name, mBBS, tuitionFeeUpload }) => {
           please upload another receipt.
         </Typography>
       )}
-      
 
       <Typography sx={{ width: { xs: "100%", md: "70%" } }}>
         1. To secure your spot, a tuition fee of {tuitionFee} is required. Please make your payment

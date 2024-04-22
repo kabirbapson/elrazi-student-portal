@@ -66,7 +66,7 @@ export const SettingsPassword = () => {
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained">
+          <Button disabled variant="contained">
             Update
           </Button>
         </CardActions>

@@ -10,6 +10,7 @@ export const useAuth = () => {
   const [paymentUpload, setPaymentUpload] = useState(null);
   const [documentsCompleted, setDocumentsCompleted] = useState(false);
   const [facultyCourses, setFacultyCourses] = useState([]);
+  const [studentCourses, setStudentCourses] = useState([]);
   const [admissions, setAdmissions] = useState([]);
   const [tuitionFeeUpload, setTuitionFeeUpload] = useState(false);
   const [accommodationFeeUpload, setAccommodationFeeUpload] = useState(false);
@@ -65,6 +66,22 @@ export const useAuth = () => {
       const response = await axiosInstance.get("/faculty-courses/", config);
       const courses = response.data;
       setFacultyCourses(courses);
+    } catch (error) {
+      console.log("error", error);
+    }
+  }, []);
+
+  const getStudentCourses = useCallback(async (userToken) => {
+    const config = {
+      headers: {
+        Authorization: `Token ${userToken}`,
+      },
+    };
+
+    try {
+      const response = await axiosInstance.get("/students/enroll/", config);
+      const courses = response.data;
+      setStudentCourses(courses);
     } catch (error) {
       console.log("error", error);
     }
@@ -175,6 +192,7 @@ export const useAuth = () => {
     await handleFetchUserAccommodationFee(savedToken);
     await checkDocumentsCompleted(savedToken);
     await getFacultyCourses(savedToken);
+    await getStudentCourses(savedToken);
     await getAppliedAdmissions(savedToken);
     setToken(savedToken);
 
@@ -183,6 +201,7 @@ export const useAuth = () => {
     checkDocumentsCompleted,
     getAppliedAdmissions,
     getFacultyCourses,
+    getStudentCourses,
     handleFetchUserDetails,
     handleFetchUserPayments,
     handleFetchUserPaymentsTuition,
@@ -205,6 +224,7 @@ export const useAuth = () => {
     token,
     documentsCompleted,
     facultyCourses,
+    studentCourses,
     admissions,
     logOutUser,
   };

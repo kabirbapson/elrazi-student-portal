@@ -84,7 +84,7 @@ export const AccommodationFeesPaymentDetails = ({ name, mBBS, accommodationFeeUp
       )}
 
       <Typography sx={{ width: { xs: "100%", md: "70%" } }}>
-        1. To secure your spot, Accommodation fee of N500,000 is required. Please make your
+        1. To secure your spot, Accommodation fee of N1,000,000 is required. Please make your
         payment using the following details and upload your receipt as proof of payment.
       </Typography>
 

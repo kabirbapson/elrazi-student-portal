@@ -31,6 +31,12 @@ export const items = [
   },
 
   {
+    title: "Courses",
+    path: "/courses", // Adjust the path as needed
+    icon: <SvgIcon component={HomeIcon} fontSize="small" />,
+  },
+
+  {
     title: "Settings",
     path: "/settings",
     icon: <SvgIcon component={CogIcon} fontSize="small" />,
