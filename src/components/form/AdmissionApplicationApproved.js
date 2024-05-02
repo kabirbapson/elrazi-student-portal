@@ -1,11 +1,20 @@
 import React, { useContext } from "react";
-import { Button, Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography, Grid, Card, CardActionArea, CardContent } from "@mui/material";
 import { MdCheckCircle } from "react-icons/md"; // Importing a checkmark icon for approval
 import { AuthContext } from "src/context";
 import Link from "next/link";
+import { AccountCircle, Book, Info, Settings } from "@mui/icons-material";
 
 export const AdmissionApplicationApproved = ({ name }) => {
   const { token } = useContext(AuthContext);
+
+  const menuItems = [
+    { title: "Profile", icon: <AccountCircle />, link: "/profile" },
+    { title: "Courses", icon: <Book />, link: "/courses" },
+    { title: "Biodata", icon: <Info />, link: "/biodata" },
+    { title: "Settings", icon: <Settings />, link: "/settings" },
+    // Add more menu items as needed
+  ];
 
   return (
     <Stack spacing={2}>
@@ -14,6 +23,25 @@ export const AdmissionApplicationApproved = ({ name }) => {
           Congratulations, {name}!
         </Typography>
       </Stack>
+
+      <Grid container spacing={2} padding={2}>
+        {menuItems.map((item, index) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+            <Card>
+              <CardActionArea href={item.link}>
+                <CardContent>
+                  <Typography variant="h5" component="div">
+                    {item.icon}
+                  </Typography>
+                  <Typography variant="h6" color="text.secondary">
+                    {item.title}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
 
       <Stack
         marginTop={"100px"}
@@ -55,18 +83,18 @@ export const AdmissionApplicationApproved = ({ name }) => {
           </Button>
         </Link>
       </Stack>
-        <Stack mt={"20px"} spacing={1}>
-          <Typography fontWeight={"bold"} sx={{ color: "#2E7D32",marginTop:4 }}>
-            Need assistance?
-          </Typography>
-          <Typography sx={{ color: "#2E7D32" }}>Email: admission@elrazi.edu.ng</Typography>
-          <Typography sx={{ color: "#2E7D32" }}>Phone: +234 703 078 5761</Typography>
-        </Stack>
-
-        <Typography sx={{ mt: 2, color: "#2E7D32" }}>Best wishes,</Typography>
-        <Typography sx={{ color: "#2E7D32" }}>
-          Admissions Team, Elrazi Medical University, Kano.
+      <Stack mt={"20px"} spacing={1}>
+        <Typography fontWeight={"bold"} sx={{ color: "#2E7D32", marginTop: 4 }}>
+          Need assistance?
         </Typography>
+        <Typography sx={{ color: "#2E7D32" }}>Email: admission@elrazi.edu.ng</Typography>
+        <Typography sx={{ color: "#2E7D32" }}>Phone: +234 703 078 5761</Typography>
+      </Stack>
+
+      <Typography sx={{ mt: 2, color: "#2E7D32" }}>Best wishes,</Typography>
+      <Typography sx={{ color: "#2E7D32" }}>
+        Admissions Team, Elrazi Medical University, Kano.
+      </Typography>
     </Stack>
   );
 };

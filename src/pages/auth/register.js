@@ -3,7 +3,19 @@ import NextLink from "next/link";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Box, Button, CircularProgress, Link, Stack, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  FormControl,
+  InputLabel,
+  Link,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Layout as AuthLayout } from "src/layouts/auth/layout";
 import axiosInstance from "config";
 import { ToastContainer, toast } from "react-toastify";
@@ -13,6 +25,10 @@ import { useState } from "react";
 const Page = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  // const [source, setSource] = useState("");
+  // const handleSource = (event) => {
+  //   setSource(event.target.value);
+  // };
   const formik = useFormik({
     initialValues: {
       first_name: "",
@@ -21,6 +37,7 @@ const Page = () => {
       email: "",
       password: "",
       confirm_password: "",
+      source: "",
     },
     validationSchema: Yup.object({
       first_name: Yup.string().max(25).required("First Name is required"),
@@ -39,13 +56,15 @@ const Page = () => {
       confirm_password: Yup.string()
         .required("Confirm Password is required")
         .oneOf([Yup.ref("password"), null], "Passwords must match"),
+      source: Yup.string(),
     }),
     onSubmit: async (values) => {
-      const { email, password, phone_number, first_name, last_name } = values;
+      const { email, password, phone_number, first_name, last_name, source} = values;
+      console.log({ values });
       setLoading(true);
       try {
         axiosInstance
-          .post("/auth/register", { email, password, phone_number, first_name, last_name })
+          .post("/auth/register", { email, password, phone_number, first_name, last_name, source })
           .then((response) => {
             if (response.status === 201) {
               localStorage.setItem("email", JSON.stringify(email));
@@ -164,6 +183,28 @@ const Page = () => {
                   type="password"
                   value={formik.values.confirm_password}
                 />
+                <FormControl sx={{ m: 1, minWidth: 400 }}>
+                  <InputLabel id="demo-simple-select-autowidth-label">
+                    How did you hear about us
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-autowidth-label"
+                    id="demo-simple-select-autowidth"
+                    name="source" // Ensure this matches the key in formik's initialValues
+                    value={formik.values.source} // Use formik's value
+                    onChange={formik.handleChange} // Use formik's handleChange
+                    onBlur={formik.handleBlur} // Optional but useful for validation
+                    autoWidth
+                    label="How did you hear about us"
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value="facebook">Facebook</MenuItem>
+                    <MenuItem value="twitter">Twitter</MenuItem>
+                    <MenuItem value="other">Others</MenuItem>
+                  </Select>
+                </FormControl>
               </Stack>
               {formik.errors.submit && (
                 <Typography color="error" sx={{ mt: 3 }} variant="body2">
