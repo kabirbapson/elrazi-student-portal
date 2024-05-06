@@ -195,13 +195,18 @@ const Page = () => {
                     onChange={formik.handleChange} // Use formik's handleChange
                     onBlur={formik.handleBlur} // Optional but useful for validation
                     autoWidth
-                    label="How did you hear about us"
+                    label="How did you hear about us?"
                   >
                     <MenuItem value="">
-                      <em>None</em>
+                      <em>How did you hear about us?</em>
                     </MenuItem>
+                    <MenuItem value="facebook">Radio/TV</MenuItem>
+                    <MenuItem value="facebook">Newspaper</MenuItem>
+                    <MenuItem value="facebook">Website</MenuItem>
                     <MenuItem value="facebook">Facebook</MenuItem>
                     <MenuItem value="twitter">Twitter</MenuItem>
+                    <MenuItem value="facebook">Instagram</MenuItem>
+                    <MenuItem value="facebook">Word of mouth/Friend</MenuItem>
                     <MenuItem value="other">Others</MenuItem>
                   </Select>
                 </FormControl>
