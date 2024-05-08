@@ -3,7 +3,15 @@ import { Button, Stack, Typography, Grid, Card, CardActionArea, CardContent } fr
 import { MdCheckCircle } from "react-icons/md"; // Importing a checkmark icon for approval
 import { AuthContext } from "src/context";
 import Link from "next/link";
-import { AccountCircle, Book, Info, Settings } from "@mui/icons-material";
+import {
+  AccountCircle,
+  Book,
+  Info,
+  Settings,
+  Payment,
+  HomeWork,
+  School,
+} from "@mui/icons-material";
 
 export const AdmissionApplicationApproved = ({ name }) => {
   const { token } = useContext(AuthContext);
@@ -11,7 +19,9 @@ export const AdmissionApplicationApproved = ({ name }) => {
   const menuItems = [
     { title: "Profile", icon: <AccountCircle />, link: "/profile" },
     { title: "Courses", icon: <Book />, link: "/courses" },
-    { title: "Biodata", icon: <Info />, link: "/biodata" },
+    { title: "Tuition Fee", icon: <Payment />, link: "/tuition" }, // Manage payments
+    { title: "Accommodation", icon: <HomeWork />, link: "/accommodation" }, // Dormitory or housing options
+    { title: "Application", icon: <School />, link: "/application" }, // Academic applications, enrollments
     { title: "Settings", icon: <Settings />, link: "/settings" },
     // Add more menu items as needed
   ];

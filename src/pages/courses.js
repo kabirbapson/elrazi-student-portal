@@ -60,7 +60,7 @@ const PaymentsPage = () => {
   return (
     <>
       <Head>
-        <title>Payments | Elrazi Medical University</title>
+        <title>My Courses | Elrazi Medical University</title>
       </Head>
       <Box
         component="main"
@@ -80,13 +80,6 @@ const PaymentsPage = () => {
                   {approved && (
                     <CoursesList name={"Bapso"}
                     coursesList={studentCourses} />
-
-                    // coursesList
-                    // <AccommodationFeesPaymentDetails
-                    //   mBBS
-                    //   name={user?.first_name}
-                    //   accommodationFeeUpload
-                    // />
                   )}
                   {rejected && <AdmissionApplicationRejected name={user?.first_name} />}
                 </>

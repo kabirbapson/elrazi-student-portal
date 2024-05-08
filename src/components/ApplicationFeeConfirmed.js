@@ -8,7 +8,7 @@ export const ApplicationFeeConfirmed = ({ name }) => {
   const router = useRouter();
 
   const handleContinueToApplication = () => {
-    router.push("/biodata");
+    router.push("/application");
   };
   return (
     <Stack spacing={2}>

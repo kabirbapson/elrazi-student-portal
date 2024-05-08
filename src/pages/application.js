@@ -100,7 +100,7 @@ const Page = () => {
   return (
     <>
       <Head>
-        <title>Account | Elrazi Medical University, Kano</title>
+        <title>Apply | Elrazi Medical University, Kano</title>
       </Head>
       <Box
         component="main"
