@@ -92,19 +92,11 @@ export const AdmissionApplicationApproved = ({ name }) => {
             Go To Payments
           </Button>
         </Link>
+      <Typography textAlign={'end'} sx={{ mt: 2, color: "#2E7D32" }}>Best wishes,</Typography>
       </Stack>
-      <Stack mt={"20px"} spacing={1}>
-        <Typography fontWeight={"bold"} sx={{ color: "#2E7D32", marginTop: 4 }}>
-          Need assistance?
-        </Typography>
-        <Typography sx={{ color: "#2E7D32" }}>Email: admission@elrazi.edu.ng</Typography>
-        <Typography sx={{ color: "#2E7D32" }}>Phone: +234 703 078 5761</Typography>
-      </Stack>
+     
 
-      <Typography sx={{ mt: 2, color: "#2E7D32" }}>Best wishes,</Typography>
-      <Typography sx={{ color: "#2E7D32" }}>
-        Admissions Team, Elrazi Medical University, Kano.
-      </Typography>
+     
     </Stack>
   );
 };
