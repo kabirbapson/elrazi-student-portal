@@ -104,9 +104,9 @@ export const AccommodationFeesPaymentDetails = ({ name, mBBS, accommodationFeeUp
           Payment Information
         </Typography>
 
-        <TextValue name={"Bank Name"} value={"Elrazi Medical University kn-Revenue"} />
-        <TextValue name={"Account Name"} value={"0005035147"} />
-        <TextValue name={"Bank Name"} value={"Taj Bank Plc."} />
+        <TextValue name={"Account Name"} value={"Opal International Global Services"} />
+        <TextValue name={"Account Number"} value={"1009956827"} />
+        <TextValue name={"Bank Name"} value={"FCMB"} />
 
         <br />
 

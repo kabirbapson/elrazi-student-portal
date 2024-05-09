@@ -107,9 +107,9 @@ export const TuitionFeesPaymentDetails = ({ name, mBBS, tuitionFeeUpload }) => {
           Payment Information
         </Typography>
 
-        <TextValue name={"Bank Name"} value={"Elrazi Medical University kn-Revenue"} />
-        <TextValue name={"Account Name"} value={"0005035147"} />
-        <TextValue name={"Bank Name"} value={"Taj Bank Plc."} />
+        <TextValue name={"Account Name"} value={"ALRAZI MEDICAL UNIVERSITY LIMITED"} />
+        <TextValue name={"Account Number"} value={"1229145749"} />
+        <TextValue name={"Bank Name"} value={"Zenith Bank Plc. Plc."} />
 
         <br />
 
