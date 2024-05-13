@@ -204,7 +204,7 @@ export const AccommodationFeesPaymentDetails = ({ name, mBBS, accommodationFeeUp
       <Stack mt={"10px"}>
         <Stack spacing={1} direction={"row"}>
           <Typography fontWeight={"bold"}>Email:</Typography>
-          <Typography variant="body1">support@elrazi.edu.ng</Typography>
+          <Typography variant="body1">ict@elrazi.edu.ng</Typography>
         </Stack>
         <Stack spacing={1} direction={"row"}>
           <Typography fontWeight={"bold"}>Phone:</Typography>

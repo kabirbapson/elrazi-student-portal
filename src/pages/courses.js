@@ -4,7 +4,12 @@ import { Box, Container, Card, Typography, Stack } from "@mui/material";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { AuthContext } from "src/context";
 import { TuitionFeesPaymentDetails } from "src/components/form/TuitionFeesPaymentDetails";
-import { AdmissionApplicationPending, AdmissionApplicationRejected } from "src/components";
+import {
+  AdmissionApplicationPending,
+  AdmissionApplicationRejected,
+  ApplicationFeeConfirmed,
+  ApplicationFeePaymentProcess,
+} from "src/components";
 import { AccommodationFeesPaymentDetails } from "src/components/form/AccommodationFeesPaymentDetails";
 import { CoursesList } from "src/components/form/CoursesList";
 
@@ -15,7 +20,7 @@ const PaymentsPage = () => {
   const [loading, setLoading] = useState(true);
   const [mBBS, setMBBS] = useState(false);
 
-  const { user, token, admissions, tuitionFeeUpload, studentCourses } = useContext(AuthContext);
+  const { user, token, admissions, documentsCompleted, studentCourses } = useContext(AuthContext);
   console.log({ studentCourses });
   const admissionCheck = useCallback(() => {
     if (!admissions || admissions.length < 1) {
@@ -75,14 +80,24 @@ const PaymentsPage = () => {
               <Typography>Loading...</Typography>
             ) : (
               <Stack spacing={2}>
-                <>
-                  {pending && <AdmissionApplicationPending name={user?.first_name} />}
-                  {approved && (
-                    <CoursesList name={"Bapso"}
-                    coursesList={studentCourses} />
-                  )}
-                  {rejected && <AdmissionApplicationRejected name={user?.first_name} />}
-                </>
+                {!documentsCompleted ? (
+                  <>
+                    {user?.has_paid ? (
+                      <ApplicationFeeConfirmed name={user?.first_name} />
+                    ) : (
+                      <ApplicationFeePaymentProcess name={user?.first_name} />
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {pending && <AdmissionApplicationPending name={user?.first_name} />}
+                    {approved && <CoursesList name={"Bapso"} coursesList={studentCourses} />}
+                    {rejected && <AdmissionApplicationRejected name={user?.first_name} />}
+                  </>
+                  // <Card sx={{ padding: { xs: "20px", sm: "40px" }, mb: "20px" }}>
+                  //   <ProfileOverview user={user} />
+                  // </Card>
+                )}
               </Stack>
             )}
           </Card>

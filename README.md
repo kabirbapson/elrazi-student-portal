@@ -106,4 +106,4 @@ material-kit-react
 
 ## Contact Us
 
-- Email Us: support@deviasio.zendesk.com
+- Email Us: ict@deviasio.zendesk.com

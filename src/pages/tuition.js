@@ -1,11 +1,16 @@
-"use client"
+"use client";
 import Head from "next/head";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { Box, Container, Card, Typography, Stack } from "@mui/material";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { AuthContext } from "src/context";
 import { TuitionFeesPaymentDetails } from "src/components/form/TuitionFeesPaymentDetails";
-import { AdmissionApplicationPending, AdmissionApplicationRejected } from "src/components";
+import {
+  AdmissionApplicationPending,
+  AdmissionApplicationRejected,
+  ApplicationFeeConfirmed,
+  ApplicationFeePaymentProcess,
+} from "src/components";
 
 const PaymentsPage = () => {
   const [pending, setPending] = useState(false);
@@ -14,7 +19,7 @@ const PaymentsPage = () => {
   const [loading, setLoading] = useState(true);
   const [mBBS, setMBBS] = useState(false);
 
-  const { user, token, admissions, tuitionFeeUpload, accommodationFeeUpload } =
+  const { user, token, admissions, tuitionFeeUpload, accommodationFeeUpload, documentsCompleted } =
     useContext(AuthContext);
 
   const admissionCheck = useCallback(() => {
@@ -33,7 +38,7 @@ const PaymentsPage = () => {
     } else {
       setMBBS(false);
     }
-    
+
     const admissionStatus = admissions?.find((admission) => admission.status);
 
     switch (admissionStatus?.status) {
@@ -75,18 +80,28 @@ const PaymentsPage = () => {
               <Typography>Loading...</Typography>
             ) : (
               <Stack spacing={2}>
-                <>
-                  {pending && <AdmissionApplicationPending name={user?.first_name} />}
-                  {approved && (
-                    <TuitionFeesPaymentDetails
-                      mBBS={mBBS}
-                      name={user?.first_name}
-                      tuitionFeeUpload
-                      // onMadePaymentPress={uploadPaymentReceiptType}
-                    />
-                  )}
-                  {rejected && <AdmissionApplicationRejected name={user?.first_name} />}
-                </>
+                {!documentsCompleted ? (
+                  <>
+                    {user?.has_paid ? (
+                      <ApplicationFeeConfirmed name={user?.first_name} />
+                    ) : (
+                      <ApplicationFeePaymentProcess name={user?.first_name} />
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {pending && <AdmissionApplicationPending name={user?.first_name} />}
+                    {approved && (
+                      <TuitionFeesPaymentDetails
+                        mBBS={mBBS}
+                        name={user?.first_name}
+                        tuitionFeeUpload
+                        // onMadePaymentPress={uploadPaymentReceiptType}
+                      />
+                    )}
+                    {rejected && <AdmissionApplicationRejected name={user?.first_name} />}
+                  </>
+                )}
               </Stack>
             )}
           </Card>

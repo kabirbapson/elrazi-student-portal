@@ -21,12 +21,13 @@ import axiosInstance from "config";
 import { FaCircleInfo } from "react-icons/fa6";
 import { useRouter } from "next/router";
 import ProfileOverview from "src/components/ProfileOverview";
+import { ApplicationFeeConfirmed, ApplicationFeePaymentProcess } from "src/components";
 
 const Page = () => {
   const methods = useForm();
   const router = useRouter();
 
-  const { user, token } = useContext(AuthContext);
+  const { user, token, documentsCompleted } = useContext(AuthContext);
 
   return (
     <>
@@ -42,7 +43,19 @@ const Page = () => {
       >
         <Container maxWidth="lg">
           <Card sx={{ padding: { xs: "20px", sm: "40px" }, mb: "20px" }}>
-            <ProfileOverview user={user} />
+            {!documentsCompleted ? (
+              <>
+                {user?.has_paid ? (
+                  <ApplicationFeeConfirmed name={user?.first_name} />
+                ) : (
+                  <ApplicationFeePaymentProcess name={user?.first_name} />
+                )}
+              </>
+            ) : (
+              <Card sx={{ padding: { xs: "20px", sm: "40px" }, mb: "20px" }}>
+                <ProfileOverview user={user} />
+              </Card>
+            )}
           </Card>
         </Container>
       </Box>

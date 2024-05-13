@@ -14,15 +14,15 @@ export const items = [
   },
 
   {
-    title: "My Profile",
-    path: "/profile",
-    icon: <SvgIcon component={UserIcon} fontSize="small" />,
-  },
-
-  {
     title: "Application",
     path: "/application",
     icon: <SvgIcon component={DocumentIcon} fontSize="small" />, // Updated icon
+  },
+
+  {
+    title: "My Profile",
+    path: "/profile",
+    icon: <SvgIcon component={UserIcon} fontSize="small" />,
   },
 
   {

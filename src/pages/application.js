@@ -45,6 +45,7 @@ const Page = () => {
       )
       .then((response) => {
         setUserData(response.data);
+        setActiveStep((prevStep) => prevStep + 1);
       })
       .catch((error) => {
         console.log(error);
@@ -73,7 +74,6 @@ const Page = () => {
     if (data) {
       updateUserInfo(data);
     }
-    setActiveStep((prevStep) => prevStep + 1);
   };
 
   const handleBack = () => {
