@@ -45,11 +45,8 @@ const Page = () => {
         spacing={1}
       >
         <MdCheckCircle fontSize={"50px"} color="#4CAF50" />
-        <Typography fontWeight={"bold"} sx={{ color: "#2E7D32" }}>
-          ADMISSION APPROVED
-        </Typography>
         <Typography variant="h6">
-          Please come to the registry department for your Registration Number
+          Please contact the registry department. 
         </Typography>
       </Stack>
     );

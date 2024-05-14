@@ -37,12 +37,7 @@ export const AdmissionApplicationApproved = () => {
         spacing={1}
       >
         <MdCheckCircle fontSize={"50px"} color="#4CAF50" />
-        <Typography fontWeight={"bold"} sx={{ color: "#2E7D32" }}>
-          ADMISSION APPROVED
-        </Typography>
-        <Typography variant="h6">
-          Please come to the registry department for your Registration Number
-        </Typography>
+        <Typography variant="h6">Please contact the registry department.</Typography>
       </Stack>
     );
   }
@@ -72,7 +67,6 @@ export const AdmissionApplicationApproved = () => {
           Congratulations, {user?.first_name}! your Registration Number is:{" "}
           {user?.student_profile?.student_id}
         </Typography>
-        
       </Stack>
       <Grid container spacing={2} padding={2}>
         {menuItems.map((item, index) => (

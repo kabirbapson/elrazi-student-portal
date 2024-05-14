@@ -104,7 +104,7 @@ const PaymentsPage = () => {
                         >
                           <Typography variant="h6">You have not been enrolled</Typography>
                           <Typography variant="h6">
-                            Please come to the registry department for your Registration Number
+                            Please contact the registry department.
                           </Typography>
                         </Stack>
                       ) : (
