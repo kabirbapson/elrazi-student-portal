@@ -22,12 +22,38 @@ import { FaCircleInfo } from "react-icons/fa6";
 import { useRouter } from "next/router";
 import ProfileOverview from "src/components/ProfileOverview";
 import { ApplicationFeeConfirmed, ApplicationFeePaymentProcess } from "src/components";
+import { MdCheckCircle } from "react-icons/md";
 
 const Page = () => {
   const methods = useForm();
   const router = useRouter();
 
   const { user, token, documentsCompleted } = useContext(AuthContext);
+
+  if (!user?.student_profile?.student_id) {
+    return (
+      <Stack
+        sx={{
+          marginTop:'50px',
+          backgroundColor: "#E8F5E9",
+          padding: { xs: "20px", sm: "30px" },
+          width: { xs: "80%", sm: "90%" },
+          borderRadius: "5px",
+          margin: { xs: "0 auto", sm: "0 auto" }, // Center the Stack in its container
+          boxSizing: "border-box", // Include padding and border in the width and height
+        }}
+        spacing={1}
+      >
+        <MdCheckCircle fontSize={"50px"} color="#4CAF50" />
+        <Typography fontWeight={"bold"} sx={{ color: "#2E7D32" }}>
+          ADMISSION APPROVED
+        </Typography>
+        <Typography variant="h6">
+          Please come to the registry department for your Registration Number
+        </Typography>
+      </Stack>
+    );
+  }
 
   return (
     <>

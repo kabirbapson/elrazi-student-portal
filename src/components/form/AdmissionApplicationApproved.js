@@ -13,8 +13,8 @@ import {
   School,
 } from "@mui/icons-material";
 
-export const AdmissionApplicationApproved = ({ name }) => {
-  const { token } = useContext(AuthContext);
+export const AdmissionApplicationApproved = () => {
+  const { token, user } = useContext(AuthContext);
 
   const menuItems = [
     { title: "Profile", icon: <AccountCircle />, link: "/profile" },
@@ -25,15 +25,55 @@ export const AdmissionApplicationApproved = ({ name }) => {
     { title: "Settings", icon: <Settings />, link: "/settings" },
     // Add more menu items as needed
   ];
-
-  return (
-    <Stack spacing={2}>
-      <Stack direction={"row"} spacing={1} alignItems="center">
-        <Typography variant="h5" fontWeight={"bold"}>
-          Congratulations, {name}!
+  if (!user?.student_profile?.student_id) {
+    return (
+      <Stack
+        sx={{
+          backgroundColor: "#E8F5E9",
+          padding: { xs: "20px", sm: "30px" },
+          width: { xs: "100%", sm: "90%" },
+          borderRadius: "5px",
+        }}
+        spacing={1}
+      >
+        <MdCheckCircle fontSize={"50px"} color="#4CAF50" />
+        <Typography fontWeight={"bold"} sx={{ color: "#2E7D32" }}>
+          ADMISSION APPROVED
+        </Typography>
+        <Typography variant="h6">
+          Please come to the registry department for your Registration Number
         </Typography>
       </Stack>
-
+    );
+  }
+  return (
+    <Stack spacing={2}>
+      {/* <Stack direction={"row"} spacing={1} alignItems="center">
+        <Typography variant="h5" fontWeight={"bold"}>
+          Congratulations, {user?.first_name}! your Registration Number is:{" "}
+          {user?.student_profile?.student_id}
+        </Typography>
+      </Stack> */}
+      <Stack
+        marginTop={"100px"}
+        sx={{
+          backgroundColor: "#E8F5E9",
+          padding: { xs: "20px", sm: "30px" },
+          width: { xs: "100%", sm: "90%" },
+          borderRadius: "5px",
+        }}
+        spacing={1}
+      >
+        {/* <MdCheckCircle fontSize={"20px"} color="#4CAF50" />
+        <Typography fontWeight={"bold"} sx={{ color: "#2E7D32" }}>
+          ADMISSION APPROVED
+        </Typography> */}
+        <Typography variant="h6" fontWeight={"bold"}>
+          Congratulations, {user?.first_name}! your Registration Number is:{" "}
+          {user?.student_profile?.student_id}
+        </Typography>
+        
+      </Stack>
       <Grid container spacing={2} padding={2}>
         {menuItems.map((item, index) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
@@ -53,7 +93,7 @@ export const AdmissionApplicationApproved = ({ name }) => {
         ))}
       </Grid>
 
-      <Stack
+      {/* <Stack
         marginTop={"100px"}
         sx={{
           backgroundColor: "#E8F5E9",
@@ -83,7 +123,7 @@ export const AdmissionApplicationApproved = ({ name }) => {
           link below. This will complete your registration process.
         </Typography>
 
-        {/* Assuming the link to the upload page is "/upload-payment-receipt" */}
+        // Assuming the link to the upload page is "/upload-payment-receipt" 
         <Link href="/tuition" passHref>
           <Button
             variant="contained"
@@ -92,11 +132,10 @@ export const AdmissionApplicationApproved = ({ name }) => {
             Go To Payments
           </Button>
         </Link>
-      <Typography textAlign={'end'} sx={{ mt: 2, color: "#2E7D32" }}>Best wishes,</Typography>
-      </Stack>
-     
-
-     
+        <Typography textAlign={"end"} sx={{ mt: 2, color: "#2E7D32" }}>
+          Best wishes,
+        </Typography>
+      </Stack> */}
     </Stack>
   );
 };

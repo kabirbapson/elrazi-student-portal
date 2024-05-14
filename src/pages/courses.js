@@ -91,12 +91,27 @@ const PaymentsPage = () => {
                 ) : (
                   <>
                     {pending && <AdmissionApplicationPending name={user?.first_name} />}
-                    {approved && <CoursesList name={"Bapso"} coursesList={studentCourses} />}
+                    {approved &&
+                      (!user?.student_profile?.registerNumber ? (
+                        <Stack
+                          sx={{
+                            backgroundColor: "#E8F5E9",
+                            padding: { xs: "20px", sm: "30px" },
+                            width: { xs: "100%", sm: "90%" },
+                            borderRadius: "5px",
+                          }}
+                          spacing={1}
+                        >
+                          <Typography variant="h6">You have not been enrolled</Typography>
+                          <Typography variant="h6">
+                            Please come to the registry department for your Registration Number
+                          </Typography>
+                        </Stack>
+                      ) : (
+                        <CoursesList name={user.first_name} coursesList={studentCourses} />
+                      ))}
                     {rejected && <AdmissionApplicationRejected name={user?.first_name} />}
                   </>
-                  // <Card sx={{ padding: { xs: "20px", sm: "40px" }, mb: "20px" }}>
-                  //   <ProfileOverview user={user} />
-                  // </Card>
                 )}
               </Stack>
             )}
