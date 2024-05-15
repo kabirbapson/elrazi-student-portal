@@ -91,25 +91,28 @@ const PaymentsPage = () => {
                 ) : (
                   <>
                     {pending && <AdmissionApplicationPending name={user?.first_name} />}
-                    {approved &&
-                      (!user?.student_profile?.registerNumber ? (
-                        <Stack
-                          sx={{
-                            backgroundColor: "#E8F5E9",
-                            padding: { xs: "20px", sm: "30px" },
-                            width: { xs: "100%", sm: "90%" },
-                            borderRadius: "5px",
-                          }}
-                          spacing={1}
-                        >
-                          <Typography variant="h6">You have not been enrolled</Typography>
-                          <Typography variant="h6">
-                            Please contact the registry department.
-                          </Typography>
-                        </Stack>
-                      ) : (
+                    {
+                      approved && (
+                        // (!user?.student_profile?.registerNumber ? (
+                        //   <Stack
+                        //     sx={{
+                        //       backgroundColor: "#E8F5E9",
+                        //       padding: { xs: "20px", sm: "30px" },
+                        //       width: { xs: "100%", sm: "90%" },
+                        //       borderRadius: "5px",
+                        //     }}
+                        //     spacing={1}
+                        //   >
+                        //     <Typography variant="h6">You have not been enrolled</Typography>
+                        //     <Typography variant="h6">
+                        //       Please contact the registry department.
+                        //     </Typography>
+                        //   </Stack>
+                        // ) : (
                         <CoursesList name={user.first_name} coursesList={studentCourses} />
-                      ))}
+                      )
+                      // ))
+                    }
                     {rejected && <AdmissionApplicationRejected name={user?.first_name} />}
                   </>
                 )}
