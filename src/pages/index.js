@@ -59,7 +59,7 @@ const Page = () => {
 
   // lets write a modal pop up for the user to with an inout field to add phone number if not added
   // if user.phone_number is null, show modal
-console.log({user});
+
   useEffect(() => {
     if (
       user &&
@@ -157,7 +157,7 @@ console.log({user});
                 )}
               </>
             ) : (
-              <AdmissionApplicationProcess name={user?.first_name} faculties={facultyCourses} />
+              <AdmissionApplicationProcess user={user} faculties={facultyCourses} />
             )}
           </Card>
         </Container>

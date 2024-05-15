@@ -60,7 +60,7 @@ const Page = () => {
     }),
     onSubmit: async (values) => {
       const { email, password, phone_number, first_name, last_name, source } = values;
-      console.log({ values });
+
       setLoading(true);
       try {
         axiosInstance

@@ -21,7 +21,7 @@ const PaymentsPage = () => {
   const [mBBS, setMBBS] = useState(false);
 
   const { user, token, admissions, documentsCompleted, studentCourses } = useContext(AuthContext);
-  console.log({ studentCourses });
+
   const admissionCheck = useCallback(() => {
     if (!admissions || admissions.length < 1) {
       setLoading(false);
@@ -91,27 +91,26 @@ const PaymentsPage = () => {
                 ) : (
                   <>
                     {pending && <AdmissionApplicationPending name={user?.first_name} />}
-                    {
-                      approved && (
-                        // (!user?.student_profile?.registerNumber ? (
-                        //   <Stack
-                        //     sx={{
-                        //       backgroundColor: "#E8F5E9",
-                        //       padding: { xs: "20px", sm: "30px" },
-                        //       width: { xs: "100%", sm: "90%" },
-                        //       borderRadius: "5px",
-                        //     }}
-                        //     spacing={1}
-                        //   >
-                        //     <Typography variant="h6">You have not been enrolled</Typography>
-                        //     <Typography variant="h6">
-                        //       Please contact the registry department.
-                        //     </Typography>
-                        //   </Stack>
-                        // ) : (
-                        <CoursesList name={user.first_name} coursesList={studentCourses} />
-                      )
+                    {approved && (<CoursesList name={user.first_name} coursesList={studentCourses} />)
+                      // (
+                      // (!user?.student_profile?.registerNumber ? (
+                      //   <Stack
+                      //     sx={{
+                      //       backgroundColor: "#E8F5E9",
+                      //       padding: { xs: "20px", sm: "30px" },
+                      //       width: { xs: "100%", sm: "90%" },
+                      //       borderRadius: "5px",
+                      //     }}
+                      //     spacing={1}
+                      //   >
+                      //     <Typography variant="h6">You have not been enrolled</Typography>
+                      //     <Typography variant="h6">
+                      //       Please contact the registry department.
+                      //     </Typography>
+                      //   </Stack>
+                      // ) : (
                       // ))
+                      // )
                     }
                     {rejected && <AdmissionApplicationRejected name={user?.first_name} />}
                   </>

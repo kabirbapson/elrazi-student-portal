@@ -18,7 +18,7 @@ export const AccountProfileDetails = () => {
   // lets stringify the user object from local storage
 
   const { user } = useContext(AuthContext);
-  // console.log(user)
+
   const formik = useFormik({
     initialValues: {
       first_name: user?.first_name || "",
