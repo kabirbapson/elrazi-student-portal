@@ -25,22 +25,22 @@ export const AdmissionApplicationApproved = () => {
     { title: "Settings", icon: <Settings />, link: "/settings" },
     // Add more menu items as needed
   ];
-  if (!user?.student_profile?.student_id) {
-    return (
-      <Stack
-        sx={{
-          backgroundColor: "#E8F5E9",
-          padding: { xs: "20px", sm: "30px" },
-          width: { xs: "100%", sm: "90%" },
-          borderRadius: "5px",
-        }}
-        spacing={1}
-      >
-        <MdCheckCircle fontSize={"50px"} color="#4CAF50" />
-        <Typography variant="h6">Please contact the registry department.</Typography>
-      </Stack>
-    );
-  }
+  // if (!user?.student_profile?.student_id) {
+  //   return (
+  //     <Stack
+  //       sx={{
+  //         backgroundColor: "#E8F5E9",
+  //         padding: { xs: "20px", sm: "30px" },
+  //         width: { xs: "100%", sm: "90%" },
+  //         borderRadius: "5px",
+  //       }}
+  //       spacing={1}
+  //     >
+  //       <MdCheckCircle fontSize={"50px"} color="#4CAF50" />
+  //       <Typography variant="h6">Please contact the registry department.</Typography>
+  //     </Stack>
+  //   );
+  // }
   return (
     <Stack spacing={2}>
       {/* <Stack direction={"row"} spacing={1} alignItems="center">
@@ -64,7 +64,7 @@ export const AdmissionApplicationApproved = () => {
           ADMISSION APPROVED
         </Typography> */}
         <Typography variant="h6" fontWeight={"bold"}>
-          Congratulations, {user?.first_name}! your Registration Number is:{" "}
+          Congratulations, {user?.first_name}! 
           {user?.student_profile?.student_id}
         </Typography>
       </Stack>

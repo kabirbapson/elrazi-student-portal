@@ -16,13 +16,14 @@ import { AdmissionApplicationApproved } from "./AdmissionApplicationApproved"; /
 import { AdmissionApplicationRejected } from "./AdmissionApplicationRejected"; // Import the Rejected component
 import { AuthContext } from "src/context";
 
-export const AdmissionApplicationProcess = ({ name, faculties }) => {
+export const AdmissionApplicationProcess = ({ user, faculties }) => {
   const { admissions } = useContext(AuthContext);
   const [pending, setPending] = useState(false);
   const [approved, setApproved] = useState(false); // New state for approved
   const [rejected, setRejected] = useState(false); // New state for rejected
   const [loading, setLoading] = useState(true);
-
+  // console.log('object of name', name);
+  // console.log('object of user', user);
   const admissionCheck = useCallback(() => {
     if (admissions?.length < 1) {
       setLoading(false);
@@ -59,11 +60,11 @@ export const AdmissionApplicationProcess = ({ name, faculties }) => {
       ) : (
         <>
           {!pending && !approved && !rejected && (
-            <AdmissionApplicationRequest name={name} faculties={faculties} />
+            <AdmissionApplicationRequest name={user} faculties={faculties} />
           )}
-          {pending && <AdmissionApplicationPending name={name} faculties={faculties} />}
-          {approved && <AdmissionApplicationApproved name={name} faculties={faculties} />}
-          {rejected && <AdmissionApplicationRejected name={name} faculties={faculties} />}
+          {pending && <AdmissionApplicationPending name={user} faculties={faculties} />}
+          {approved && <AdmissionApplicationApproved name={user} faculties={faculties} />}
+          {rejected && <AdmissionApplicationRejected name={user} faculties={faculties} />}
         </>
       )}
     </>

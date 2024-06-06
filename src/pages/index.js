@@ -157,7 +157,7 @@ const Page = () => {
                 )}
               </>
             ) : (
-              <AdmissionApplicationProcess user={user} faculties={facultyCourses} />
+              <AdmissionApplicationProcess user={user.first_name} faculties={facultyCourses} />
             )}
           </Card>
         </Container>

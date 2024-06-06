@@ -56,6 +56,24 @@ const CoursesDisplay = ({ coursesList }) => {
 };
 
 export const CoursesList = ({ name, coursesList }) => {
+  const { token, user } = useContext(AuthContext);
+
+    if (!user?.student_profile?.student_id) {
+    return (
+      <Stack
+        sx={{
+          backgroundColor: "#E8F5E9",
+          padding: { xs: "20px", sm: "30px" },
+          width: { xs: "100%", sm: "90%" },
+          borderRadius: "5px",
+        }}
+        spacing={1}
+      >
+        <MdCheckCircle fontSize={"50px"} color="#4CAF50" />
+        <Typography variant="h6">Please contact the registry department.</Typography>
+      </Stack>
+    );
+  }
   return (
     <Stack spacing={2}>
       <div>
