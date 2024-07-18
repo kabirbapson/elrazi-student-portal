@@ -31,7 +31,6 @@ const Page = () => {
     initialValues: {
       email: "",
       password: "",
-      // submit: null
     },
     validationSchema: Yup.object({
       email: Yup.string().email("Must be a valid email").max(70).required("Email is required"),
@@ -45,7 +44,6 @@ const Page = () => {
         .then((response) => {
           if (response.status === 200) {
             const user = response.data;
-            // save user token
             localStorage.setItem("token", user.token);
             toast.success("Welcome back!");
             router.push("/");
@@ -89,7 +87,6 @@ const Page = () => {
           sx={{
             maxWidth: 550,
             px: 3,
-            // py: "100px",
             width: "100%",
           }}
         >
@@ -132,7 +129,7 @@ const Page = () => {
               <Button
                 fullWidth
                 size="large"
-                sx={{ mt: 3 }}
+                sx={{ mt: 2 }}
                 type="submit"
                 variant="contained"
                 disabled={loading}
@@ -143,30 +140,48 @@ const Page = () => {
                   <Typography>Login</Typography>
                 )}
               </Button>
+
+              <Typography sx={{ mt: 2, textAlign: "center" }} variant="h6" color="textSecondary">
+                or
+              </Typography>
+
+              <Button
+                fullWidth
+                size="large"
+                sx={{ mt: 2 }}
+                component={NextLink}
+                href="/auth/register"
+                variant="outlined"
+              >
+                Create Account
+              </Button>
             </form>
 
-            <Typography sx={{ pt: 4 }} textAlign={"center"} color="text.secondary" variant="h6">
+            <Typography sx={{ pt: 4 }} textAlign="center" color="text.secondary" variant="h6">
               Don&apos;t have an account? &nbsp;
               <Link component={NextLink} href="/auth/register" underline="hover" variant="h6">
-                Register
+                Register here
               </Link>
             </Typography>
-          </div>
-          <Typography mt={"20px"} variant="body2">
-            If you encounter any issues or have questions, feel free to contact our support team at
-          </Typography>
-          <Stack mt={"10px"}>
-            <Stack spacing={1} direction={"row"}>
-              <Typography fontWeight={"bold"}>Email:</Typography>
-              <Typography variant="body1">ict@elrazi.edu.ng</Typography>
-            </Stack>
-            <Stack spacing={1} direction={"row"}>
-              <Typography fontWeight={"bold"}>Phone:</Typography>
-              <Typography variant="body1">+234 808 427 7233</Typography>
-            </Stack>
-          </Stack>
 
-          <Typography>Thank you for choosing Elrazi Medical University.</Typography>
+            <Typography sx={{ mt: 4 }} textAlign="center" color="text.secondary" variant="h6">
+              If you encounter any issues or have questions, feel free to contact our support team
+              at:
+            </Typography>
+            <Stack mt="10px" alignItems="center">
+              <Stack spacing={1} direction="row">
+                <Typography fontWeight="bold">Email:</Typography>
+                <Typography variant="body1">ict@elrazi.edu.ng</Typography>
+              </Stack>
+              <Stack spacing={1} direction="row">
+                <Typography fontWeight="bold">Phone:</Typography>
+                <Typography variant="body1">+234 808 427 7233</Typography>
+              </Stack>
+            </Stack>
+            <Typography mt="20px" textAlign="center" variant="body2">
+              Thank you for choosing Elrazi Medical University.
+            </Typography>
+          </div>
         </Box>
       </Box>
     </>

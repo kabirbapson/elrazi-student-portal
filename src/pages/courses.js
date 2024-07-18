@@ -13,7 +13,7 @@ import {
 import { AccommodationFeesPaymentDetails } from "src/components/form/AccommodationFeesPaymentDetails";
 import { CoursesList } from "src/components/form/CoursesList";
 
-const PaymentsPage = () => {
+const Courses = () => {
   const [pending, setPending] = useState(false);
   const [approved, setApproved] = useState(false); // New state for approved
   const [rejected, setRejected] = useState(false); // New state for rejected
@@ -91,7 +91,7 @@ const PaymentsPage = () => {
                 ) : (
                   <>
                     {pending && <AdmissionApplicationPending name={user?.first_name} />}
-                    {approved && (<CoursesList name={user.first_name} coursesList={studentCourses} />)
+                    {approved && (<CoursesList name={user?.first_name} coursesList={studentCourses} />)
                       // (
                       // (!user?.student_profile?.registerNumber ? (
                       //   <Stack
@@ -124,6 +124,6 @@ const PaymentsPage = () => {
   );
 };
 
-PaymentsPage.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+Courses.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
-export default PaymentsPage;
+export default Courses;

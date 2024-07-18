@@ -3,9 +3,7 @@ import { Stack, Typography, Button } from "@mui/material";
 
 const TextValue = ({ name, value }) => (
   <Stack direction={{ xs: "column", sm: "row" }} spacing={1}>
-    <Typography color={"white"} >
-      {name}:
-    </Typography>
+    <Typography color={"white"}>{name}:</Typography>
     <Typography color={"white"} fontWeight={"bold"}>
       {value}
     </Typography>
@@ -46,9 +44,9 @@ export const ApplicationFeePaymentDetails = ({ name, onMadePaymentPress }) => {
           Payment Information
         </Typography>
 
-        <TextValue name={"Account Name"} value={"ALRAZI MEDICAL UNIVERSITY LIMITED"} />
-        <TextValue name={"Account Number"} value={"1229145749"} />
-        <TextValue name={"Bank Name"} value={"Zenith Bank Plc. Plc."} />
+        <TextValue name={"Account Name"} value={"Elrazi Medical University KN-Revenue "} />
+        <TextValue name={"Account Number"} value={"0005035147"} />
+        <TextValue name={"Bank Name"} value={"Taj Bank Plc."} />
 
         <br />
 

@@ -50,9 +50,9 @@ const Page = () => {
       password: Yup.string()
         .required("Password is required")
         .min(8, "Password must be at least 8 characters")
-        .matches(/[a-zA-Z]+/, "Password must contain at least one letter")
-        .matches(/[!@#$%^&*(),.?":{}|<>]+/, "Password must contain at least one symbol")
         .label("Password"),
+      // .matches(/[a-zA-Z]+/, "Password must contain at least one letter")
+      // .matches(/[!@#$%^&*(),.?":{}|<>]+/, "Password must contain at least one symbol")
       confirm_password: Yup.string()
         .required("Confirm Password is required")
         .oneOf([Yup.ref("password"), null], "Passwords must match"),

@@ -59,9 +59,9 @@ export const ApplicationFeePaymentUpload = ({ onLoading, onUploadReceipt }) => {
         {`Now that you've made payment to the following account:`}
       </Typography>
 
-      <TextValue name={"Account Name"} value={"ALRAZI MEDICAL UNIVERSITY LIMITED"} />
-      <TextValue name={"Account Number"} value={"1229145749"} />
-      <TextValue name={"Bank Name"} value={"Zenith Bank Plc. Plc."} />
+      <TextValue name={"Account Name"} value={"Elrazi Medical University KN-Revenue "} />
+      <TextValue name={"Account Number"} value={"0005035147"} />
+      <TextValue name={"Bank Name"} value={"Taj Bank Plc."} />
 
       <Typography marginY={"5px"} sx={{ width: { xs: "100%", md: "70%", marginBottom: "4" } }}>
         Great! please upload a clear image of your receipt in either JPG or PNG format to proceed

@@ -22,8 +22,7 @@ export const AdmissionApplicationProcess = ({ user, faculties }) => {
   const [approved, setApproved] = useState(false); // New state for approved
   const [rejected, setRejected] = useState(false); // New state for rejected
   const [loading, setLoading] = useState(true);
-  // console.log('object of name', name);
-  // console.log('object of user', user);
+
   const admissionCheck = useCallback(() => {
     if (admissions?.length < 1) {
       setLoading(false);

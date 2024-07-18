@@ -11,16 +11,17 @@ import {
   ApplicationFeePaymentProcess,
 } from "src/components";
 import { AccommodationFeesPaymentDetails } from "src/components/form/AccommodationFeesPaymentDetails";
+import { CoursesList } from "src/components/form/CoursesList";
+import { StudentResult } from "src/components/form/StudentResult";
 
-const Accommodation = () => {
+const Results = () => {
   const [pending, setPending] = useState(false);
   const [approved, setApproved] = useState(false); // New state for approved
   const [rejected, setRejected] = useState(false); // New state for rejected
   const [loading, setLoading] = useState(true);
   const [mBBS, setMBBS] = useState(false);
 
-  const { user, token, admissions, tuitionFeeUpload, accommodationFeeUpload, documentsCompleted } =
-    useContext(AuthContext);
+  const { user, token, admissions, documentsCompleted, studentCourses } = useContext(AuthContext);
 
   const admissionCheck = useCallback(() => {
     if (!admissions || admissions.length < 1) {
@@ -65,7 +66,7 @@ const Accommodation = () => {
   return (
     <>
       <Head>
-        <title>Payments | Elrazi Medical University</title>
+        <title>My Results | Elrazi Medical University</title>
       </Head>
       <Box
         component="main"
@@ -91,12 +92,8 @@ const Accommodation = () => {
                 ) : (
                   <>
                     {pending && <AdmissionApplicationPending name={user?.first_name} />}
-                    {approved && (
-                      <AccommodationFeesPaymentDetails
-                        mBBS
-                        name={user?.first_name}
-                        accommodationFeeUpload
-                      />
+                    {approved && user && (
+                      <StudentResult name={user?.first_name} coursesList={studentCourses} />
                     )}
                     {rejected && <AdmissionApplicationRejected name={user?.first_name} />}
                   </>
@@ -110,6 +107,6 @@ const Accommodation = () => {
   );
 };
 
-Accommodation.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+Results.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
-export default Accommodation;
+export default Results;
