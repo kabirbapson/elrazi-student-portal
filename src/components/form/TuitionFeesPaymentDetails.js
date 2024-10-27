@@ -202,7 +202,7 @@ export const TuitionFeesPaymentDetails = ({ name, mBBS, tuitionFeeUpload }) => {
       </Typography>
 
       <Typography mt={"20px"} variant="body2">
-        If you encounter any issues or have questions, feel free to contact our support team at
+        If you encounter any issues or have questions, feel free to contact our support team.
       </Typography>
       <Stack mt={"10px"}>
         <Stack spacing={1} direction={"row"}>

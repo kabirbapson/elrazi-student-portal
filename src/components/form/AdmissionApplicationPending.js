@@ -51,7 +51,7 @@ export const AdmissionApplicationPending = ({ name }) => {
       <Typography>
         You will be notified via email once a decision regarding your admission is reached. In the
         meantime, if you have any questions or require additional information, feel free to reach
-        out to our support team at
+        out to our support team.
       </Typography>
 
       <Stack mt={"10px"}>

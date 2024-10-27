@@ -128,17 +128,25 @@ export const DocumentUploadForm = ({ onBack, document }) => {
   };
 
   const validateFile = (file) => {
+    console.log(file.type); // Check the file type
     if (!file) return true; // No file selected is allowed
     const isImageOrPdf = file.type.startsWith("image/") || file.type === "application/pdf";
-    const isSizeValid = file.size <= 1048576; // 1MB in bytes
+    const isSizeValid = file.size <= 2 * 1048576; // 2MB in bytes
     return isImageOrPdf && isSizeValid;
   };
 
   const handleFileChange = (fieldName, file) => {
     if (validateFile(file)) {
       setValue(fieldName, file);
+      // Only handle image previews for images
+      if (file.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          setPreviewImageUrl(reader.result);
+        };
+        reader.readAsDataURL(file);
+      }
     } else {
-      // Handle invalid file (e.g., show an error message)
       toast.warning("Invalid file format or size");
     }
   };

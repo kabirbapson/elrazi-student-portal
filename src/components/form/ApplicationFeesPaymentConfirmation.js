@@ -46,7 +46,7 @@ export const ApplicationFeePaymentConfirmation = ({ name }) => {
 
       <Typography>
         If you do not receive any confirmation within the specified time frame or if you have any
-        concerns, please do not hesitate to reach out to our support team at
+        concerns, please do not hesitate to reach out to our support team.
       </Typography>
 
       <Stack mt={"10px"}>

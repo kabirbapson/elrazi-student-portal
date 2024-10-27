@@ -37,9 +37,7 @@ export const PersonalInfoForm = ({ onNext, user }) => {
             name="first_name"
             control={control}
             defaultValue={user?.first_name || ""}
-            render={({ field }) => (
-              <TextField {...field} label="First Name" disabled={true} required fullWidth />
-            )}
+            render={({ field }) => <TextField {...field} label="First Name" required fullWidth />}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -47,9 +45,7 @@ export const PersonalInfoForm = ({ onNext, user }) => {
             name="last_name"
             control={control}
             defaultValue={user?.last_name || ""}
-            render={({ field }) => (
-              <TextField {...field} label="Last Name" disabled={true} required fullWidth />
-            )}
+            render={({ field }) => <TextField {...field} label="Last Name" required fullWidth />}
           />
         </Grid>
         <Grid item xs={12} sm={6}>

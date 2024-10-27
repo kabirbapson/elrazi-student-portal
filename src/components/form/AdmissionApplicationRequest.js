@@ -139,7 +139,7 @@ export const AdmissionApplicationRequest = ({ name, faculties }) => {
 
       <Typography>
         Should you have any questions or need further assistance, please do not hesitate to contact
-        our support team at
+        our support team.
       </Typography>
 
       <Stack mt={"10px"}>
