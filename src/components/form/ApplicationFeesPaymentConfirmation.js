@@ -38,9 +38,7 @@ export const ApplicationFeePaymentConfirmation = ({ name }) => {
         </Typography>
 
         <Typography color={"white"} variant="body2">
-          Kindly note that the verification process will take up to 24 hours. Following
-          confirmation, an email notification will be sent to you detailing the outcome of your
-          payment verification and outlining the subsequent steps in the application procedure.
+          Kindly note that the verification process might take a while. Someone from our team will contact you  shortly.
         </Typography>
       </Stack>
 
