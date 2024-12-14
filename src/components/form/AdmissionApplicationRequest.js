@@ -55,8 +55,7 @@ export const AdmissionApplicationRequest = ({ name, faculties }) => {
       </Stack>
 
       <Typography sx={{ width: { xs: "100%", md: "70%" } }}>
-        Congratulations on successfully completing the initial steps of your application process at
-        Elrazi Medical University.
+        Congratulations on successfully completing the initial steps of your application process.
       </Typography>
 
       <Stack
@@ -138,26 +137,10 @@ export const AdmissionApplicationRequest = ({ name, faculties }) => {
       </Stack>
 
       <Typography>
-        Should you have any questions or need further assistance, please do not hesitate to contact
-        our support team.
-      </Typography>
-
-      <Stack mt={"10px"}>
-        <Stack spacing={1} direction={"row"}>
-          <Typography fontWeight={"bold"}>Email:</Typography>
-          <Typography variant="body1">ict@elrazi.edu.ng</Typography>
-        </Stack>
-        <Stack spacing={1} direction={"row"}>
-          <Typography fontWeight={"bold"}>Phone:</Typography>
-          <Typography variant="body1">+234 808 427 7233</Typography>
-        </Stack>
-      </Stack>
-
-      <Typography>
         Thank you for choosing Elrazi Medical University. We are excited to continue this journey
         with you.
       </Typography>
-      <Typography fontWeight={"bold"}>Elrazi Medical University Admission Team</Typography>
+
     </Stack>
   );
 };

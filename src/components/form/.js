@@ -1,25 +1,32 @@
 import { useForm, Controller } from "react-hook-form";
 import {
   Button,
+  Grid,
+  Input,
+  InputLabel,
+  Switch,
+  FormGroup,
+  FormControlLabel,
   Stack,
   Typography,
   IconButton,
   styled,
   Card,
   Box,
+  ButtonGroup,
   FormControl,
   FormLabel,
   Radio,
   RadioGroup,
-  FormControlLabel,
 } from "@mui/material";
 import { MdCloudUpload } from "react-icons/md";
 import { toast } from "react-toastify";
-import { FaCheckCircle } from "react-icons/fa";
+import { v4 as uuidv4 } from "uuid";
 import { LoadingButton } from "@mui/lab";
+import { FaCheckCircle } from "react-icons/fa";
 import axiosInstance from "config";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { use, useContext, useEffect, useState } from "react";
 import { AuthContext } from "src/context";
 
 const VisuallyHiddenInput = styled("input")({
@@ -28,6 +35,8 @@ const VisuallyHiddenInput = styled("input")({
   height: 1,
   overflow: "hidden",
   position: "absolute",
+  bottom: 0,
+  left: 0,
   whiteSpace: "nowrap",
   width: 1,
 });
@@ -73,72 +82,32 @@ const internationalStudent = [
 ];
 
 export const DocumentUploadForm = ({ onBack, document }) => {
+  // const { control, handleSubmit, setValue, watch } = useForm();
   const { control, handleSubmit, setValue, watch } = useForm({
     defaultValues: {
-      is_international: document["is_international"] || false,
-      student_type: document["student_type"] || "fresh", // Pre-populate based on fetched data
-      transcript: null,
-      de_hnd_certificate: null,
+      is_international:
+        document["is_international"] !== undefined ? document["is_international"] : false, // Or `null` if you prefer
+      // Include other fields as necessary
     },
   });
 
   const router = useRouter();
+
   const form = watch();
+
   const [previewImageUrl, setPreviewImageUrl] = useState(
     form["passport_photo"] || document["passport_photo"] || "/assets/img_placeholder_avatar.jpg"
   );
+
   const [loading, setLoading] = useState(false);
   const { token } = useContext(AuthContext);
 
   const onSubmit = async (data) => {
     const formData = new FormData();
-    // Append common fields
+    Object.keys(data).forEach((key) => {
+      formData.append(key, data[key]);
+    });
 
-    formData.append("is_international", data.is_international);
-    formData.append("student_type", data.student_type);
-
-    // Validate and append passport photo
-    if (data.passport_photo && validateFile(data.passport_photo)) {
-      formData.append("passport_photo", data.passport_photo);
-    } else if (data.passport_photo) {
-      toast.warning("Invalid passport photo format or size");
-      return;
-    }
-
-    // Append documents if they exist and pass validation
-    if (data.waec_document && validateFile(data.waec_document)) {
-      formData.append("waec_document", data.waec_document);
-    }
-    if (data.neco_document && validateFile(data.neco_document)) {
-      formData.append("neco_document", data.neco_document);
-    }
-    if (data.nabteb_document && validateFile(data.nabteb_document)) {
-      formData.append("nabteb_document", data.nabteb_document);
-    }
-    if (data.jamb_document && validateFile(data.jamb_document)) {
-      formData.append("jamb_document", data.jamb_document);
-    }
-
-    if (data.student_type === "transfer") {
-      if (!data.transcript && !data.de_hnd_certificate) {
-        toast.warning("Transfer students must upload either a transcript or DE/HND certificate.");
-        return;
-      }
-
-      if (data.transcript && validateFile(data.transcript)) {
-        formData.append("transcript", data.transcript);
-      }
-
-      if (data.de_hnd_certificate && validateFile(data.de_hnd_certificate)) {
-        formData.append("de_hnd_certificate", data.de_hnd_certificate);
-      }
-    }
-
-    if (data.is_international && data.international_student_document) {
-      formData.append("international_student_document", data.international_student_document);
-    }
-
-    console.log({ data });
     setLoading(true);
     try {
       const request = await axiosInstance.post("/students", formData, {
@@ -147,35 +116,53 @@ export const DocumentUploadForm = ({ onBack, document }) => {
           "Content-Type": "multipart/form-data",
         },
       });
-
       if (request.status === 201) {
         toast.success("Documents uploaded successfully");
         router.push("/");
       }
     } catch (error) {
-      console.error(error);
-      toast.error("Failed to upload documents. Please try again.");
-    } finally {
-      setLoading(false);
+      console.log(error);
     }
+
+    setLoading(false);
   };
 
   const validateFile = (file) => {
-    if (!file) return true;
+    console.log(file.type); // Check the file type
+    if (!file) return true; // No file selected is allowed
     const isImageOrPdf = file.type.startsWith("image/") || file.type === "application/pdf";
-    const isSizeValid = file.size <= 2 * 1048576;
+    const isSizeValid = file.size <= 2 * 1048576; // 2MB in bytes
     return isImageOrPdf && isSizeValid;
   };
 
   const handleFileChange = (fieldName, file) => {
     if (validateFile(file)) {
       setValue(fieldName, file);
-      if (fieldName === "passport_photo" && file.type.startsWith("image/")) {
+      // Only handle image previews for images
+      if (file.type.startsWith("image/")) {
         const reader = new FileReader();
-        reader.onload = () => setPreviewImageUrl(reader.result);
+        reader.onload = () => {
+          setPreviewImageUrl(reader.result);
+        };
         reader.readAsDataURL(file);
       }
     } else {
+      toast.warning("Invalid file format or size");
+    }
+  };
+
+  const handleImageChange = (fieldName, file) => {
+    if (validateFile(file)) {
+      setValue(fieldName, file);
+
+      // Set the state with the data URL
+      const reader = new FileReader();
+      reader.onload = () => {
+        setPreviewImageUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      // Handle invalid file (e.g., show an error message)
       toast.warning("Invalid file format or size");
     }
   };
@@ -184,9 +171,6 @@ export const DocumentUploadForm = ({ onBack, document }) => {
     if (document["is_international"]) {
       setValue("is_international", document["is_international"]);
     }
-    if (document["student_type"]) {
-      setValue("student_type", document["student_type"]);
-    }
   }, [document, setValue]);
 
   return (
@@ -194,31 +178,33 @@ export const DocumentUploadForm = ({ onBack, document }) => {
       <Typography mt={"10px"} variant="h6" color={"black"}>
         Upload Your Documents
       </Typography>
-      <Typography mt={"10px"} variant="body1" color={"black"}>
-        Files should be in PDF or image format and should not exceed 2MB.
+      <Typography
+        mt={"10px"}
+        // textAlign={"center"}
+        variant="body1"
+        color={"black"}
+        sx={{ maxWidth: "800px" }}
+      >
+        Files should be in either PDF or image format and should not exceed 2MB in size.
       </Typography>
 
-      {/* Passport Photo Upload */}
+      {/* upload passport_photo */}
       <Stack direction={"column"} mt={"10px"}>
         <img
           src={previewImageUrl}
           width={150}
           height={150}
           alt="passport"
-          style={{
-            borderRadius: "5px",
-            border: `1px solid ${
-              form["passport_photo"] || document["passport_photo"] ? "#31ea19" : "#A2A4FA"
-            }`,
-          }}
+          style={{ borderRadius: "5px", border: "1px solid #31ea19" }}
         />
-        <Stack direction={"row"} alignItems={"center"}>
+
+        <Stack direction={"row"} justifyContent={"flex-start"} alignItems={"center"}>
           <Typography>Passport Photo</Typography>
-          <IconButton component="label" color="#3133AD">
+          <IconButton component="label" aria-label="fingerprint" color="#3133AD">
             <VisuallyHiddenInput
               type="file"
               accept=".jpg, .jpeg, .png"
-              onChange={(e) => handleFileChange("passport_photo", e.target.files[0])}
+              onChange={(e) => handleImageChange("passport_photo", e.target.files[0])}
             />
             {form["passport_photo"] || document["passport_photo"] ? (
               <FaCheckCircle color={"#31ea19"} />
@@ -361,115 +347,6 @@ export const DocumentUploadForm = ({ onBack, document }) => {
           </>
         )}
       </Stack>
-
-      {/* Fresh / Transfer */}
-      <>
-        <Typography variant="h6" color="black" mt={"20px"} gutterBottom>
-          Select Student Type
-        </Typography>
-        <Stack direction="column" spacing={2}>
-          <FormControl>
-            <FormLabel id="student-type-label">
-              Are you a Fresh Student or a Transfer/Direct Entry Student?
-            </FormLabel>
-            <RadioGroup
-              row
-              aria-labelledby="student-type-label"
-              name="student_type"
-              value={form["student_type"]}
-              onChange={(e) => {
-                const selectedType = e.target.value;
-                setValue("student_type", selectedType);
-
-                // Clear specific fields if switching to "Fresh Student"
-                if (selectedType === "fresh") {
-                  setValue("transcript", null);
-                  setValue("de_hnd_certificate", null);
-                }
-              }}
-            >
-              <FormControlLabel
-                value="fresh"
-                control={<Radio />}
-                label="Fresh Student (100 Level)"
-              />
-              <FormControlLabel
-                value="transfer"
-                control={<Radio />}
-                label="Transfer/Direct Entry Student (200 Level)"
-              />
-            </RadioGroup>
-          </FormControl>
-          {/* Conditional rendering */}
-          {form["student_type"] === "transfer" && (
-            <Stack direction="column" spacing={2} maxWidth={400}>
-              <Typography variant="h6" color="black">
-                Upload Your Transcript and DE/HND Certificate
-              </Typography>
-              <Card
-                sx={{
-                  padding: "10px",
-                  borderRadius: "5px",
-                  border: `1px solid ${
-                    form["transcript"] || document["transcript"] ? "#31ea19" : "#A2A4FA"
-                  }`,
-                }}
-              >
-                <Stack direction="row" alignItems="center" justifyContent="space-between">
-                  <Typography variant="body2" fontSize="90%" color="black">
-                    Transcript
-                  </Typography>
-                  <IconButton component="label" aria-label="upload transcript" color="#3133AD">
-                    {form["transcript"] || document["transcript"] ? (
-                      <FaCheckCircle color="#31ea19" />
-                    ) : (
-                      <MdCloudUpload color="#3133AD" />
-                    )}
-                    <VisuallyHiddenInput
-                      type="file"
-                      accept=".pdf, .jpg, .jpeg, .png"
-                      onChange={(e) => handleFileChange("transcript", e.target.files[0])}
-                    />
-                  </IconButton>
-                </Stack>
-              </Card>
-              <Card
-                sx={{
-                  padding: "10px",
-                  borderRadius: "5px",
-                  border: `1px solid ${
-                    form["de_hnd_certificate"] || document["de_hnd_certificate"]
-                      ? "#31ea19"
-                      : "#A2A4FA"
-                  }`,
-                }}
-              >
-                <Stack direction="row" alignItems="center" justifyContent="space-between">
-                  <Typography variant="body2" fontSize="90%" color="black">
-                    DE/HND Certificate
-                  </Typography>
-                  <IconButton
-                    component="label"
-                    aria-label="upload de/hnd certificate"
-                    color="#3133AD"
-                  >
-                    {form["de_hnd_certificate"] || document["de_hnd_certificate"] ? (
-                      <FaCheckCircle color="#31ea19" />
-                    ) : (
-                      <MdCloudUpload color="#3133AD" />
-                    )}
-                    <VisuallyHiddenInput
-                      type="file"
-                      accept=".pdf, .jpg, .jpeg, .png"
-                      onChange={(e) => handleFileChange("de_hnd_certificate", e.target.files[0])}
-                    />
-                  </IconButton>
-                </Stack>
-              </Card>
-            </Stack>
-          )}
-        </Stack>
-      </>
 
       <Stack direction={"column"} mt={"20px"}>
         <Typography variant="h6" color={"black"}>

@@ -24,8 +24,7 @@ export const ApplicationFeeConfirmed = ({ name }) => {
 
       <Typography sx={{ width: { xs: "100%", md: "70%" } }}>
         We are delighted to inform you that your payment of N30,000 for the application fee has been
-        successfully confirmed. Your commitment to pursuing education at Elrazi Medical University
-        is greatly appreciated.
+        successfully confirmed.
       </Typography>
 
       {/* bank account details */}
@@ -44,11 +43,6 @@ export const ApplicationFeeConfirmed = ({ name }) => {
         <FaCheckCircle fontSize={"60px"} color="#0A8779" />
         <Typography fontWeight={"bold"} color={"black"} marginTop={"20px"}>
           Payment Confirmed
-        </Typography>
-
-        <Typography color={"black"} variant="body2">
-          With the payment confirmation, your application process is now in progress. To proceed to
-          the next step, kindly submit your bio data through the following instructions:{" "}
         </Typography>
 
         <Button
@@ -76,11 +70,6 @@ export const ApplicationFeeConfirmed = ({ name }) => {
         </Stack>
       </Stack>
 
-      <Typography>
-        Thank you for choosing Elrazi Medical University. We wish you the best of luck in the
-        application process,
-      </Typography>
-      <Typography >Admission - Elrazi Medical University, Kano. </Typography>
     </Stack>
   );
 };
