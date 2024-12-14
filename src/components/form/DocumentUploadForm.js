@@ -105,7 +105,7 @@ export const DocumentUploadForm = ({ onBack, document }) => {
       return;
     }
 
-    // Append documents if they exist and pass validation
+    // Append documents if they exist and pass validations 
     if (data.waec_document && validateFile(data.waec_document)) {
       formData.append("waec_document", data.waec_document);
     }
@@ -138,7 +138,6 @@ export const DocumentUploadForm = ({ onBack, document }) => {
       formData.append("international_student_document", data.international_student_document);
     }
 
-    console.log({ data });
     setLoading(true);
     try {
       const request = await axiosInstance.post("/students", formData, {
