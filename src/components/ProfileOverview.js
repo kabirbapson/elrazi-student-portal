@@ -8,7 +8,7 @@ const toSentenceCase = (str) => {
 };
 
 const ProfileOverview = ({ user, studentDocument }) => {
-  console.log("overview", studentDocument);
+
   return (
     <Card sx={{ maxWidth: 600, mx: "auto", my: 5, p: 2 }}>
       <CardContent>
