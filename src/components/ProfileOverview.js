@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardContent, Typography, Grid, Divider } from "@mui/material";
+import { Card, CardContent, Typography, Grid, Divider, Avatar } from "@mui/material";
 
 // Utility function to convert strings to sentence case
 const toSentenceCase = (str) => {
@@ -7,7 +7,8 @@ const toSentenceCase = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 };
 
-const ProfileOverview = ({ user }) => {
+const ProfileOverview = ({ user, studentDocument }) => {
+
   return (
     <Card sx={{ maxWidth: 600, mx: "auto", my: 5, p: 2 }}>
       <CardContent>
@@ -15,6 +16,17 @@ const ProfileOverview = ({ user }) => {
           Profile Overview
         </Typography>
         <Divider sx={{ my: 2 }} />
+
+        {/* Add Avatar here */}
+        <Grid container justifyContent="center" sx={{ mb: 2 }}>
+          {/* Center the avatar */}
+          <Avatar
+            alt="Passport Photo"
+            src={studentDocument?.passport_photo} // Use studentDocument data
+            sx={{ width: 150, height: 150 }} // Adjust size as needed
+          />
+        </Grid>
+
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <Typography variant="body1">
