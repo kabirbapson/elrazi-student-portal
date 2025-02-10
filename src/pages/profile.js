@@ -27,14 +27,37 @@ import { MdCheckCircle } from "react-icons/md";
 const Page = () => {
   const methods = useForm();
   const router = useRouter();
+  const [studentDocument, setStudentDocument] = useState({});
 
   const { user, token, documentsCompleted } = useContext(AuthContext);
+
+  const handleGetStudentDocument = useCallback(async () => {
+    axiosInstance
+      .get("/students", {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          const uploadsData = response.data;
+          setStudentDocument(uploadsData);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [token]);
+
+  useEffect(() => {
+    handleGetStudentDocument();
+  }, [handleGetStudentDocument]);
 
   if (!user?.student_profile?.student_id) {
     return (
       <Stack
         sx={{
-          marginTop:'50px',
+          marginTop: "50px",
           backgroundColor: "#E8F5E9",
           padding: { xs: "20px", sm: "30px" },
           width: { xs: "80%", sm: "90%" },
@@ -45,9 +68,7 @@ const Page = () => {
         spacing={1}
       >
         <MdCheckCircle fontSize={"50px"} color="#4CAF50" />
-        <Typography variant="h6">
-          Please contact the registry department. 
-        </Typography>
+        <Typography variant="h6">Please contact the registry department.</Typography>
       </Stack>
     );
   }
@@ -76,7 +97,7 @@ const Page = () => {
               </>
             ) : (
               <Card sx={{ padding: { xs: "20px", sm: "40px" }, mb: "20px" }}>
-                <ProfileOverview user={user} />
+                <ProfileOverview user={user} studentDocument={studentDocument} />
               </Card>
             )}
           </Card>
