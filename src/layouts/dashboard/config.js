@@ -5,6 +5,7 @@ import UserIcon from "@heroicons/react/24/solid/UserIcon";
 import AcademicCapIcon from "@heroicons/react/24/solid/AcademicCapIcon"; // For Tuition and Results
 import HomeIcon from "@heroicons/react/24/solid/HomeIcon"; // For Accommodation
 import DocumentIcon from "@heroicons/react/24/solid/DocumentIcon"; // Import at the top with other icons
+import ChatBubbleOvalLeftIcon from "@heroicons/react/24/solid/ChatBubbleOvalLeftIcon"; // For Support Ticket
 
 export const items = [
   {
@@ -42,6 +43,13 @@ export const items = [
     path: "/accommodation",
     icon: <SvgIcon component={HomeIcon} fontSize="small" />,
   },
+
+  {
+    title: "Support / Complaint",
+    path: "/support",
+    icon: <SvgIcon component={ChatBubbleOvalLeftIcon} fontSize="small" />,
+  },
+
   {
     title: "Settings",
     path: "/settings",

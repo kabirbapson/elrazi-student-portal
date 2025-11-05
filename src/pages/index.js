@@ -134,10 +134,11 @@ const Page = () => {
     }
   };
 
+  // Your academic resources in one place.
   return (
     <>
       <Head>
-        <title>Dashboard | Elrazi Medical University, Kano</title>
+        <title>Dashboard | Elrazi Student Portal</title>
       </Head>
       <Box
         component="main"
