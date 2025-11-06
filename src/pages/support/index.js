@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useContext, useEffect, useState } from "react";
-import { Box, Container, Card, Typography, Button, Chip, Stack } from "@mui/material";
+import { Box, Container, Card, Typography, Button, Chip, Stack, Divider } from "@mui/material";
 import Link from "next/link";
 import axiosInstance from "config";
 import { AuthContext } from "src/context";
@@ -26,9 +26,11 @@ const Page = () => {
   }, [user, token]);
 
   const statusColor = (status) => {
-    switch (status) {
+    switch (status?.toLowerCase()) {
       case "open":
         return "success";
+      case "in progress":
+        return "warning";
       case "closed":
         return "error";
       default:
@@ -39,40 +41,136 @@ const Page = () => {
   return (
     <>
       <Head>
-        <title>My Support Tickets | Elrazi Medical University</title>
+        <title>Support Tickets | Elrazi Medical University</title>
       </Head>
 
-      <Box sx={{ p: 3 }}>
-        <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
-          <Typography variant="h4">My Support Tickets</Typography>
-
-          <Link href="/support/new" passHref>
-            <Button variant="contained">Create New Ticket</Button>
-          </Link>
-        </Stack>
-
+      <Box
+        sx={{
+          p: 3,
+          minHeight: "100vh",
+          background: "linear-gradient(135deg, #EEF7FF 0%, #F7F9FC 100%)",
+        }}
+      >
         <Container maxWidth="md">
-          {tickets.length === 0 && (
-            <Typography textAlign="center" color="text.secondary" mt={3}>
-              You have not created any support tickets yet.
+          {/* Page Heading */}
+          <Stack direction="row" justifyContent="space-between" alignItems="center" mb={4}>
+            <Typography variant="h4" fontWeight={700} color="primary.dark">
+              My Support Tickets
             </Typography>
+
+            <Link href="/support/new" passHref>
+              <Button
+                variant="contained"
+                sx={{
+                  borderRadius: 2,
+                  px: 2.5,
+                  py: 1,
+                  textTransform: "none",
+                  fontWeight: 600,
+                }}
+              >
+                + Create Ticket
+              </Button>
+            </Link>
+          </Stack>
+
+          {/* If No Tickets */}
+          {tickets.length === 0 && (
+            <Card sx={{ p: 4, textAlign: "center", borderRadius: 4 }}>
+              <Typography variant="h6" color="text.secondary">
+                No tickets submitted yet.
+              </Typography>
+            </Card>
           )}
 
+          {/* Ticket List */}
           {tickets.map((ticket) => (
-            <Card key={ticket.id} sx={{ p: 2, mb: 2 }}>
-              <Stack direction="row" justifyContent="space-between">
-                <Box>
-                  <Typography variant="h6">{ticket.subject}</Typography>
-                  <Typography fontSize={14} color="text.secondary">
+            <Card
+              key={ticket.id}
+              sx={{
+                mb: 3,
+                p: 3,
+                borderRadius: 4,
+                background: "#FFFFFF",
+                borderLeft: `6px solid`,
+                borderColor:
+                  ticket.status === "closed"
+                    ? "error.main"
+                    : ticket.status === "in progress"
+                    ? "warning.main"
+                    : "success.main",
+                boxShadow: "0 3px 12px rgba(0,0,0,0.07)",
+                transition: "0.3s",
+                "&:hover": {
+                  transform: "translateY(-2px)",
+                  boxShadow: "0 6px 20px rgba(0,0,0,0.12)",
+                },
+              }}
+            >
+              <Stack
+                direction={{ xs: "column", sm: "row" }}
+                spacing={2}
+                justifyContent="space-between"
+                alignItems={{ xs: "flex-start", sm: "center" }}
+              >
+                {/* LEFT SIDE */}
+                <Box sx={{ flex: 1, minWidth: 0 }}>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontWeight: 700,
+                      whiteSpace: "nowrap", // ✅ prevent line wrap
+                      overflow: "hidden",
+                      textOverflow: "ellipsis", // ✅ add ... if too long
+                    }}
+                  >
+                    {ticket.subject}
+                  </Typography>
+
+                  <Typography variant="caption" color="text.secondary">
                     Created: {new Date(ticket.created_at).toLocaleString()}
                   </Typography>
                 </Box>
 
-                <Stack spacing={1} alignItems="flex-end">
-                  <Chip label={ticket.status?.toUpperCase()} color={statusColor(ticket.status)} size="small" />
-                  <Chip label={`Priority: ${ticket.priority}`} size="small" />
+                {/* RIGHT SIDE */}
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  alignItems="center"
+                  justifyContent="flex-end"
+                  sx={{
+                    flexShrink: 0,
+                    minWidth: { sm: 220 }, // Gives stable layout on desktop
+                  }}
+                >
+                  {/* Status Chip */}
+                  <Chip
+                    label={ticket.status.toUpperCase()}
+                    color={statusColor(ticket.status)}
+                    size="small"
+                    sx={{
+                      fontWeight: 600,
+                      px: 1.5,
+                      borderRadius: 1.5,
+                      whiteSpace: "nowrap",
+                    }}
+                  />
+
+                  {/* View Button */}
                   <Link href={`/support/${ticket.id}`} style={{ textDecoration: "none" }}>
-                    <Button size="small" variant="outlined">View</Button>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      sx={{
+                        textTransform: "none",
+                        fontWeight: 600,
+                        borderRadius: 1.5,
+                        px: { xs: 2, sm: 3 },
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      View
+                    </Button>
                   </Link>
                 </Stack>
               </Stack>
@@ -86,90 +184,3 @@ const Page = () => {
 
 Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 export default Page;
-
-
-
-// import Head from "next/head";
-// import { useContext, useState } from "react";
-// import { Box, Container, Card, Typography, Button, Stack, Alert } from "@mui/material";
-// import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
-// import { AuthContext } from "src/context";
-// import axiosInstance from "config";
-// import { SupportForm } from "src/components/form/SupportForm";
-// import { ConnectingAirportsOutlined } from "@mui/icons-material";
-
-// const Page = () => {
-//   const { user, token } = useContext(AuthContext);
-//   const [success, setSuccess] = useState(false);
-//   const [loading, setLoading] = useState(false);
-
-//   const handleSubmit = async (data) => {
-//     setLoading(true);
-//     console.log(data);
-//     console.log("User:", user);
-//     console.log("Token:", token);
-//     // try {
-//     //   const response = await axiosInstance.post(
-//     //     "/support-tickets/",
-//     //     {
-//     //       student: user?.id,
-//     //       ...data,
-//     //     },
-//     //     {
-//     //       headers: {
-//     //         Authorization: `Token ${token}`,
-//     //       },
-//     //     }
-//     //   );
-
-//     //   if (response.status === 201 || response.status === 200) {
-//     //     setSuccess(true);
-//     //   }
-//     // } catch (error) {
-//     //   console.log("Support error:", error);
-//     //   alert("Something went wrong. Please try again.");
-//     // } finally {
-//     //   setLoading(false);
-//     // }
-//   };
-
-//   return (
-//     <>
-//       <Head>
-//         <title>Support / Complaint | Elrazi Medical University, Kano</title>
-//       </Head>
-
-//       <Box component="main" sx={{ flexGrow: 1, py: 8 }}>
-//         <Container maxWidth="md">
-//           <Card sx={{ padding: { xs: "20px", sm: "40px" } }}>
-//             <Typography variant="h5" fontWeight="bold" gutterBottom>
-//               Support / Complaint Form
-//             </Typography>
-
-//             <Typography variant="body2" color="text.secondary" mb={3}>
-//               Submit your issue or complaint to the university management. You will receive a response soon.
-//             </Typography>
-
-//             {success && (
-//               <Alert severity="success" sx={{ mb: 3 }}>
-//                 Your complaint has been submitted successfully. Management will respond soon.
-//               </Alert>
-//             )}
-
-//             <SupportForm onSubmit={handleSubmit} />
-
-//             {/* <Stack direction="row" justifyContent="flex-end" mt={3}>
-//               <Button variant="contained" disabled={loading} onClick={() => {}}>
-//                 {loading ? "Submitting..." : "Submit Complaint"}
-//               </Button>
-//             </Stack> */}
-//           </Card>
-//         </Container>
-//       </Box>
-//     </>
-//   );
-// };
-
-// Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
-
-// export default Page;
