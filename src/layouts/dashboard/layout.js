@@ -63,31 +63,25 @@ export const Layout = (props) => {
   );
 
   return (
-    <>
-      {isLoading ? (
-        <FullScreenLoading />
-      ) : (
-        <AuthContext.Provider
-          value={{
-            user,
-            paymentUpload,
-            tuitionFeeUpload,
-            accommodationFeeUpload,
-            token,
-            documentsCompleted,
-            facultyCourses,
-            studentCourses,
-            admissions,
-            logOutUser,
-          }}
-        >
-          <TopNav onNavOpen={() => setOpenNav(true)} />
-          <SideNav onClose={() => setOpenNav(false)} open={openNav} />
-          <LayoutRoot>
-            <LayoutContainer>{children}</LayoutContainer>
-          </LayoutRoot>
-        </AuthContext.Provider>
-      )}
-    </>
+    <AuthContext.Provider
+      value={{
+        user,
+        paymentUpload,
+        tuitionFeeUpload,
+        accommodationFeeUpload,
+        token,
+        documentsCompleted,
+        facultyCourses,
+        studentCourses,
+        admissions,
+        logOutUser,
+      }}
+    >
+      <TopNav onNavOpen={() => setOpenNav(true)} />
+      <SideNav onClose={() => setOpenNav(false)} open={openNav} />
+      <LayoutRoot>
+        <LayoutContainer>{isLoading ? <FullScreenLoading overlay /> : children}</LayoutContainer>
+      </LayoutRoot>
+    </AuthContext.Provider>
   );
 };

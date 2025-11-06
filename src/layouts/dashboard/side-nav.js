@@ -138,11 +138,11 @@ export const SideNav = (props) => {
             py: 3,
           }}
         >
+          <Typography color="neutral.500" variant="body2">
+            Elrazi ICT Department.
+          </Typography>
           <Typography color="neutral.100" variant="subtitle2">
             Powered by nail...
-          </Typography>
-          <Typography color="neutral.500" variant="body2">
-            thisisnail.xyz
           </Typography>
           <Box
             sx={{

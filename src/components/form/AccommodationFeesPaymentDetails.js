@@ -84,8 +84,8 @@ export const AccommodationFeesPaymentDetails = ({ name, mBBS, accommodationFeeUp
       )}
 
       <Typography sx={{ width: { xs: "100%", md: "70%" } }}>
-        1. To secure your spot, Accommodation fee of N1,000,000 is required. Please make your
-        payment using the following details and upload your receipt as proof of payment.
+        1. To secure your spot, Accommodation fee is required. Please make your payment using the
+        following details and upload your receipt as proof of payment.
       </Typography>
 
       {/* bank account details */}
@@ -187,16 +187,6 @@ export const AccommodationFeesPaymentDetails = ({ name, mBBS, accommodationFeeUp
           )}
         </Stack>
       )}
-      <Typography sx={{ width: { xs: "100%", md: "70%" } }}>
-        2. Document Submission and Verification: In addition to online submission, it is mandatory
-        for all students to present their credentials in hard copy for physical verification. This
-        step is crucial to complete your registration process.
-      </Typography>
-
-      <Typography sx={{ width: { xs: "100%", md: "70%" } }}>
-        3. Student Registration and Documentation: Scheduled to take place from Monday, 12th
-        February 2024, to Monday, 19th February 2024.
-      </Typography>
 
       <Typography mt={"20px"} variant="body2">
         If you encounter any issues or have questions, feel free to contact our support team.

@@ -196,11 +196,6 @@ export const TuitionFeesPaymentDetails = ({ name, mBBS, tuitionFeeUpload }) => {
         step is crucial to complete your registration process.
       </Typography>
 
-      <Typography sx={{ width: { xs: "100%", md: "70%" } }}>
-        3. Student Registration and Documentation: Scheduled to take place from Monday, 12th
-        February 2024, to Monday, 19th February 2024.
-      </Typography>
-
       <Typography mt={"20px"} variant="body2">
         If you encounter any issues or have questions, feel free to contact our support team.
       </Typography>

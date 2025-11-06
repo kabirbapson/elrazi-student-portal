@@ -11,7 +11,8 @@ import {
   Payment,
   HomeWork,
   School,
-  Assessment, // Importing the Results icon
+  Assessment,
+  SupportAgent, // Importing the Results icon
 } from "@mui/icons-material";
 
 export const AdmissionApplicationApproved = () => {
@@ -19,11 +20,12 @@ export const AdmissionApplicationApproved = () => {
 
   const menuItems = [
     { title: "Profile", icon: <AccountCircle />, link: "/profile" },
+    { title: "Application", icon: <School />, link: "/application" }, // Academic applications, enrollments
     { title: "Courses", icon: <Book />, link: "/courses" },
     { title: "Results", icon: <Assessment />, link: "/results" }, // New Results menu item
     { title: "Tuition Fee", icon: <Payment />, link: "/tuition" }, // Manage payments
     { title: "Accommodation", icon: <HomeWork />, link: "/accommodation" }, // Dormitory or housing options
-    { title: "Application", icon: <School />, link: "/application" }, // Academic applications, enrollments
+    { title: "Support & Complaints", icon: <SupportAgent />, link: "/support" },
     { title: "Settings", icon: <Settings />, link: "/settings" },
     // Add more menu items as needed
   ];

@@ -63,7 +63,7 @@ const Page = () => {
   useEffect(() => {
     if (
       user &&
-      (user.phone_number === null || user.phone_number === "" || user.phone_number.length < 6)
+      (user?.phone_number === null || user?.phone_number === "" || user?.phone_number?.length < 6)
     ) {
       setOpenModal(true);
     }
