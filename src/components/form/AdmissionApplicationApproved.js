@@ -32,12 +32,6 @@ export const AdmissionApplicationApproved = () => {
 
   return (
     <Stack spacing={2}>
-      {/* <Stack direction={"row"} spacing={1} alignItems="center">
-        <Typography variant="h5" fontWeight={"bold"}>
-          Congratulations, {user?.first_name}! your Registration Number is:{" "}
-          {user?.student_profile?.student_id}
-        </Typography>
-      </Stack> */}
       <Stack
         marginTop={"100px"}
         sx={{
