@@ -128,7 +128,12 @@ const Page = () => {
                   </Typography>
 
                   <Typography variant="caption" color="text.secondary">
-                    Created: {new Date(ticket.created_at).toLocaleString()}
+                    Created:{" "}
+                    {new Date(ticket.created_at).toLocaleString(undefined, {
+                      year: "numeric",
+                      month: "long", // 'long' gives the full month name (e.g., November)
+                      day: "numeric",
+                    })}
                   </Typography>
                 </Box>
 
