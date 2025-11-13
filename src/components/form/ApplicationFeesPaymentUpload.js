@@ -64,8 +64,8 @@ export const ApplicationFeePaymentUpload = ({ onLoading, onUploadReceipt }) => {
       <TextValue name={"Bank Name"} value={"Taj Bank Plc."} />
 
       <Typography marginY={"5px"} sx={{ width: { xs: "100%", md: "70%", marginBottom: "4" } }}>
-        Great! please upload a clear image of your receipt in either JPG or PNG format to proceed
-        with your application.
+        Great! please upload a clear image of your receipt in either JPG or PNG format of less than
+        1MB to proceed with your application.
       </Typography>
 
       {/* bank account details */}

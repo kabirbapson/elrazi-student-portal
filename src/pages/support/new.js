@@ -6,7 +6,6 @@ import { AuthContext } from "src/context";
 import axiosInstance from "config";
 import BackButton from "src/components/BackButton";
 import { useRouter } from "next/router";
-
 import { useForm, Controller } from "react-hook-form";
 import {
   TextField,
@@ -20,19 +19,26 @@ import {
 } from "@mui/material";
 
 const SupportForm = ({ onSubmit }) => {
+  const { user } = useContext(AuthContext);
   const { control, handleSubmit } = useForm({
     defaultValues: {
       category: "",
       subject: "",
       message: "",
-      priority: "normal",
+      priority: "medium",
     },
   });
 
   const handleFormSubmit = (data) => {
+    // ✅ Add student full name and registration number inside message
+    const fullName = `${user?.first_name || ""} ${user?.last_name || ""} ${
+      user?.other_name || ""
+    }`.trim();
+    const regNumber = user?.student_profile?.student_id || "N/A";
+
     const formattedData = {
-      subject: data.subject,
-      description: `[${data.category}] ${data.message}`,
+      subject: `[${data.category}] - ${data.subject}  `,
+      description: `From ${fullName} - ${regNumber} || Message: ${data.message}`,
       priority: data.priority.toLowerCase(),
     };
     onSubmit(formattedData);
@@ -41,7 +47,6 @@ const SupportForm = ({ onSubmit }) => {
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)}>
       <Grid container spacing={2} my={"20px"}>
-
         <Grid item xs={12} sm={6}>
           <FormControl fullWidth required>
             <InputLabel id="category-label">Type of Issue</InputLabel>
@@ -70,8 +75,10 @@ const SupportForm = ({ onSubmit }) => {
               render={({ field }) => (
                 <Select {...field} labelId="priority-label" label="Priority">
                   <MenuItem value="low">Low</MenuItem>
-                  <MenuItem value="normal">Normal</MenuItem>
-                  <MenuItem value="high">High (Urgent)</MenuItem>
+                  <MenuItem selected value="medium">
+                    Medium
+                  </MenuItem>
+                  <MenuItem value="high">High </MenuItem>
                 </Select>
               )}
             />
@@ -82,9 +89,7 @@ const SupportForm = ({ onSubmit }) => {
           <Controller
             name="subject"
             control={control}
-            render={({ field }) => (
-              <TextField {...field} label="Subject" required fullWidth />
-            )}
+            render={({ field }) => <TextField {...field} label="Subject" required fullWidth />}
           />
         </Grid>
 
@@ -128,7 +133,7 @@ const Page = () => {
       setSuccess(true);
       setTimeout(() => router.push("/support"), 1500);
     } catch (error) {
-      console.log("Ticket Submit Error:", error);
+      console.log("Ticket Submit Error:", error?.response?.data);
       alert("Failed to submit ticket, try again.");
     }
   };
