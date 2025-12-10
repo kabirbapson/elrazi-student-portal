@@ -121,7 +121,7 @@ const Page = () => {
           </form>
 
           <Typography mt="30px" textAlign="center" variant="body2">
-            Need help? Email: <strong>ict@elrazi.edu.ng</strong> — Phone:{" "}
+            Need help? Email: <strong>ict@elrazi.edu.ng</strong> — Call:{" "}
             <strong>+234 808 427 7233</strong>
           </Typography>
         </Box>

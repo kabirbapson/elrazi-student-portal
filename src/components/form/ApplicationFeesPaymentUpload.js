@@ -148,10 +148,10 @@ export const ApplicationFeePaymentUpload = ({ onLoading, onUploadReceipt }) => {
           <Typography fontWeight={"bold"}>Email:</Typography>
           <Typography variant="body1">ict@elrazi.edu.ng</Typography>
         </Stack>
-        <Stack spacing={1} direction={"row"}>
+        {/* <Stack spacing={1} direction={"row"}>
           <Typography fontWeight={"bold"}>Phone:</Typography>
           <Typography variant="body1">+234 808 427 7233</Typography>
-        </Stack>
+        </Stack> */}
       </Stack>
 
       <Typography mt={"20px"}>

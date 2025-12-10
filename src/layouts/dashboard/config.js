@@ -6,6 +6,7 @@ import AcademicCapIcon from "@heroicons/react/24/solid/AcademicCapIcon"; // For 
 import HomeIcon from "@heroicons/react/24/solid/HomeIcon"; // For Accommodation
 import DocumentIcon from "@heroicons/react/24/solid/DocumentIcon"; // Import at the top with other icons
 import ChatBubbleOvalLeftIcon from "@heroicons/react/24/solid/ChatBubbleOvalLeftIcon"; // For Support Ticket
+import ClipboardDocumentCheckIcon from "@heroicons/react/24/solid/ClipboardDocumentCheckIcon";
 
 export const items = [
   {
@@ -43,7 +44,12 @@ export const items = [
     path: "/accommodation",
     icon: <SvgIcon component={HomeIcon} fontSize="small" />,
   },
-
+  {
+    title: "My Attendance",
+    icon: <SvgIcon component={ClipboardDocumentCheckIcon} fontSize="small" />,
+    external: true,
+    url: "https://elrazi.ng/student_login.php", // <-- must use 'url' here
+  },
   {
     title: "Support / Complaint",
     path: "/support",
