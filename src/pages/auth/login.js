@@ -120,10 +120,17 @@ const Page = () => {
             </Button>
           </form>
 
-          <Typography mt="30px" textAlign="center" variant="body2">
-            Need help? Email: <strong>ict@elrazi.edu.ng</strong> — Call:{" "}
-            <strong>+234 808 427 7233</strong>
-          </Typography>
+          <Box mt="30px" textAlign="center">
+            <Typography variant="body2">
+              Need help creating an account or having issues logging in?
+            </Typography>
+            <Typography variant="body2">
+              Email: <strong>ict@elrazi.edu.ng</strong>
+            </Typography>
+            <Typography variant="body2">
+              Call: <strong>+234 808 427 7233</strong>
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </>
