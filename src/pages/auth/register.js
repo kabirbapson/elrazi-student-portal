@@ -240,17 +240,35 @@ const Page = () => {
             </Link>
           </Typography>
 
-          <Typography mt={"20px"} variant="body2">
-            If you encounter any issues or have questions, feel free to contact our support team.
-          </Typography>
-          <Stack mt={"10px"}>
-            {/* <Stack spacing={1} direction={"row"}>
-              <Typography fontWeight={"bold"}>Phone:</Typography>
-              <Typography variant="body1">+234 808 427 7233</Typography>
-            </Stack> */}
-          </Stack>
+          <Box mt="20px" textAlign="center">
+            <Typography variant="body2">
+              If you encounter any issues or have questions, feel free to contact our support team:
+            </Typography>
 
-          <Typography>Thank you for choosing Elrazi Medical University.</Typography>
+            <Stack mt="10px" spacing={1}>
+              <Typography variant="body2">
+                Email:{" "}
+                <strong>
+                  <a
+                    href="mailto:ict@elrazi.edu.ng"
+                    style={{ color: "inherit", textDecoration: "none" }}
+                  >
+                    ict@elrazi.edu.ng
+                  </a>
+                </strong>
+              </Typography>
+              <Typography variant="body2">
+                Phone:{" "}
+                <strong>
+                  <a href="tel:+2348084277233" style={{ color: "inherit", textDecoration: "none" }}>
+                    +234 808 427 7233
+                  </a>
+                </strong>
+              </Typography>
+            </Stack>
+            <Typography mt="10px" />
+            <Typography>Thank you for choosing Elrazi Medical University, Kano...</Typography>
+          </Box>
         </Box>
       </Box>
     </>
